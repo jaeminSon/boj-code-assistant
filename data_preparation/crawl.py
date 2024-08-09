@@ -3,7 +3,6 @@ import random
 import requests
 import time
 import json
-import re
 
 from tqdm import tqdm
 from bs4 import BeautifulSoup
@@ -16,8 +15,7 @@ def crawl_problem_list(page: int):
     querystring = {"query": "", "page": f"{page}"}
 
     headers = {"Content-Type": "application/json"}
-    response = requests.request(
-        "GET", SEARCH_URL, headers=headers, params=querystring)
+    response = requests.request("GET", SEARCH_URL, headers=headers, params=querystring)
 
     summarized_problem_lists = []
     problem_list = json.loads(response.text).get("items")
@@ -42,7 +40,7 @@ def crawl_problem_list(page: int):
                 "problemId": prob_desc["problemId"],
                 "titleKo": prob_desc["titleKo"],
                 "tags": retrieved_tags,
-                "level": prob_desc["level"]
+                "level": prob_desc["level"],
             }
         )
 
@@ -79,8 +77,7 @@ def crawl_problem_content(problem_id: int):
     sample_input = soup.select("pre[id^=sample-input]")
     sample_output = soup.select("pre[id^=sample-output]")
 
-    problem_str = "Problem Description: " + \
-        "".join([e.text for e in problem_desc])
+    problem_str = "Problem Description: " + "".join([e.text for e in problem_desc])
     input_str = "Input: " + "".join([e.text for e in input_desc])
     output_str = "Output: " + "".join([e.text for e in output_desc])
     sample_input_output = "\n".join(
@@ -108,7 +105,7 @@ if __name__ == "__main__":
     for page in tqdm(range(1, 603)):
         problem_lists = crawl_problem_list(page)
         all_problem_lists.extend(problem_lists)
-    with open(path_problem_lists, "w", encoding='utf8') as f:
+    with open(path_problem_lists, "w", encoding="utf8") as f:
         json.dump(all_problem_lists, f, indent="\t", ensure_ascii=False)
 
     # save problems to files

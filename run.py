@@ -15,20 +15,17 @@ homedir = os.path.dirname(os.path.realpath(__file__))
 
 
 def read_yaml(path_yaml: str) -> Dict:
-    with open(path_yaml, 'r') as file:
+    with open(path_yaml, "r") as file:
         data = yaml.safe_load(file)
     return data
 
 
-auto = read_yaml(os.path.join(homedir,
-                 "authentication/openai.yaml"))
+auto = read_yaml(os.path.join(homedir, "authentication/openai.yaml"))
 client = OpenAI(api_key=auto["api_key"])
 
-tags = json.load(
-    open(os.path.join(homedir, "metainfo/problem_tag.json")))
+tags = json.load(open(os.path.join(homedir, "metainfo/problem_tag.json")))
 
-prob_lists = json.load(
-    open(os.path.join(homedir, "metainfo/problem_lists.json")))
+prob_lists = json.load(open(os.path.join(homedir, "metainfo/problem_lists.json")))
 
 vdb = None
 
@@ -50,9 +47,8 @@ def _vdb_exists(homedir) -> bool:
 
 
 def initialize_vdb(homedir):
-
     def find_txt_files(directory: str) -> List[str]:
-        return glob.glob(os.path.join(directory, '**/*.txt'), recursive=True)
+        return glob.glob(os.path.join(directory, "**/*.txt"), recursive=True)
 
     # save vdb to persistent directory
     docs = [TextLoader(f).load() for f in find_txt_files(homedir)]
@@ -61,12 +57,11 @@ def initialize_vdb(homedir):
         documents=docs_list,
         collection_name="rag-chroma",
         embedding=GPT4AllEmbeddings(),
-        persist_directory=homedir
+        persist_directory=homedir,
     )
 
 
 def prepare_vdb(homedir) -> None:
-
     if not _vdb_exists(homedir):
         initialize_vdb(homedir)
 
@@ -76,7 +71,7 @@ def prepare_vdb(homedir) -> None:
     vdb = Chroma(
         collection_name="rag-chroma",
         embedding_function=GPT4AllEmbeddings(),
-        persist_directory=homedir
+        persist_directory=homedir,
     )
 
 
@@ -99,7 +94,11 @@ def _show_tag(algorithm):
     if algorithm in tags:
         return "\n".join(tags[algorithm])
     else:
-        return f"No tag '{algorithm}' exists.\n" + "=== Available tags ===\n" + "\n".join(tags.keys())
+        return (
+            f"No tag '{algorithm}' exists.\n"
+            + "=== Available tags ===\n"
+            + "\n".join(tags.keys())
+        )
 
 
 def _retrieve_description(algorithm):
@@ -111,8 +110,12 @@ def _retrieve_description(algorithm):
 
 def _general_advice():
     advices = []
-    advices.append("Analyze the Problem: Identify and map the elements of the problem to appropriate data structures in computer science. Consider the allowed complexity constraints.")
-    advices.append("Filter Algorithms by Complexity: Based on the complexity constraints, narrow down to feasible algorithms that can efficiently solve the problem. Type 'complexity' for more details.")
+    advices.append(
+        "Analyze the Problem: Identify and map the elements of the problem to appropriate data structures in computer science. Consider the allowed complexity constraints."
+    )
+    advices.append(
+        "Filter Algorithms by Complexity: Based on the complexity constraints, narrow down to feasible algorithms that can efficiently solve the problem. Type 'complexity' for more details."
+    )
     return "\n\n".join([f"{i+1}. {adv}" for i, adv in enumerate(advices)])
 
 
@@ -127,10 +130,17 @@ def _write_io_codes(rows):
                     code = " = input()"
             else:
                 if all(e.isdigit() for e in row_chunks):
-                    code = " = list(map(int, input().split())) or " + "," * \
-                        (len(row_chunks)-1) + "= map(int, input().split())"
+                    code = (
+                        " = list(map(int, input().split())) or "
+                        + "," * (len(row_chunks) - 1)
+                        + "= map(int, input().split())"
+                    )
                 else:
-                    code = " = input().split() or" + ","*(len(row_chunks)-1) + "= input().split()"
+                    code = (
+                        " = input().split() or"
+                        + "," * (len(row_chunks) - 1)
+                        + "= input().split()"
+                    )
 
             f.write(f"{code}\n")
 
@@ -141,15 +151,17 @@ def _write_to_draft(content):
 
 
 def _manual():
-    manuals = ["## change directory\n```cd </path/to/directory>```",
-               "## show list directory content\n```ls```",
-               "## execute python file\n```python </path/to/python_file>```",
-               "## get a hint\n```hint <boj-prob-number>```",
-               "## show algorithm tags\n```tag <algorithm-name>```",
-               "## write parsing codes on draft.py\n```io <io-examples-after-newline>```",
-               "## fetch algorithm explanation\n```explain <algorithm-name>```",
-               "## show general strategy for problem solving\n```help```",
-               "## write code on draft.py based on the discussion\n```code```"]
+    manuals = [
+        "## change directory\n```cd </path/to/directory>```",
+        "## show list directory content\n```ls```",
+        "## execute python file\n```python </path/to/python_file>```",
+        "## get a hint\n```hint <boj-prob-number>```",
+        "## show algorithm tags\n```tag <algorithm-name>```",
+        "## write parsing codes on draft.py\n```io <io-examples-after-newline>```",
+        "## fetch algorithm explanation\n```explain <algorithm-name>```",
+        "## show general strategy for problem solving\n```help```",
+        "## write code on draft.py based on the discussion\n```code```",
+    ]
 
     return "\n\n".join(manuals)
 
@@ -192,16 +204,24 @@ def execute_command(history):
 
 def is_command(prompt):
     commands = [
-        'cd', 'ls', 'python',
-
+        "cd",
+        "ls",
+        "python",
         # user-defined
-        'man', 'hint', 'code', 'tag', 'io', 'explain', 'complexity', 'help'
+        "man",
+        "hint",
+        "code",
+        "tag",
+        "io",
+        "explain",
+        "complexity",
+        "help",
     ]
     command = prompt.split()[0]
     return command in commands
 
 
-def reference_to_code(prompt, commands_discussion=['hint', 'discuss']):
+def reference_to_code(prompt, commands_discussion=["hint", "discuss"]):
     command = prompt.split()[0]
     return command in commands_discussion
 
@@ -220,22 +240,25 @@ def handle_query(history):
 
 
 def _write_code(history):
-    history_openai_format = [{"role": "system",
-                              "content": "You're an expert in Python. Write a code-only solution to the problem discussed. At the end of your code, append if __name__ == '__main__': to call your function with sample arguments"}]
+    history_openai_format = [
+        {
+            "role": "system",
+            "content": "You're an expert in Python. Write a code-only solution to the problem discussed. At the end of your code, append if __name__ == '__main__': to call your function with sample arguments",
+        }
+    ]
     for msg_user, msg_assistant in history:
         if msg_assistant and reference_to_code(msg_user):
             history_openai_format.append({"role": "user", "content": msg_user})
             history_openai_format.append(
-                {"role": "assistant", "content": msg_assistant})
+                {"role": "assistant", "content": msg_assistant}
+            )
 
     final_user_prompt = history[-1][0]
-    history_openai_format.append(
-        {"role": "user", "content": final_user_prompt})
+    history_openai_format.append({"role": "user", "content": final_user_prompt})
 
-    response = client.chat.completions.create(model='gpt-4o',
-                                              messages=history_openai_format,
-                                              temperature=1.0,
-                                              stream=True)
+    response = client.chat.completions.create(
+        model="gpt-4o", messages=history_openai_format, temperature=1.0, stream=True
+    )
 
     history[-1][1] = ""
     for chunk in response:
@@ -243,10 +266,10 @@ def _write_code(history):
             history[-1][1] += chunk.choices[0].delta.content
 
     answer = history[-1][1]
-    start_code = answer.find('```python')
+    start_code = answer.find("```python")
     if start_code != -1:
-        answer = answer[start_code + len('```python'):]
-        end_code = answer.find('```')
+        answer = answer[start_code + len("```python") :]
+        end_code = answer.find("```")
         if end_code != -1:
             answer = answer[:end_code]
             _write_to_draft(answer)
@@ -259,9 +282,7 @@ def read_txt(path):
 
 
 def _problem_tags(problem_number):
-
-    tags = [e["tags"]
-            for e in prob_lists if e["problemId"] == int(problem_number)]
+    tags = [e["tags"] for e in prob_lists if e["problemId"] == int(problem_number)]
 
     if len(tags) == 0:
         raise ValueError("No tag found.")
@@ -273,47 +294,50 @@ def _problem_tags(problem_number):
 
 def _problem_prompt(problem_num):
     try:
-        problem_desc = read_txt(os.path.join(
-            homedir, f"problems/{problem_num}.txt"))
-    except Exception as e:
+        problem_desc = read_txt(os.path.join(homedir, f"problems/{problem_num}.txt"))
+    except Exception:
         problem_desc = "Not found"
 
     try:
         ptags = _problem_tags(problem_num)
-    except Exception as e:
+    except Exception:
         ptags = "Not found"
 
     try:
-        solution = read_txt(os.path.join(homedir,
-                            f"solutions/{problem_num}.txt"))
-    except Exception as e:
+        solution = read_txt(os.path.join(homedir, f"solutions/{problem_num}.txt"))
+    except Exception:
         solution = "Not found"
 
-    return f"### problem: {problem_desc}\n\n" + \
-        f"### tags: {ptags}\n\n" + f"### solution code: {solution}"
+    return (
+        f"### problem: {problem_desc}\n\n"
+        + f"### tags: {ptags}\n\n"
+        + f"### solution code: {solution}"
+    )
 
 
 def _give_hint(history: str):
-
     try:
         user_prompt = history[-1][0]
         problem_num = str(int("".join(user_prompt.split()[1:])))
-    except Exception as e:
+    except Exception:
         pnum = " ".join(user_prompt.split()[1:])
         history[-1][0] = "Failed command - " + history[-1][0]
         history[-1][1] = f"Uknown problem number {pnum}"
         return history
 
-    history_openai_format = [{"role": "system",
-                              "content": "You're an expert in algorithm. Given a problem, and algorithms that consist of a solution, and a solution code, advise to provide the best lessons. Never write codes."}]
+    history_openai_format = [
+        {
+            "role": "system",
+            "content": "You're an expert in algorithm. Given a problem, and algorithms that consist of a solution, and a solution code, advise to provide the best lessons. Never write codes.",
+        }
+    ]
 
     history[-1][0] = _problem_prompt(problem_num)
     history_openai_format.append({"role": "user", "content": history[-1][0]})
 
-    response = client.chat.completions.create(model='gpt-4o',
-                                              messages=history_openai_format,
-                                              temperature=1.0,
-                                              stream=True)
+    response = client.chat.completions.create(
+        model="gpt-4o", messages=history_openai_format, temperature=1.0, stream=True
+    )
 
     history[-1][1] = ""
     for chunk in response:
@@ -332,10 +356,12 @@ def run_gradio():
         def merge_user_input_to_history(user_message, history):
             return "", history + [[user_message, None]]
 
-        text_input.submit(merge_user_input_to_history,
-                          [text_input, history],
-                          [text_input, history],
-                          queue=False).then(handle_query, history, history)
+        text_input.submit(
+            merge_user_input_to_history,
+            [text_input, history],
+            [text_input, history],
+            queue=False,
+        ).then(handle_query, history, history)
         clear.click(lambda: None, None, history, queue=False)
 
     demo.queue()
@@ -343,7 +369,6 @@ def run_gradio():
 
 
 if __name__ == "__main__":
-
     prepare_vdb(homedir=os.path.join(homedir, "descriptions"))
 
     run_gradio()
