@@ -1,6 +1,9 @@
 # 백준 코딩 도우미
 
 
+### OpenAI API key 세팅
+- authentication/openai.yaml 에 [api_key](https://platform.openai.com/docs/quickstart) 복붙
+
 ### 실행
 ```
 $ python run.py
