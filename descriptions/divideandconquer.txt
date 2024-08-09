@@ -1,0 +1,13 @@
+divide and conquer
+
+(1) Divide and conquer is an algorithmic paradigm that solves a problem by recursively breaking it down into smaller subproblems, solving each subproblem independently, and then combining their solutions to solve the original problem.
+
+(2) The time complexity of divide and conquer algorithms typically follows the recurrence relation T(n) = aT(n/b) + f(n), where:
+   - T(n) is the time complexity of the original problem of size n,
+   - a is the number of subproblems,
+   - n/b is the size of each subproblem,
+   - f(n) is the time complexity of dividing the problem and combining the solutions.
+   
+The overall complexity depends on the values of a, b, and the function f(n) and can often be determined using the Master Theorem.
+
+For example, if f(n) = O(n) and a = b = 2, the complexity becomes O(n log n), which means the time grows proportionate to n log n.

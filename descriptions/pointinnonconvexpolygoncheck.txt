@@ -1,0 +1,5 @@
+point in non-convex polygon check
+
+1. The "point in non-convex polygon check" algorithm determines whether a given point lies inside, outside, or on the boundary of a non-convex polygon.
+
+2. The complexity of a typical ray-casting algorithm for this problem is \( O(n) \), where \( n \) is the number of vertices in the polygon. This means the time to check if a point is inside the polygon grows linearly with the number of polygon vertices.

@@ -1,0 +1,5 @@
+degree sequence
+
+1. The "degree sequence" of a graph is a list of the degrees (number of edges connected) of its vertices, typically sorted in non-increasing order.
+   
+2. The complexity of finding the degree sequence of a graph is \(O(V + E)\), where \(V\) is the number of vertices and \(E\) is the number of edges, as it involves iterating over all vertices and edges to count the degrees and then sorting the sequence.

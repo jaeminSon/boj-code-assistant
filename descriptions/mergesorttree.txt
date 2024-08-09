@@ -1,0 +1,7 @@
+merge sort tree
+
+1. A merge sort tree is a data structure that combines a segment tree and merge sort to answer range query problems efficiently by maintaining sorted information for various segments.
+2. Space Complexity: O(n log n), Query Time Complexity: O(log^2 n).
+   - n: The number of elements in the array.
+   - log n: The height of the segment tree, derived from the recursive division of the array.
+   - log^2 n: The product of two logarithmic factors, one for the tree height and the other for handling the sorted lists during the query.

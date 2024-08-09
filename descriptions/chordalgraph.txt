@@ -1,0 +1,4 @@
+chordal graph
+
+1. A chordal graph is a graph where every cycle of four or more vertices has a chord, which is an edge that connects two non-adjacent vertices in the cycle.
+2. The recognition of a chordal graph can be achieved in O(n + m) time complexity, where n is the number of vertices and m is the number of edges in the graph.

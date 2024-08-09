@@ -1,0 +1,5 @@
+rabin–karp
+
+1. Rabin-Karp is a string-search algorithm that uses hashing to find any one of a set of pattern strings in a text.
+
+2. Complexity: The average case time complexity is O(n + m) where 'n' is the length of the text and 'm' is the length of the pattern; the worst-case time complexity is O(nm) due to hash collisions.

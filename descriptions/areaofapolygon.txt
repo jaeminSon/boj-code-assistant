@@ -1,0 +1,5 @@
+area of a polygon
+
+1. (Brief Description) The "area of a polygon" algorithm calculates the area of a simple polygon using the coordinates of its vertices.
+
+2. (Complexity) The time complexity of the algorithm is \( O(n) \), where \( n \) is the number of vertices of the polygon. This denotes that the computational time grows linearly with the number of vertices.

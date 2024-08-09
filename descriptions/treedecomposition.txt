@@ -1,0 +1,5 @@
+tree decomposition
+
+1. Tree decomposition is a method to map a graph into a tree structure in order to facilitate certain types of computational problems, particularly those involving graph width and subgraph connectivity.
+
+2. The complexity of algorithms using tree decomposition generally depends on two parameters: the number of vertices \( n \) in the original graph, and the "width" \( w \) of the tree decomposition. For example, many problems that are NP-hard on general graphs can be solved in \( O(n \cdot f(w)) \) time when using tree decomposition, where \( f(w) \) is a function that depends exponentially on the width \( w \). Thus, the overall efficiency is highly influenced by \( w \), making tree width a crucial factor.

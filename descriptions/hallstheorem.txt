@@ -1,0 +1,16 @@
+hall's theorem
+
+**Brief Description:** 
+
+Hall's Theorem provides a condition to determine if there exists a perfect matching in a bipartite graph, stating that for every subset \( S \) of one partition, the neighborhood of \( S \) (i.e., the set of vertices that are adjacent to at least one vertex in \( S \)) must have a cardinality at least as large as \( S \).
+
+**Complexity in Big O Notation:**
+
+To check Hall's condition, iterating through all subsets \( S \) of a set with \( n \) vertices and computing their neighborhoods has a time complexity of \( O(2^n \cdot (n+m)) \), where \( n \) is the number of vertices and \( m \) is the number of edges in the bipartite graph.
+
+- \( O \): Big O notation, which provides an upper bound on time complexity.
+- \( 2^n \): Represents the number of subsets of the vertex set, as there are \( 2^n \) possible subsets.
+- \( n \): Represents the number of vertices.
+- \( m \): Represents the number of edges in the graph.
+
+However, practical matching algorithms like the Hopcroft-Karp algorithm can find a perfect matching in \( O(\sqrt{n} \cdot m) \) time. This is more efficient for actual implementation than checking subsets manually.

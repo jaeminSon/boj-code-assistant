@@ -1,0 +1,5 @@
+fast fourier transform
+
+1. The Fast Fourier Transform (FFT) is an efficient algorithm to compute the discrete Fourier transform (DFT) and its inverse, transforming a sequence of complex numbers into another sequence representing the frequency domain.
+
+2. The time complexity of the FFT is \( O(n \log n) \), where \( n \) is the number of input data points (it must be a power of two). Here, \( O \) denotes the upper bound of the algorithm's running time as the input size grows, \( n \) is the size of the dataset, and \( \log n \) refers to the logarithm of \( n \), typically base 2.

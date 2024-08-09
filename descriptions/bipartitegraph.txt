@@ -1,0 +1,7 @@
+bipartite graph
+
+Sure! 
+
+1. A bipartite graph algorithm determines whether a graph is bipartite, meaning its vertices can be divided into two disjoint sets such that no two graph vertices within the same set are adjacent.
+ 
+2. The time complexity of checking if a graph is bipartite using BFS or DFS is \(O(V + E)\), where \(V\) is the number of vertices and \(E\) is the number of edges in the graph.

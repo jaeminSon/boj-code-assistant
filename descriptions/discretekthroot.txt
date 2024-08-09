@@ -1,0 +1,10 @@
+discrete k-th root
+
+1. The discrete k-th root algorithm finds an integer \( x \) such that \( x^k ≡ a \ (\text{mod} \ n) \), where \( k \), \( a \), and \( n \) are given integers.
+
+2. Complexity: \( O(\sqrt{k \cdot n}) \)
+
+- \( k \): the exponent in the equation \( x^k \).
+- \( n \): the modulus in the equation \( x^k ≡ a \ (\text{mod} \ n) \).
+
+This computational complexity arises because the algorithm typically involves iterating through potential solutions and verifying them, often using methods such as the baby-step giant-step algorithm for efficiency.

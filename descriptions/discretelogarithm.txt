@@ -1,0 +1,7 @@
+discrete logarithm
+
+1. **Brief Description**: The discrete logarithm algorithm finds an integer \( x \) such that \( a^x \equiv b \ (\text{mod} \ p) \) for given integers \( a \), \( b \), and \( p \), where \( p \) is a prime.
+
+2. **Complexity**: The most general and brute-force approach has a complexity of \( O(p) \), where \( p \) is the prime modulus. More efficient algorithms, like Baby-step Giant-step, have complexities of \( O(\sqrt{p}) \), where \( p \) is again the prime modulus. The symbols mean:
+   - \( O \): Big-O notation, representing the upper bound of the algorithm's time complexity.
+   - \( p \): The prime modulus, which is the size of the finite field.

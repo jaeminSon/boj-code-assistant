@@ -1,0 +1,10 @@
+digit dp
+
+1. **Brief Description:** Digit DP is a dynamic programming technique used to count numbers with specific properties within a range, by examining the digits individually from the most significant to the least significant.
+
+2. **Complexity:** The complexity often ranges from **O(d * n * M)** to **O(d^2 * n * M)**, where **d** is the number of digits in the number, **n** is the base of the number system (e.g., 10 for decimal), and **M** is a constant reflecting the complexity of state transitions or additional constraints.
+
+Explanation of symbols:
+- **d:** Number of digits in the number being processed.
+- **n:** Base of the number system.
+- **M:** State space or additional variables used to maintain constraints and properties.

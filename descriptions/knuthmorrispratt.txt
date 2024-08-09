@@ -1,0 +1,5 @@
+knuth–morris–pratt
+
+(1) The Knuth-Morris-Pratt (KMP) algorithm efficiently finds occurrences of a pattern within a text by preprocessing the pattern to determine where shifts can occur without redundantly re-examining characters.
+
+(2) Complexity: **O(n + m)**, where **n** is the length of the text and **m** is the length of the pattern. This means the algorithm processes each character of the text and pattern at most a constant number of times.

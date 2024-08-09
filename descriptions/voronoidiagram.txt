@@ -1,0 +1,5 @@
+voronoi diagram
+
+1. A Voronoi diagram partitions a plane into regions based on distance to a specific set of points, where each region contains all the points closer to its specific seed point than to any other seed point.
+
+2. The complexity of constructing a Voronoi diagram using Fortune's algorithm is O(n log n), where n is the number of seed points.

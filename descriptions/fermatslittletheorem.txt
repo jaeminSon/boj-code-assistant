@@ -1,0 +1,5 @@
+fermat's little theorem
+
+1. Fermat's Little Theorem states that if \( p \) is a prime number and \( a \) is an integer such that \( a \) is not divisible by \( p \), then \( a^{(p-1)} \equiv 1 \ (\text{mod} \ p) \).
+
+2. Fermat's Little Theorem itself does not directly involve an algorithm, but calculating \( a^{(p-1)} \mod p \) can be done efficiently using modular exponentiation, which typically has a time complexity of \( O(\log p) \). Here, \( O \) represents the Big-O notation for an upper bound on running time, \( p \) is the prime number, and \( \log \) denotes the logarithm.

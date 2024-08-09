@@ -1,0 +1,4 @@
+line segment intersection check
+
+1. The line segment intersection check algorithm determines whether two given line segments intersect in a 2D plane.
+2. The complexity is O(1), because the intersection check involves a constant number of arithmetic and logical operations regardless of the input sizes. Here, `O` stands for the "order of" and describes an upper bound of the running time; `1` means it is a constant time operation.

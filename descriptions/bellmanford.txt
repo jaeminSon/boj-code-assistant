@@ -1,0 +1,10 @@
+bellman–ford
+
+1. The Bellman-Ford algorithm computes the shortest paths from a single source vertex to all other vertices in a weighted graph, and can handle graphs with negative edge weights.
+
+2. Complexity: \(O(V \cdot E)\)
+
+- \(V\) represents the number of vertices in the graph.
+- \(E\) represents the number of edges in the graph.
+
+The algorithm's time complexity reflects that in the worst-case scenario, it relaxes each edge \(E\) up to \(V-1\) times.

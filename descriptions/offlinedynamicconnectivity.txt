@@ -1,0 +1,7 @@
+offline dynamic connectivity
+
+Sure!
+
+1. **Brief Description**: Offline dynamic connectivity algorithms answer queries about the connectivity of nodes in a graph that undergoes a sequence of edge insertions and deletions, assuming all operations are given in advance.
+
+2. **Complexity**: The algorithm typically operates in **O((m + n)α(n))** time complexity, where **m** is the number of operations (queries + edge updates), **n** is the number of nodes, and **α(n)** is the inverse Ackermann function, which grows extremely slowly, thus making the algorithm nearly linear in practical scenarios.

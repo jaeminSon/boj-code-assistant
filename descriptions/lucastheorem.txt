@@ -1,0 +1,4 @@
+lucas theorem
+
+1. Lucas' Theorem is a method used in modular arithmetic to determine binomial coefficients modulo a prime number.
+2. Complexity: O(log_p(n)), where `n` is the non-negative integer and `p` is the prime modulus, indicating that the time complexity grows logarithmically with respect to `n` in the base `p`.

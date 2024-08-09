@@ -1,0 +1,7 @@
+hyperdimensional
+
+Sure, here you go:
+
+1. **Description**: Hyperdimensional computing algorithms use high-dimensional vectors to represent, store, and manipulate data for tasks like classification, pattern recognition, and associative memory.
+
+2. **Complexity**: The computational complexity is often \(O(n \cdot d)\), where \(n\) represents the number of data points and \(d\) denotes the dimensions of the vectors.

@@ -1,0 +1,5 @@
+dynamic programming on trees
+
+1. Dynamic programming on trees is an optimization technique that involves breaking down problems on tree structures into simpler subproblems and solving each subproblem only once to save computational effort.
+
+2. The complexity is generally O(V), where V represents the number of vertices (or nodes) in the tree, as each node and edge is typically processed a constant number of times.

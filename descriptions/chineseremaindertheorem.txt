@@ -1,0 +1,5 @@
+chinese remainder theorem
+
+1. The Chinese Remainder Theorem is an algorithm used to solve systems of simultaneous congruences with pairwise coprime moduli, finding a single solution modulo the product of the moduli.
+
+2. The complexity of finding the solution using this theorem is O(k log M), where k is the number of congruences and M is the product of the moduli, since the algorithm involves iterative computation and modular inverses, which can be efficiently done using extended Euclidean algorithm.

@@ -1,0 +1,9 @@
+sweeping
+
+Certainly!
+
+1. **Brief Description**: The "sweeping" algorithm is a technique used to solve problems related to geometric properties or intervals by iterating over a sorted list of events while maintaining a dynamic set of active intervals or objects.
+
+2. **Complexity**: The time complexity of the sweeping algorithm is typically O((n + k) log n), where **n** represents the number of input elements (events) to be processed, and **k** usually represents the number of intersections or specific events that need to be handled dynamically.
+
+Let me know if you need a more detailed explanation or an example!

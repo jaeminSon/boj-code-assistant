@@ -1,0 +1,6 @@
+.DS_Store
+chroma.sqlite3
+*.bin
+authentication/*.yaml
+problems/*.txt
+

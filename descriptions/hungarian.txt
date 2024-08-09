@@ -1,0 +1,5 @@
+hungarian
+
+1. The Hungarian algorithm, also known as the Kuhn-Munkres algorithm, is used for finding the maximum weight matching in a weighted bipartite graph.
+
+2. The time complexity of the Hungarian algorithm is \(O(n^3)\), where \(n\) represents the number of vertices (or nodes) on each side of the bipartite graph.

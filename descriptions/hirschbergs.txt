@@ -1,0 +1,4 @@
+hirschberg's
+
+1. Hirschberg's Algorithm is a space-efficient algorithm for finding the longest common subsequence (LCS) of two strings.
+2. Complexity: Time complexity is \(O(m \cdot n)\), where \(m\) and \(n\) are the lengths of the two input strings, and space complexity is \(O(\min(m, n))\), as it significantly reduces space requirements compared to the standard LCS dynamic programming approach.

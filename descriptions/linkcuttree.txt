@@ -1,0 +1,5 @@
+link/cut tree
+
+1. A link/cut tree is a data structure used to dynamically maintain a forest of trees where each tree supports operations to add or remove edges and to efficiently answer queries about the paths and subtrees in a dynamic forest.
+  
+2. The complexity for individual operations (link, cut, find root, path aggregate, etc.) in a link/cut tree is O(log n), where n is the number of nodes in the forest. Here, O(log n) denotes that the time taken for each operation grows logarithmically with respect to the number of nodes, making the operations very efficient even for large data sets.

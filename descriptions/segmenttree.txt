@@ -1,0 +1,12 @@
+segment tree
+
+### Description
+A segment tree is a data structure used for storing information about intervals or segments, allowing for efficient querying and updating of range-based properties such as minimum, maximum, sum, and more.
+
+### Complexity
+- **Building the Tree:** \( O(n) \)
+  - **n:** Number of elements in the array.
+- **Querying:** \( O(\log n) \)
+  - **\log n:** Logarithmic complexity relative to the number of elements, representing the height of the balanced segment tree.
+- **Updating:** \( O(\log n) \)
+  - **\log n:** Similar reason as querying; updates propagate through the height of the tree.

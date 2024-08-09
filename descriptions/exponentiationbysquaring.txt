@@ -1,0 +1,5 @@
+exponentiation by squaring
+
+1. Exponentiation by squaring is an efficient algorithm to compute powers of a number by recursively reducing the exponent by squaring the base when the exponent is even and multiplying the base with the result when the exponent is odd.
+
+2. The time complexity of exponentiation by squaring is O(log n), where n is the exponent. This means that the number of operations required grows logarithmically with respect to the size of the exponent.

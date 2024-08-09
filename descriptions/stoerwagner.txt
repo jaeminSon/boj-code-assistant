@@ -1,0 +1,5 @@
+stoer–wagner
+
+1. Stoer-Wagner is an algorithm that computes the minimum cut of an undirected graph, which is the smallest set of edges that, if removed, would disconnect the graph.
+
+2. The complexity of the Stoer-Wagner algorithm is O(V^3), where V represents the number of vertices in the graph.

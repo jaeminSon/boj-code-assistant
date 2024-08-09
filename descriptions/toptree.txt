@@ -1,0 +1,5 @@
+top tree
+
+1. A top tree is a dynamic data structure used to represent a forest of trees that supports efficient queries and updates on paths within the trees.
+
+2. The complexity for update and query operations in top trees is typically **O(log n)** per operation, where **n** represents the number of nodes in the trees.

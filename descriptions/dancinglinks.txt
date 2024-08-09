@@ -1,0 +1,5 @@
+dancing links
+
+1. **Description**: Dancing Links is an algorithm used to efficiently implement backtracking and solve exact cover problems, such as the Sudoku puzzle, by dynamically linking and unlinking elements to represent constraints.
+   
+2. **Complexity**: The time complexity of Dancing Links depends on the specific constraints and problem instance, but for the exact cover problem, it is generally O(b^d), where b is the branching factor (possible options to try), and d is the depth of the search or number of decisions to be made.

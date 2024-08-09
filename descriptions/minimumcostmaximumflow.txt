@@ -1,0 +1,5 @@
+minimum cost maximum flow
+
+1. The minimum cost maximum flow algorithm finds the maximum flow in a flow network such that the cost of the flow is minimized.
+
+2. Complexity: \( O(V^2 E + V E \log V) \), where \( V \) is the number of vertices and \( E \) is the number of edges. The term \( V^2 E \) corresponds to finding augmenting paths, and \( V E \log V \) accounts for the shortest path computations typically handled by algorithms like Dijkstra’s with a priority queue.

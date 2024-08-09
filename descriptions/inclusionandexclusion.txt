@@ -1,0 +1,5 @@
+inclusion and exclusion
+
+(1) The inclusion-exclusion principle is a combinatorial method used to count the number of elements in the union of multiple sets by alternately adding and subtracting the sizes of various intersections of these sets.
+
+(2) The complexity of applying the inclusion-exclusion principle depends on the number of sets \( n \) and it's \( O(2^n) \), where \( n \) is the number of sets being considered, because it involves calculating the sizes of all possible intersections of these sets, which are \( 2^n \) in total.

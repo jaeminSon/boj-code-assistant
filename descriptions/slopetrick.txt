@@ -1,0 +1,5 @@
+slope trick
+
+1. The slope trick is a technique used to maintain and efficiently query the minimum value of a convex or concave piecewise linear function as it is modified by various operations.
+   
+2. The typical complexity of applying the slope trick operations (such as additions and queries) is \(O(\log n)\) per operation, where \(n\) is the number of operations applied. Here, \(O\) denotes the asymptotic upper bound, \(\log\) is the logarithm function, and \(n\) represents the number of operations.

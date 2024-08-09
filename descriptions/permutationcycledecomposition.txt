@@ -1,0 +1,5 @@
+permutation cycle decomposition
+
+1. Permutation cycle decomposition is an algorithm used to identify and partition a permutation of elements into distinct cycles.
+   
+2. Complexity: \(O(n)\), where \(n\) is the number of elements in the permutation. This indicates that the running time of the algorithm scales linearly with the number of elements.

@@ -1,0 +1,5 @@
+0-1 bfs
+
+1. The 0-1 BFS algorithm is an optimized version of BFS that efficiently finds the shortest path in a graph where edge weights are either 0 or 1 by using a deque (double-ended queue).
+
+2. The complexity of 0-1 BFS is O(V + E), where \( V \) is the number of vertices and \( E \) is the number of edges in the graph.

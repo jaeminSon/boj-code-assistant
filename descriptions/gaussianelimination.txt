@@ -1,0 +1,5 @@
+gaussian elimination
+
+1. **Brief Description:** Gaussian elimination is a method for solving systems of linear equations by converting the matrix to row-echelon form and then performing back substitution.
+
+2. **Complexity:** The time complexity of Gaussian elimination is \(O(n^3)\), where \(n\) represents the number of variables (or the number of rows/columns in the square matrix). This involves performing operations through multiple nested loops over the matrix elements.

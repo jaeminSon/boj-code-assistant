@@ -1,0 +1,5 @@
+berlekamp–massey
+
+1. The Berlekamp-Massey algorithm is used to find the shortest linear feedback shift register (LFSR) that generates a given binary sequence.
+
+2. Complexity: O(N^2), where N is the length of the given sequence. The algorithm analyzes subsequences of the given sequence to iteratively construct and adjust the polynomial representing the LFSR.

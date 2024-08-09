@@ -1,0 +1,5 @@
+strongly connected component
+
+1. A Strongly Connected Component (SCC) algorithm identifies all subgraphs in a directed graph where any vertex is reachable from any other vertex within the same subgraph.
+
+2. The complexity of finding SCCs using Tarjan's or Kosaraju's algorithm is **O(V + E)** where **V** represents the number of vertices and **E** represents the number of edges in the graph.

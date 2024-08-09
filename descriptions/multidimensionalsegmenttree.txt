@@ -1,0 +1,7 @@
+multidimensional segment tree
+
+(1) A multidimensional segment tree is a data structure that allows efficient querying and updating of elements in a multi-dimensional array.
+
+(2) Complexity: 
+- For constructing an N-dimensional segment tree: **O(n^d log^d n)**, where `n` is the size of the array in each dimension and `d` is the number of dimensions.
+- For query and update operations: **O(log^d n)**, where `n` is the size in each dimension and `d` is the number of dimensions.

@@ -1,0 +1,11 @@
+bipartite matching
+
+1. **Description**: Bipartite matching is an algorithm used to find the maximum matching in a bipartite graph, where a matching is a set of edges without common vertices and a bipartite graph is a graph whose vertices can be divided into two disjoint sets such that every edge connects a vertex in one set to a vertex in the other set.
+
+2. **Complexity**: The most common bipartite matching algorithm, the Hopcroft-Karp algorithm, has a time complexity of \( O(E \sqrt{V}) \), where \( V \) is the number of vertices and \( E \) is the number of edges in the bipartite graph.
+
+   - \( V \): The number of vertices in the graph.
+   - \( E \): The number of edges in the graph.
+   - \( \sqrt{V} \): The square root of the number of vertices.
+
+This complexity reflects the efficiency of the algorithm in finding an optimal solution, balancing the need to explore potential matchings and the efficiency in traversing the graph structure.

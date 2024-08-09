@@ -1,0 +1,4 @@
+persistent segment tree
+
+1. A persistent segment tree is a data structure that allows both efficient queries and modifications on an array while preserving the history of changes, enabling access to any previous version of the array. 
+2. The complexity of both update and query operations in a persistent segment tree is \(O(\log n)\), where \(n\) is the size of the array, because each operation requires traversing and potentially modifying or accessing only the logarithmic height of the tree due to its binary nature.

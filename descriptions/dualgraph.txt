@@ -1,0 +1,7 @@
+dual graph
+
+**1. Description:**
+A dual graph is a graph transformation where vertices represent the faces of an original graph, and edges exist between vertices if the corresponding faces in the original graph share an edge.
+
+**2. Complexity:**
+Constructing a dual graph typically has a complexity of \(O(V + E)\) where \(V\) is the number of vertices and \(E\) is the number of edges in the original graph, since each face corresponds to one vertex in the dual graph and edges are created only where faces are adjacent.

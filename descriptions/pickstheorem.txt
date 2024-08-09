@@ -1,0 +1,9 @@
+pick's theorem
+
+(1) Pick's theorem is an algorithm for determining the area of a simple lattice polygon (a polygon whose vertices are points in a lattice, i.e., points with integer coordinates).
+
+(2) Complexity: O(n), where n is the number of vertices of the polygon. This denotes that the time complexity of the algorithm increases linearly with the number of vertices.
+
+Explanation:
+- "O" (big O notation) represents the upper bound of the algorithm's time complexity.
+- "n" is the total number of vertices in the polygon, indicating that each vertex typically needs to be processed once.

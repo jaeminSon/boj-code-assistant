@@ -1,0 +1,12 @@
+complexity analysis
+
+The worst acceptable complexity of an algorithm given N is as follows:
+N ~ 10: O(n!) and O(n^6)
+N ~ 15: O(2^n n^2)
+N ~ 20: O(n2^n)
+N ~ 100:: O(n^4)
+N ~ 500: O(n^5)
+N ~ X000: O(n^2logn)
+N ~ X0_000: O(n^2)
+N ~ 1,000,000: O(nlogn)
+N > 100,000,000, O(n), O(logn), and O(1)

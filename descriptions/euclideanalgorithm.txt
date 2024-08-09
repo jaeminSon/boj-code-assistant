@@ -1,0 +1,5 @@
+euclidean algorithm
+
+1. **Brief Description**: The Euclidean algorithm is a method for finding the greatest common divisor (GCD) of two integers by repeatedly applying the division algorithm.
+
+2. **Complexity**: The time complexity of the Euclidean algorithm is \(O(\log \min(a, b))\), where \(a\) and \(b\) are the two integers whose GCD is being calculated. This means that the number of steps required to find the GCD grows logarithmically with respect to the smaller of the two input numbers.

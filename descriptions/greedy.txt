@@ -1,0 +1,8 @@
+greedy
+
+1. The greedy algorithm iteratively makes locally optimal choices at each step with the hope that these choices will result in a globally optimal solution.
+2. Complexity: O(n)
+
+Where:
+- O represents the upper bound of the complexity.
+- n is the number of elements or steps to process.

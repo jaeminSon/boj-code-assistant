@@ -1,0 +1,7 @@
+cartesian tree
+
+Sure!
+
+1. A Cartesian tree is a binary tree derived from a sequence of numbers, where the tree's in-order traversal yields the original sequence, and it satisfies the heap property (either min-heap or max-heap).
+
+2. The complexity for building a Cartesian tree from a sequence of `n` numbers is \(O(n)\), where \(n\) represents the number of elements in the sequence.

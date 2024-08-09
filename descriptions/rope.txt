@@ -1,0 +1,5 @@
+rope
+
+1. Rope is a data structure used to efficiently store and manipulate very long strings by representing them as a binary tree where each leaf node contains a short string.
+
+2. The complexity for concatenation, split, and substring operations in a rope is O(log n), where n is the length of the string. The "O(log n)" notation implies that the time it takes to perform these operations grows logarithmically relative to the size of the string, making it much more efficient for very large strings compared to operations on standard contiguous strings.

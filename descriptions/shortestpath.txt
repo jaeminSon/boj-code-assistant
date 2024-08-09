@@ -1,0 +1,5 @@
+shortest path
+
+1. The "shortest path" algorithm finds the minimum distance or cost between two nodes in a weighted graph. 
+
+2. Complexity: For Dijkstra's algorithm (using a priority queue), it is O((V + E) log V), where V is the number of vertices and E is the number of edges.

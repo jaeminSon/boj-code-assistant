@@ -1,0 +1,4 @@
+manacher's
+
+1. Manacher's algorithm efficiently finds the longest palindromic substring in a given string.
+2. Complexity: O(n), where n is the length of the input string.

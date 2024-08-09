@@ -1,0 +1,6 @@
+prefix sum
+
+1. **Description**: The prefix sum algorithm computes cumulative sums of a given array, where each element at index `i` in the resulting array is the sum of the elements from the start of the original array up to the element at index `i`.
+
+2. **Complexity**: The complexity of constructing the prefix sum array is **O(n)**, where `n` is the number of elements in the input array. Here, `O` denotes the asymptotic upper bound of time complexity, and `n` represents the number of elements in the array.
+

@@ -1,0 +1,5 @@
+bitmask
+
+1. Bitmasking in competitive programming involves using binary representations (bitmasks) to efficiently represent and manipulate subsets or combinations of elements.
+  
+2. The complexity of algorithms involving bitmasking varies, but a common example is the use of bitmasking with dynamic programming (DP) where the complexity is O(n * 2^n), with "n" representing the number of elements to consider, and "2^n" representing the number of possible subsets.

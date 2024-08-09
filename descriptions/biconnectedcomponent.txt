@@ -1,0 +1,5 @@
+biconnected component
+
+1. The biconnected component algorithm identifies maximal subgraphs within a given graph where the removal of any single vertex (and its associated edges) does not disconnect the subgraph.
+
+2. The complexity of finding biconnected components in a graph using Tarjan's algorithm is O(V + E), where V is the number of vertices and E is the number of edges in the graph.

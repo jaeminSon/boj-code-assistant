@@ -1,0 +1,11 @@
+sorting
+
+1. **Description**: Sorting is the process of arranging elements of a list or array in a specific order (usually ascending or descending).
+
+2. **Complexity**: The time complexity of common sorting algorithms varies:
+   - **O(n²)**: for algorithms like Bubble Sort, Selection Sort, and Insertion Sort, where *n* is the number of elements in the list.
+   - **O(n log n)**: for more efficient algorithms like Merge Sort, Quick Sort, and Heap Sort, where *n* is the number of elements and *log n* is the logarithm of *n*, often base 2.
+
+The space complexity also varies:
+   - **O(1)**: for algorithms like Insertion Sort and sometimes Quick Sort, indicating constant extra space.
+   - **O(n)**: for algorithms like Merge Sort, where *n* is the number of elements, indicating linear additional space requirements.

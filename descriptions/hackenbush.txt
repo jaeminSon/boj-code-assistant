@@ -1,0 +1,13 @@
+hackenbush
+
+### Brief Description
+Hackenbush is a combinatorial game theory algorithm used to analyze two-player games involving colored edges on a graph, where players alternately remove edges according to specific rules.
+
+### Complexity
+The complexity of analyzing a Hackenbush game depends heavily on the graph's structure and the rules applied, but can be highly variable; in general cases, determining the outcome can be computationally intensive. The computation involves evaluating potential moves, often exponential in nature.
+
+### Symbols Explanation
+- **O(n!)**: Factorial time complexity, where `n` is the number of edges; in the worst case, every possible removal order is evaluated.
+- **O(2^n)**: Exponential time complexity, indicating that for `n` edges, every combination of edge removals might need to be considered.
+  
+In practical scenarios, specific subclasses of Hackenbush (e.g., on simpler graphs) may offer more tractable complexities, but the algorithm for a general Hackenbush game remains challenging.

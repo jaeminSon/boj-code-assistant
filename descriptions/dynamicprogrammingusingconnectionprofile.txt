@@ -1,0 +1,5 @@
+dynamic programming using connection profile
+
+1. Dynamic programming using connection profile is a technique that breaks down a problem into smaller subproblems and solves them using memoization, specifically taking into account the connectivity or relationship between state transitions, often used in optimization problems on graphs or networks.
+
+2. The complexity can vary greatly depending on the specific problem and how the connection profiles are defined. Generally, the time complexity is O(n*m), where n is the number of states (or nodes) and m is the average number of transitions (or edges) per state in the problem, and the space complexity can be O(n*k), where k is the number of stored profiles or states.

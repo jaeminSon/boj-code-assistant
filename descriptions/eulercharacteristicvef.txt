@@ -1,0 +1,5 @@
+euler characteristic (χ=v-e+f)
+
+1. Euler characteristic (χ=v-e+f) is a formula used to determine a topological invariant for polyhedra, where χ represents the characteristic, v is the number of vertices, e is the number of edges, and f is the number of faces.
+
+2. Complexity in large O notation: N/A (The Euler characteristic is a direct computation based on known values for vertices, edges, and faces, so it doesn't pertain to algorithmic complexity in this context. However, if computing from scratch, count operations would be O(V + E + F) where V, E, and F are the numbers of vertices, edges, and faces respectively).

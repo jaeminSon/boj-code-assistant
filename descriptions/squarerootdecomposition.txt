@@ -1,0 +1,5 @@
+square root decomposition
+
+1. Square root decomposition is a technique used to answer range queries and perform updates efficiently by dividing the input data into blocks of size approximately the square root of the total number of elements.
+
+2. The complexity is \(O(\sqrt{n})\) per query or update, where \(n\) is the number of elements in the array.

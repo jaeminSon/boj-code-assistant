@@ -1,0 +1,5 @@
+pollard rho
+
+1. **Brief Description:** Pollard's Rho algorithm is a probabilistic algorithm used for integer factorization, particularly effective for finding small factors of a composite number.
+   
+2. **Complexity:** The time complexity of Pollard's Rho algorithm is approximately \(O(N^{1/4})\), where \(N\) is the number to be factored. Here, \(N\) represents the value of the composite number which is being factored, and \(N^{1/4}\) indicates the algorithm's running time grows proportionally to the fourth root of \(N\). This complexity denotes the expected average-case performance for finding one non-trivial factor of \(N\).

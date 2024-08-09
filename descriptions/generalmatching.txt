@@ -1,0 +1,5 @@
+general matching
+
+1. General matching algorithms are used to find a set of edges in a graph such that no two edges share a common vertex.
+
+2. The complexity can vary based on the specific algorithm used. For example, the Hopcroft-Karp algorithm for bipartite matching runs in \(O(\sqrt{V} \cdot E)\), where \(V\) is the number of vertices and \(E\) is the number of edges in the graph. For non-bipartite graphs, algorithms like Edmonds' Blossom algorithm run in approximately \(O(V^3)\).

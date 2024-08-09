@@ -1,0 +1,5 @@
+dynamic programming using bitfield
+
+1. Dynamic programming using bitfields involves encoding states or subsets as binary numbers (bitfields) to efficiently represent and transition between states in optimization problems.
+   
+2. Complexity: Often O(n * 2^n) where n is the number of elements being considered; here, 2^n represents the number of possible subsets or states and n accounts for the transitions or updates for each state.

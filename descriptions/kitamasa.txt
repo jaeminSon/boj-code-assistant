@@ -1,0 +1,5 @@
+kitamasa
+
+1. The Kitamasa algorithm efficiently computes the n-th term of a linear recurrence relation in logarithmic time by using a matrix exponentiation technique.
+
+2. Complexity: O(k^2 * log n), where k is the order of the recurrence relation (number of terms it depends on) and n is the position of the term to be computed.

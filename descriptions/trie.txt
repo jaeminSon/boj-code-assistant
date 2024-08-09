@@ -1,0 +1,5 @@
+trie
+
+(1) A trie, also known as a prefix tree, is a tree-like data structure that stores a dynamic set of strings where the keys are usually strings, enabling efficient querying by prefixes.
+
+(2) The complexity for insertion, deletion, and search operations in a trie is O(L), where L is the length of the string being inserted, deleted, or searched. Here, 'L' represents the number of characters in the string.

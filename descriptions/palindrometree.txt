@@ -1,0 +1,4 @@
+palindrome tree
+
+1. A palindrome tree (or Eertree) is a data structure that efficiently stores and processes all palindromic substrings of a given string.
+2. The complexity of constructing a palindrome tree is O(n), where n is the length of the string, because each character is processed in constant time using previous results.

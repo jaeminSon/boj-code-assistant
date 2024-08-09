@@ -1,0 +1,7 @@
+möbius inversion
+
+1. Möbius inversion is an algebraic technique used to invert a relation defined by a summation over divisors in number theory.
+
+2. Complexity: **O(n log log n)** for precomputing values of the Möbius function up to n, where n is the maximum integer involved.
+    - **n**: The largest integer up to which the Möbius function values are computed.
+    - **log log n**: A very slowly growing function representing the average complexity of iterating and updating multiple values.

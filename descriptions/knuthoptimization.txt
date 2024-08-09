@@ -1,0 +1,5 @@
+knuth optimization
+
+1. Knuth optimization is a technique used to optimize the dynamic programming solution for identifying the optimal way to divide a sequence by reducing its time complexity through specific conditions on the recurrence relation.
+
+2. Complexity: O(n^3) without optimization, and O(n^2) with optimization, where 'n' is the number of elements in the sequence.

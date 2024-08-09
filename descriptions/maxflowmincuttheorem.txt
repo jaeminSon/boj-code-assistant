@@ -1,0 +1,5 @@
+max-flow min-cut theorem
+
+1. The max-flow min-cut theorem states that in a flow network, the maximum amount of flow that can be sent from a source to a sink is equal to the total weight of the edges in the smallest cut-set, which separates the source from the sink.
+
+2. Complexity: The time complexity to compute max-flow using the Ford-Fulkerson method, which often employs the Edmonds-Karp algorithm, is O(VE^2), where V is the number of vertices and E is the number of edges in the network. The O notation signifies the upper bound on the running time, providing an estimate of the algorithm's efficiency as the input size grows.

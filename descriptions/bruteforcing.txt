@@ -1,0 +1,4 @@
+bruteforcing
+
+1. **Description**: Bruteforcing is a straightforward search technique that systematically explores all possible candidates for a solution and checks which one satisfies the problem's criteria.
+2. **Complexity**: O(N^k), where N is the number of elements in the input set and k is the number of elements to be chosen or arranged, representing the total number of possible combinations or permutations.

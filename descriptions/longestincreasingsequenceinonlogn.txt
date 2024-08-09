@@ -1,0 +1,5 @@
+longest increasing sequence in o(n log n)
+
+1. The "longest increasing subsequence (LIS) in O(n log n)" algorithm finds the length of the longest subsequence in a given array such that all elements of the subsequence are in strictly increasing order, using binary search and dynamic programming to achieve optimal performance.
+
+2. Complexity: O(n log n), where "n" is the number of elements in the array. This means that the runtime of the algorithm grows in a combination of linear and logarithmic proportions relative to the input size.

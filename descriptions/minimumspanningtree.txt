@@ -1,0 +1,7 @@
+minimum spanning tree
+
+1. A minimum spanning tree (MST) of a weighted, undirected graph is a subset of its edges that connects all vertices together without any cycles and with the minimal possible total edge weight.
+
+2. Complexity:
+   - Kruskal's Algorithm: \(O(E \log E)\), where \(E\) is the number of edges. The sorting of edges dominates the complexity.
+   - Prim's Algorithm (using a priority queue): \(O(E \log V)\), where \(E\) is the number of edges and \(V\) is the number of vertices. The priority queue operations dominate the complexity.

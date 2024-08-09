@@ -1,0 +1,5 @@
+tree compression
+
+1. Tree compression in competitive programming typically refers to techniques used to reduce the size or number of states in a tree data structure while preserving essential properties, such as subtree sizes or node values, often for more efficient algorithms and queries.
+
+2. The complexity of tree compression can vary based on the specific technique used, but a common approach, such as Heavy-Light Decomposition, typically has a preprocessing complexity of O(N log N), where N is the number of nodes in the tree, and allows for efficient updates and queries. Here, "N" represents the number of nodes, and "log" signifies the logarithm, indicating the algorithm's additional logarithmic factor for each operation due to the decomposition structure.

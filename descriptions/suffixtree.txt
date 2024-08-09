@@ -1,0 +1,5 @@
+suffix tree
+
+(1) A suffix tree is a compressed trie of all the suffixes of a given string, enabling fast pattern matching and various string operations.
+
+(2) The construction of a suffix tree has a time complexity of \(O(n)\), where \(n\) is the length of the input string. This efficiency is achieved using methods like Ukkonen's algorithm. The space complexity is also \(O(n)\) in the worst case due to the need to store all suffixes of the string.

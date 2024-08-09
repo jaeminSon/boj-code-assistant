@@ -1,0 +1,5 @@
+ternary search
+
+1. **Brief Description**: Ternary search is a divide-and-conquer algorithm used to find the maximum or minimum of a unimodal function by repeatedly dividing the search interval into three parts.
+
+2. **Complexity**: The time complexity of ternary search is \(O(\log_3 n)\), where \(n\) is the length of the search interval, and \(\log_3\) denotes the logarithm to the base 3, reflecting the interval reduction by a factor of three in each iteration.

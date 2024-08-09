@@ -1,0 +1,5 @@
+tree isomorphism
+
+1. Tree isomorphism is an algorithm used to determine whether two trees are structurally identical (i.e., one can be transformed into the other by re-labeling nodes without changing the structure).
+
+2. The complexity is O(n \log n), where "n" represents the number of nodes in the trees; this is due to the signature generation and comparison processes for the nodes in the trees.

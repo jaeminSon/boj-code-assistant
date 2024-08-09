@@ -1,0 +1,7 @@
+monotone queue optimization
+
+1. Monotone queue optimization is a technique that leverages a data structure to maintain elements in a way that allows efficient access to the minimum (or maximum) values over a sliding window, often used to solve problems like finding the minimum value in all subarrays of fixed length.
+
+2. Complexity: O(n)
+   - n: The total number of elements processed by the algorithm.
+   - This reflects the fact that each element is added and removed from the queue at most once, leading to linear time complexity.

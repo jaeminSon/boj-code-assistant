@@ -1,0 +1,5 @@
+rotating calipers
+
+1. **Brief Description:** The rotating calipers algorithm is a geometric technique used to find the minimum or maximum distance between pairs of points in a convex polygon by rotating a pair of calipers around the polygon.
+
+2. **Complexity:** The time complexity is \(O(n)\), where \(n\) is the number of vertices in the convex polygon. This is because each edge of the polygon is processed a constant number of times.

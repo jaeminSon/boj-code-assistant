@@ -1,0 +1,11 @@
+3d
+
+Sure! Here is a brief explanation of the "3D algorithm" in competitive programming:
+
+1. **Description:** The "3D algorithm" typically refers to algorithms that are designed to solve problems involving three-dimensional space, such as finding the shortest path in a 3D grid, computing volumes, or processing 3D geometric shapes and objects.
+
+2. **Complexity:** The time and space complexity of 3D algorithms can vary widely depending on the specific problem and algorithm. However, a common example could be the 3D Breadth-First Search (BFS) algorithm used to find the shortest path in a 3D grid, which has a time complexity of \( O(N^3) \) and space complexity of \( O(N^3) \), where \( N \) is the size of each dimension of the grid.
+
+   **Explanation of symbols:**
+   - \( N \): The size of the edge of the 3D grid (assuming it's a cube for simplicity).
+   - \( O(N^3) \): This notation means the complexity grows proportionally to the cube of the dimension \( N \), representing the number of cells in a 3D grid.

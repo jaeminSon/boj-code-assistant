@@ -1,0 +1,4 @@
+euler totient function
+
+1. The Euler Totient Function, φ(n), counts the integers up to n that are relatively prime to n.
+2. The efficient calculation of φ(n) using its formula has a complexity of O(√n), where n is the input number and the √ symbolizes the square root operation.

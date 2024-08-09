@@ -1,0 +1,8 @@
+linear programming
+
+1. Linear programming is a mathematical optimization technique used to find the best outcome (such as maximum profit or lowest cost) in a model with linear relationships constrained by linear inequalities or equalities. 
+
+2. **Complexity**: The complexity of solving a general linear program using the Simplex algorithm is not polynomial in the worst case, but the average-case complexity can be quite efficient for practical problems. Using interior-point methods, the complexity is \(O(n^3.5L)\), where \(n\) is the number of variables and \(L\) is the number of bits in the input. 
+
+- **\(n\)**: Number of decision variables in the linear program.
+- **\(L\)**: Bit-length of the input data, which includes the coefficients in the objective function and the constraints.

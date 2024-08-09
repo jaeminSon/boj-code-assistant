@@ -1,0 +1,5 @@
+delaunay triangulation
+
+(1) Delaunay triangulation is a geometric algorithm that generates a triangulation for a set of points such that no point is inside the circumcircle of any triangle.
+
+(2) The complexity of Delaunay triangulation is generally \(O(n \log n)\), where \(n\) is the number of points; this reflects the time required to sort and process all points in the plane.

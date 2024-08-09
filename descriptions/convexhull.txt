@@ -1,0 +1,4 @@
+convex hull
+
+1. **Description:** The convex hull algorithm finds the smallest convex polygon that encloses a set of points in a 2D plane.
+2. **Complexity:** Typically, the complexity is \(O(n \log n)\), where \(n\) is the number of points, due to the sorting step required by most convex hull algorithms like Graham's scan or the monotone chain algorithm.

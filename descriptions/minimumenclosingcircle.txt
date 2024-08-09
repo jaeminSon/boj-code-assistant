@@ -1,0 +1,4 @@
+minimum enclosing circle
+
+1. The "minimum enclosing circle" algorithm finds the smallest circle that encloses a given set of points in a 2D plane.
+2. The complexity of the Welzl's algorithm for finding the minimum enclosing circle is, on average, O(n), where 'n' is the number of points.

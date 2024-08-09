@@ -1,0 +1,11 @@
+sparse table
+
+1. A sparse table is a data structure that allows querying of the minimum (or other associative operations) over a static array in constant time after O(n log n) preprocessing time.
+
+2. Complexity:
+   - Preprocessing: O(n log n)
+     - n: the number of elements in the array.
+     - log n: logarithmic factor due to precomputation for ranges of lengths that are powers of 2.
+   - Query: O(1)
+     - Queries are handled in constant time using precomputed values in the table.
+

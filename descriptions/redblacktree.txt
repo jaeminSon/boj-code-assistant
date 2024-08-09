@@ -1,0 +1,5 @@
+red-black tree
+
+1. A red-black tree is a self-balancing binary search tree where each node contains an extra bit for denoting the color (red or black) to ensure the tree remains approximately balanced during insertions and deletions.
+
+2. The time complexity for insertion, deletion, and search operations in a red-black tree is \(O(\log n)\), where \(n\) is the number of nodes in the tree, ensuring the height of the tree is logarithmic relative to the number of nodes.

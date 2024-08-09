@@ -1,0 +1,5 @@
+backtracking
+
+(1) Backtracking is a brute-force algorithmic technique for solving problems by incrementally building candidates to the solution and abandoning a candidate as soon as it is determined that it cannot possibly lead to a valid solution.
+
+(2) Complexity in Big O notation: O(b^d), where "b" is the branching factor (the number of children each node has), and "d" is the depth of the solution tree (the maximum depth of the search space).

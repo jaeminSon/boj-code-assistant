@@ -1,0 +1,7 @@
+miller–rabin
+
+1. The Miller–Rabin algorithm is a probabilistic primality test that determines if a number is a prime by using bases and repeated squaring to check possible witnesses of compositeness.
+
+2. Time Complexity: \( O(k \log^3 n) \)
+   - \( n \) is the number being tested for primality.
+   - \( k \) is the number of accuracy iterations chosen to reduce the error probability.

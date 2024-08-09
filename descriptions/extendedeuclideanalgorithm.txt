@@ -1,0 +1,5 @@
+extended euclidean algorithm
+
+1. The extended Euclidean algorithm is an extension of the Euclidean algorithm that finds not only the greatest common divisor (gcd) of two integers, `a` and `b`, but also the coefficients `x` and `y` such that `ax + by = gcd(a, b)`.
+
+2. The time complexity of the extended Euclidean algorithm is O(log(min(a, b))), where `a` and `b` are the two input integers, and `log` represents the logarithm to the base 2.

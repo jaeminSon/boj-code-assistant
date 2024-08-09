@@ -1,0 +1,8 @@
+dijkstra's
+
+1. Dijkstra's algorithm finds the shortest path from a source vertex to all other vertices in a weighted graph with non-negative weights.
+
+2. Complexity: \( O((V + E) \log V) \)
+   - \( V \) is the number of vertices in the graph.
+   - \( E \) is the number of edges in the graph.
+   - The \(\log V\) factor arises from priority queue operations used in the algorithm.

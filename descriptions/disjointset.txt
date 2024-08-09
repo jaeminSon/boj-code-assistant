@@ -1,0 +1,5 @@
+disjoint set
+
+1. **Description**: The disjoint set algorithm, also known as the union-find algorithm, is used to manage a partition of a set into disjoint (non-overlapping) subsets with efficient union and find operations.
+
+2. **Complexity**: Using union by rank and path compression, both the union and find operations have an amortized time complexity of O(α(n)), where α is the inverse Ackermann function, and n is the number of elements in the set. The inverse Ackermann function grows extremely slowly, making the operations nearly constant time in practice.

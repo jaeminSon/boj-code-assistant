@@ -1,0 +1,4 @@
+lowest common ancestor
+
+1. The "lowest common ancestor" (LCA) algorithm finds the lowest node in a tree that has both given nodes as descendants.
+2. The complexity can be O(n) for a naive approach or O(log n) for advanced techniques like binary lifting or using range minimum queries, where "n" represents the number of nodes in the tree.

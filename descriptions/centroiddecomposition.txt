@@ -1,0 +1,5 @@
+centroid decomposition
+
+1. **Brief Description**: Centroid Decomposition is a technique used in tree data structures to recursively divide the tree into smaller subtrees by selecting centroids, which minimize the maximum size of the resulting subtrees, to facilitate efficient queries and updates.
+
+2. **Complexity**: The time complexity of constructing the centroid decomposition is **O(n log n)**, where **n** is the number of nodes in the tree. This accounts for **O(log n)** levels of decomposition, each taking **O(n)** operations due to size calculations and recursive splits.

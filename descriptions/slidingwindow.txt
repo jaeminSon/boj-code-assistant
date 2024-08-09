@@ -1,0 +1,5 @@
+sliding window
+
+**Description:** The sliding window algorithm is used to optimize traversals over subsets of data sequences, such as arrays or strings, by maintaining a window that slides over the sequence to evaluate and update the result dynamically.
+
+**Complexity:** The time complexity is generally O(n), where n is the length of the input sequence, given that each element is processed at most twice. If the size of each window is k, the overall complexity remains O(n) as window size doesn't affect the linear pass over the sequence.

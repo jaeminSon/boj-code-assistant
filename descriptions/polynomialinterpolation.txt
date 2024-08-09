@@ -1,0 +1,7 @@
+polynomial interpolation
+
+1. Polynomial interpolation is a process of determining a polynomial that passes through a given set of points in a coordinate plane.
+
+2. Complexity: \(O(n^2)\) for the Lagrange interpolation method, where \(n\) is the number of given points. Here: 
+   - \(O\) denotes the "big O" notation, which expresses the upper bound of the algorithm's time complexity in terms of input size.
+   - \(n\) represents the number of data points used to construct the interpolating polynomial.

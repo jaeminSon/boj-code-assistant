@@ -1,0 +1,5 @@
+sprague–grundy theorem
+
+1. The Sprague-Grundy theorem is used in combinatorial game theory to determine the outcome of impartial games by assigning a Grundy number (or nimber) to each position, enabling the reduction of complex games into simple Nim games.
+
+2. Complexity: O(M*N), where M is the number of positions in the game, and N is the number of possible moves from each position, assuming that calculating the Grundy number for any position involves examining all possible moves.

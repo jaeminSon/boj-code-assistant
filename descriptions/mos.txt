@@ -1,0 +1,7 @@
+mo's
+
+Certainly!
+
+1. **Description:** Mo's algorithm is a query optimization technique primarily used to answer range queries on static arrays efficiently in offline processing.
+
+2. **Complexity:** The time complexity is \(O((N+Q) \times \sqrt{N})\), where \(N\) is the number of elements in the array and \(Q\) is the number of queries, because it involves sorting the queries in \(O(Q \log Q)\) and processing each query in an average of \(O(\sqrt{N})\) operations.

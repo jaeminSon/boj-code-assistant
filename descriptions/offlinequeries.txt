@@ -1,0 +1,5 @@
+offline queries
+
+1. Offline queries is an algorithmic technique where queries are pre-processed and answered after processing the data, often used to exploit efficient sorting and data structure operations.
+
+2. Complexity: O((N + Q) * log(N)), where N is the number of elements in the dataset and Q is the number of queries, with the complexity being driven by sorting and efficient data structure operations like binary search or segment trees.

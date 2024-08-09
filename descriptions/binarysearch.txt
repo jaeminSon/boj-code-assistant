@@ -1,0 +1,9 @@
+binary search
+
+1. Binary search is a divide-and-conquer algorithm that efficiently finds the position of a target value within a sorted array by repeatedly dividing the search interval in half.
+
+2. The time complexity of binary search is \( O(\log n) \), where \( n \) is the number of elements in the sorted array.
+
+In this context:
+- \( O \) denotes the "order of" and is used to describe the upper bound of an algorithm's running time.
+- \( \log n \) refers to the logarithm of \( n \) base 2, which represents the number of divisions needed to reduce the search interval to one element.

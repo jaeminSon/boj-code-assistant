@@ -1,0 +1,5 @@
+depth-first search
+
+1. Depth-first search (DFS) is an algorithm for traversing or searching tree or graph data structures, where one starts at the root (or an arbitrary node) and explores as far as possible along each branch before backtracking.
+
+2. The time complexity of DFS is O(V + E), where V represents the number of vertices and E represents the number of edges in the graph. The space complexity is O(V) due to the stack used for recursion or iterative stack management.

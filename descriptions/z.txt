@@ -1,0 +1,4 @@
+z
+
+1. The Z-algorithm computes the Z-array of a string, which contains the lengths of the longest substrings starting from each position that match the prefix of the string.
+2. Complexity: O(n), where n is the length of the string, meaning the time taken grows linearly with the size of the string.

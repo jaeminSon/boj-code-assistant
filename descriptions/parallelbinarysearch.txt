@@ -1,0 +1,13 @@
+parallel binary search
+
+Sure!
+
+1. **Description**: Parallel Binary Search is a technique used to solve problems with multiple queries by performing binary searches concurrently on all queries, often facilitated by a segment tree or similar data structure to efficiently handle intervals. 
+
+2. **Complexity**: Let \( Q \) be the number of queries and \( T(n) \) be the time complexity for checking feasibility of a midpoint value in the binary search.
+    - **Time complexity**: \( O(\log U \cdot (Q + T(n))) \) 
+      - Here, \( \log U \) represents the iterations of the binary search over a possible range \( U \),
+      - \( Q \) is the number of queries processed in each iteration,
+      - \( T(n) \) is the time complexity of evaluating a midpoint (feasibility check) at each iteration.
+
+Parallelizing binary searches over \( Q \) queries amortizes the cost effectively when \( T(n) \) involves processing ranges or intervals which can be grouped or optimized via advanced data structures like segment trees.

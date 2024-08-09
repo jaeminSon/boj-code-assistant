@@ -1,0 +1,5 @@
+lindström–gessel–viennot lemma
+
+1. The Lindström–Gessel–Viennot lemma provides a combinatorial method for counting the number of tuples of non-intersecting lattice paths between specified initial and final points in a grid.
+
+2. Complexity: The complexity is generally problem-specific and depends on the size of the grid and the number of lattice paths considered; the determinant calculation involved typically has a time complexity of O(n^3) when using standard matrix operations, where 'n' signifies the number of paths and grid points considered. Furthermore, enumerating all possible paths can have a complexity of O(2^nm), where 'n' is the number of rows and 'm' the number of columns in the grid, as each step in a path can involve two choices (right or up).

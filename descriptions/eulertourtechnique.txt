@@ -1,0 +1,10 @@
+euler tour technique
+
+1. The Euler Tour Technique is a depth-first traversal method used to preprocess trees for efficient querying of properties and relationships between nodes.
+
+2. **Time Complexity**: \(O(N)\) for preprocessing the tree, where \(N\) is the number of nodes since each node is visited once during the traversal.    
+   **Space Complexity**: \(O(N)\) for storing the Euler tour and auxiliary structures.    
+   
+   In these notations:
+   - \(N\) represents the number of nodes in the tree. 
+   - The \(O(N)\) notation means the algorithm's running time and space usage increase linearly with the number of nodes.

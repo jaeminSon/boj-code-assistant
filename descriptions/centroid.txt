@@ -1,0 +1,5 @@
+centroid
+
+1. The centroid algorithm is used to decompose a tree into smaller, more manageable pieces by recursively finding the centroid (node with roughly equal size subtrees) and removing it.
+
+2. The complexity of centroid decomposition is O(N log N), where N is the number of nodes in the tree. This accounts for examining each node and handling the logarithmic layers of recursive decomposition.

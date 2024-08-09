@@ -1,0 +1,5 @@
+meet in the middle
+
+1. "Meet in the middle" is an algorithmic technique to solve problems by dividing the problem into two smaller subproblems, solving each, and then combining their solutions.
+
+2. The complexity is generally O(2^(n/2)), where n is the size of the problem, because it involves splitting the problem into two halves, each of size n/2, and evaluating all possible solutions in each half.

@@ -1,0 +1,4 @@
+knuth's x
+
+1. Knuth's Algorithm X is a recursive, backtracking method for solving exact cover problems using the technique of dancing links for efficient constraint satisfaction.
+2. The time complexity of Knuth's Algorithm X is O(n!), where n is the number of columns (or elements) in the matrix representing the problem; the complexity arises because it explores permutations of subsets to find exact covers.

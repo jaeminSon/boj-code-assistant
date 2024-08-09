@@ -1,0 +1,11 @@
+burnside's lemma
+
+1. **Burnside's Lemma** is a combinatorial tool used to count the number of distinct objects under group actions, particularly useful in problems involving symmetry.
+
+2. **Complexity in O notation**:
+   - Determining the number of distinct objects often involves iterating over all elements of the group \( G \).
+   - If \( |G| \) is the number of elements in the group and \( |X| \) is the number of objects being acted upon:
+     - The complexity is typically \( O(|G| \cdot |X|) \), where:
+       - \( |G| \) counts how many symmetrical transformations need to be considered.
+       - \( |X| \) is the size of the set the group acts upon.
+     - Each transformation needs to be checked against the objects for fixed points, hence the product \( |G| \cdot |X| \).

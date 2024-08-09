@@ -1,0 +1,13 @@
+dynamic programming using a deque
+
+1. Brief Description:
+Dynamic programming using a deque is a technique that combines dynamic programming with a double-ended queue (deque) to optimize finding the optimal value in a sliding window of states, often used for problems involving ranges or intervals.
+
+2. Complexity:
+The complexity is generally O(n) where n is the number of elements/states, though it can vary based on specific problem constraints (e.g., window size).
+
+Symbols Explained:
+- O: Big O notation, describing an upper bound on the time complexity.
+- n: The number of elements or states the algorithm processes.
+
+This technique effectively reduces what would be a more complex solution (such as O(n^2) or worse) to linear time, by maintaining a useful subset of states in constant time using the deque.

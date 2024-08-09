@@ -1,0 +1,5 @@
+value / coordinate compression
+
+1. **Description**: Value or coordinate compression maps large numeric values to a smaller range of integers while preserving the order of the original values.
+
+2. **Complexity**: The time complexity is \(O(n \log n)\), where \(n\) is the number of elements to be compressed. This accounts for sorting the values and then mapping them, both of which are \(O(n \log n)\).

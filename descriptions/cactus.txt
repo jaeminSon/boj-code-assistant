@@ -1,0 +1,5 @@
+cactus
+
+(1) A cactus algorithm is used to identify and manage a specific type of graph where each edge belongs to at most one simple cycle.
+
+(2) The time complexity of the cactus graph identification algorithm is \(O(V + E)\), where \(V\) represents the number of vertices and \(E\) represents the number of edges in the graph.

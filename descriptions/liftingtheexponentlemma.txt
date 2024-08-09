@@ -1,0 +1,8 @@
+lifting the exponent lemma
+
+1. The "lifting the exponent lemma" is used to find the largest power of a prime \( p \) that divides a binomial coefficient or a factorial.
+
+2. The complexity of applying the lemma itself is typically \( O(\log_p(n)) \), where:
+    - \( n \) is the integer whose prime factor's largest exponent is being sought,
+    - \( p \) is the prime number in question.
+This complexity comes from repeatedly dividing \( n \) by \( p \).

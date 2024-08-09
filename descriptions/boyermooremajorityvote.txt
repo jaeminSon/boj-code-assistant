@@ -1,0 +1,5 @@
+boyer–moore majority vote
+
+1. The Boyer-Moore majority vote algorithm identifies a candidate element that appears more than half the time in a sequence of elements if such an element exists.
+
+2. The complexity is O(n), where "n" represents the number of elements in the sequence. This denotes that the algorithm processes each element a constant number of times, making its time complexity linear.

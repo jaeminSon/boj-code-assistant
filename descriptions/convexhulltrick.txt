@@ -1,0 +1,11 @@
+convex hull trick
+
+(1) The "convex hull trick" is an optimization technique used to maintain a dynamic set of linear functions and efficiently query the minimum (or maximum) value at a given point.
+
+(2) Complexity:
+- Adding a new line: O(log n) on average for the dynamic variant using a balanced binary search tree, where \(n\) is the number of lines.
+- Querying the minimum/maximum: O(log n) with a binary search mechanism on the same structure.
+
+Here:
+- \(O\): (Big O notation) denotes the upper bound complexity to provide an asymptotic limit on the algorithm’s growth rate.
+- \(n\): Represents the number of lines or functions in the set.

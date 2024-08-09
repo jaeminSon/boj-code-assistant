@@ -1,0 +1,5 @@
+aho-corasick
+
+1. The Aho-Corasick algorithm efficiently finds all occurrences of multiple patterns within a given text by building a trie-based finite state machine with failure links.
+
+2. Complexity: **O(n + m + k)**, where **n** is the total length of the input text, **m** is the sum of the lengths of the patterns, and **k** is the total number of matches found.

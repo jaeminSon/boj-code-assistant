@@ -1,0 +1,11 @@
+suffix array and lcp array
+
+1. **Brief Description:** Suffix arrays are sorted arrays of all suffixes of a given string, and the LCP (Longest Common Prefix) array provides the lengths of the longest common prefixes between consecutive suffixes in that suffix array.
+
+2. **Complexity:**
+   - **Suffix Array Construction:** \(O(n \log n)\), where \(n\) is the length of the string.
+   - **LCP Array Construction:** \(O(n)\), where \(n\) is the length of the string. 
+
+**Explanation of Symbols:**
+- \(O(\cdot)\): Big O notation describing the upper bound on the running time as a function of input size.
+- \(n\): The number of characters in the input string.

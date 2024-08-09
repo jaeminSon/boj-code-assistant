@@ -1,0 +1,7 @@
+2-sat
+
+Sure!
+
+1. **Brief Description:** The 2-Satisfiability (2-SAT) problem is a special case of the Boolean satisfiability problem where each clause in the formula is limited to at most two literals, and it can be efficiently solved using graph-based techniques.
+
+2. **Complexity:** The most common algorithm for solving 2-SAT runs in **O(n + m)** time, where **n** is the number of variables and **m** is the number of clauses. This linear time complexity is achieved by constructing and analyzing the **implication graph** associated with the formula.

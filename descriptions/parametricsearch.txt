@@ -1,0 +1,5 @@
+parametric search
+
+1. Parametric search is a technique used to solve optimization problems by translating the problem into a decision problem and performing a systematic search over a parameter space. 
+
+2. Complexity depends on the context and the specific optimization problem, typically O(T·Q) where T is the number of iterations or search steps performed over the parameter space, and Q is the complexity of solving the decision problem per iteration. For example, if binary search is used for the parametric search, and the decision problem takes linear time, the overall complexity might be O(log(P) * Q(n)), where P is the range of the parameter being searched, and Q(n) is the decision problem's complexity, often related to input size n.

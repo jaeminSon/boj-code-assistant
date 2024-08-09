@@ -1,0 +1,5 @@
+dominator tree
+
+1. A dominator tree of a directed graph is a tree where each node's parent is the immediate dominator, meaning the first node encountered that must be traversed before reaching the current node from a designated start node.
+   
+2. The complexity of constructing a dominator tree is O(V+E), where V represents the number of vertices (nodes) and E represents the number of edges in the graph.

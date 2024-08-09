@@ -1,0 +1,5 @@
+articulation points and bridges
+
+1. Articulation points and bridges are crucial components in a graph whose removal increases the number of connected components, potentially disconnecting the graph.
+
+2. The complexity of finding articulation points and bridges using Depth-First Search (DFS) is O(V + E), where V is the number of vertices and E is the number of edges in the graph.

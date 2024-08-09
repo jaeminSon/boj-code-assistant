@@ -1,0 +1,4 @@
+directed acyclic graph
+
+1. A Directed Acyclic Graph (DAG) is a type of graph that consists of directed edges with no cycles, meaning there is no way to start at any one vertex and follow a consistently directed sequence of edges that eventually loops back to the starting vertex.
+2. The complexity for operations like topological sorting in a DAG is \(O(V + E)\), where \(V\) represents the number of vertices and \(E\) represents the number of edges in the graph; this reflects the need to examine all vertices and edges once.

@@ -1,0 +1,4 @@
+half plane intersection
+
+1. The half-plane intersection algorithm finds the common intersection region of multiple half-planes, each defined by a linear inequality.
+2. Complexity: O(n log n), where n is the number of half-planes, due to the need to sort the half-planes and perform plane sweeping or deque manipulation.

@@ -1,0 +1,5 @@
+heavy-light decomposition
+
+1. Heavy-light decomposition is a technique used to break down a tree data structure into a set of heavy and light paths to enable efficient queries and updates.
+
+2. The complexity is \(O(\log^2 N)\) per query or update, where \(N\) is the number of nodes in the tree; this arises because each path in the decomposition can be traversed in \(O(\log N)\) time and potentially requires another \(O(\log N)\) time to update or query a segment tree or binary indexed tree.

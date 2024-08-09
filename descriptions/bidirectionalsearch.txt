@@ -1,0 +1,10 @@
+bidirectional search
+
+1. **Brief Description**: Bidirectional search is a graph traversal algorithm that simultaneously explores the graph from both the start node and the target node until the two searches meet.
+
+2. **Complexity**: The time complexity is \(O(b^{d/2})\) and the space complexity is also \(O(b^{d/2})\), where \(b\) is the branching factor (maximum number of successors of any node) and \(d\) is the distance (number of edges) between the start and target nodes.
+
+**Meanings of symbols**:
+- \(b\): Branching factor, the maximum number of children each node can have.
+- \(d\): Distance or depth, the number of edges in the shortest path between the start node and the target node.
+- \(O\): Big O notation, used to describe the upper bound on the time or space complexity of the algorithm in the worst-case scenario.

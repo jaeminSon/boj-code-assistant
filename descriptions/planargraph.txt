@@ -1,0 +1,4 @@
+planar graph
+
+1. A planar graph algorithm involves techniques to determine if a graph can be drawn on a plane without edges crossing and to utilize properties of such graphs for efficient computations and optimizations.
+2. The complexity varies depending on the specific problem and algorithm used; for instance, determining if a graph is planar and finding a planar embedding can be done in O(n) time where n is the number of vertices in the graph. Here, "n" refers to the number of vertices, and the notation O(n) indicates that the time taken scales linearly with the number of vertices.

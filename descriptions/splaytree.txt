@@ -1,0 +1,10 @@
+splay tree
+
+1. A splay tree is a self-adjusting binary search tree where recently accessed elements are moved to the root through a series of tree rotations.
+   
+2. The amortized time complexity for search, insert, and delete operations is \(O(\log n)\), where \(n\) is the number of elements in the tree, but a single operation can take \(O(n)\) in the worst case.
+   
+   - \(O(\log n)\): The 'big O' notation describing the upper bound, which means the algorithm's time grows logarithmically relative to the number of elements. "Log \(n\)" signifies the logarithm to base 2 of \(n\).
+   - \(n\): The total number of elements in the tree.
+   
+In context, amortized complexity essentially means that while some operations might take longer (up to linear time), the average time per operation across a sequence of operations is logarithmic.

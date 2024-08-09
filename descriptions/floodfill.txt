@@ -1,0 +1,5 @@
+flood-fill
+
+1. Flood-fill is an algorithm used to determine and alter the area connected to a given node in a multi-dimensional grid by identifying and changing all nodes of a certain value.
+
+2. The complexity is O(n * m) where 'n' is the number of rows, and 'm' is the number of columns in the grid. This represents the worst-case scenario where nearly every cell in the grid could need to be processed.

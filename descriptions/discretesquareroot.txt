@@ -1,0 +1,5 @@
+discrete square root
+
+(1) The discrete square root algorithm finds an integer \( x \) such that \( x^2 \equiv a \pmod{p} \), where \( a \) is the given integer and \( p \) is a prime number.
+
+(2) The complexity of this algorithm often involves factorizing the problem or leveraging algorithms such as Tonelli-Shanks, with a worst-case complexity of \( O(\log(p)^2) \) when using Tonelli-Shanks. Here, \( p \) is the prime modulus, and the notation \( O(\log(p)^2) \) indicates that the time complexity grows quadratically with the logarithm of \( p \).

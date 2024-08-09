@@ -1,0 +1,4 @@
+breadth-first search
+
+1. Breadth-first search (BFS) is an algorithm that explores all nodes at the present depth level before moving on to nodes at the next depth level in a graph.
+2. Complexity: **O(V + E)**, where **V** is the number of vertices (nodes) and **E** is the number of edges in the graph.

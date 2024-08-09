@@ -1,0 +1,5 @@
+aliens trick
+
+1. The "aliens trick" is a technique used to optimize dynamic programming problems by converting them into problem instances that can be solved using data structures like segment trees or binary indexed trees to achieve better time complexity.
+   
+2. Complexity: O((n + q) \log n), where \( n \) is the size of the input sequence and \( q \) is the number of queries, with \(\log n\) representing the logarithmic factor due to data structure operations.

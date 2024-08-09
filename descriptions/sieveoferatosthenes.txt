@@ -1,0 +1,6 @@
+sieve of eratosthenes
+
+1. The Sieve of Eratosthenes is an efficient algorithm to find all prime numbers up to a given integer n by iteratively marking the multiples of each prime number starting from 2.
+2. The time complexity of the Sieve of Eratosthenes is O(n log log n), where n is the upper limit up to which we want to find prime numbers. Here:
+   - "n" represents the maximum number for which primes are being calculated.
+   - "log log n" is a very slow-growing function that accounts for the efficiency gained through marking multiples starting from each prime.

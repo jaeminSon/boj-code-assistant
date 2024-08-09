@@ -1,0 +1,6 @@
+deque range maximum trick
+
+1. The deque range maximum trick is an efficient sliding window technique that finds the maximum element in each subarray of a given size.
+
+2. Complexity: \( O(n) \)
+   - \( n \) is the total number of elements in the input array.

@@ -1,0 +1,10 @@
+segment tree with lazy propagation
+
+1. **Description**: A segment tree with lazy propagation is a data structure that allows efficient range queries and updates on an array, where updates may also be applied to a range of elements.
+
+2. **Complexity**: 
+   - Query: \( O(\log n) \)
+   - Update: \( O(\log n) \)
+     - \( n \): Size of the array.
+
+Here, \( \log n \) refers to the logarithm (base 2) of the number of elements, which represents the height of the balanced segment tree, allowing logarithmic time complexity for querying and updating operations due to the tree traversal depth.

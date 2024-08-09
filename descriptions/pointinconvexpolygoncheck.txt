@@ -1,0 +1,10 @@
+point in convex polygon check
+
+1. The "point in convex polygon check" algorithm determines whether a given point lies inside, outside, or on the boundary of a convex polygon.
+
+2. Complexity: \(O(\log n)\)
+
+- \(O\) (Big O) notation describes the upper bound on the time complexity.
+- \(n\) represents the number of vertices in the convex polygon.
+
+This logarithmic complexity typically assumes using a binary search or other efficient methods leveraging the convexity property of the polygon to expedite the point location process.

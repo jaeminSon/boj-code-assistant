@@ -1,0 +1,4 @@
+circulation
+
+1. The "circulation" algorithm is used to determine whether there exists a circulation with given demands and supplies in a network flow with lower bounds on edges.
+2. Complexity: \(O(VE)\), where \(V\) is the number of vertices and \(E\) is the number of edges.

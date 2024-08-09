@@ -1,0 +1,13 @@
+knapsack
+
+1. The "knapsack" algorithm solves the problem of determining the maximum value of items that can fit into a knapsack with a weight capacity, given a list of items each with a specific weight and value.
+   
+2. The complexity of the knapsack algorithm varies:
+   - **0/1 Knapsack Problem (Dynamic Programming):** O(n * W)
+   - **Fractional Knapsack Problem (Greedy Algorithm):** O(n log n)
+
+   Where:
+   - **n** is the number of items.
+   - **W** is the maximum weight capacity of the knapsack.
+
+In the 0/1 knapsack problem, each item can either be taken or left entirely, leading to a dynamic programming solution that considers all items and capacities up to W. In the fractional knapsack problem, items can be broken into parts, allowing a more efficient greedy approach.

@@ -1,0 +1,11 @@
+modular multiplicative inverse
+
+1. The modular multiplicative inverse of an integer \( a \) modulo \( m \) is an integer \( x \) such that the product \( ax \) is congruent to 1 modulo \( m \).
+
+2. The complexity varies based on the approach:
+   - Using the Extended Euclidean Algorithm: \( O(\log m) \) where \( m \) is the modulus.
+   - Using Fermat's Little Theorem (if \( m \) is prime): \( O(\log m) \) per exponentiation operation, with the same conditions for \( m \).
+
+   Symbols:
+   - \( O(\cdot) \): Big O notation represents upper bound complexity.
+   - \( \log m \): The logarithm of \( m \), often denoted \( \log_2 m \), indicating the number of times you divide \( m \) by 2 until you get 1.

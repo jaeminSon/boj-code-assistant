@@ -1,0 +1,5 @@
+topological sorting
+
+1. Topological sorting is an algorithm for ordering vertices in a directed acyclic graph (DAG) so that for every directed edge u → v, vertex u comes before vertex v in the ordering.
+
+2. The complexity is O(V + E), where V represents the number of vertices and E represents the number of edges.

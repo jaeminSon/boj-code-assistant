@@ -1,0 +1,7 @@
+sum over subsets dynamic programming
+
+1. The sum over subsets dynamic programming algorithm calculates the sum of a function applied to all subsets of a given set, efficiently computing this for all possible subsets.
+
+2. Complexity: \( O(n \cdot 2^n) \)
+   - \( n \) is the size of the set.
+   - \( 2^n \) represents the number of all possible subsets of the given set.
