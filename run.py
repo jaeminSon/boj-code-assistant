@@ -83,13 +83,6 @@ def _exec_cmd(command):
         return output.stdout
 
 
-def _exec_python_code(path_python_script):
-    try:
-        exec(open(path_python_script).read())
-    except Exception as e:
-        return str(e)
-
-
 def _show_tag(algorithm):
     if algorithm in tags:
         return "\n".join(tags[algorithm])
@@ -111,7 +104,10 @@ def _retrieve_description(algorithm):
 def _general_advice():
     advices = []
     advices.append(
-        "Analyze the Problem: Identify and map the elements of the problem to appropriate data structures in computer science. Consider the allowed complexity constraints."
+        "Analyze the Problem: Identify key objects in the problem and map them to appropriate data structures in computer science."
+    )
+    advices.append(
+        "Figure out required operations: From the given information, derive the course of transformation that leads to the solution."
     )
     advices.append(
         "Filter Algorithms by Complexity: Based on the complexity constraints, narrow down to feasible algorithms that can efficiently solve the problem. Type 'complexity' for more details."
@@ -119,30 +115,46 @@ def _general_advice():
     return "\n\n".join([f"{i+1}. {adv}" for i, adv in enumerate(advices)])
 
 
-def _write_io_codes(rows):
-    with open(path_draft, "a") as f:
-        for row in rows:
-            row_chunks = row.split()
-            if len(row_chunks) == 1:
-                if row.isdigit():
-                    code = " = int(input())"
-                else:
-                    code = " = input()"
-            else:
-                if all(e.isdigit() for e in row_chunks):
-                    code = (
-                        " = list(map(int, input().split())) or "
-                        + "," * (len(row_chunks) - 1)
-                        + "= map(int, input().split())"
-                    )
-                else:
-                    code = (
-                        " = input().split() or"
-                        + "," * (len(row_chunks) - 1)
-                        + "= input().split()"
-                    )
+def _write_io_codes(spec):
+    chunks = spec.split()
+    if len(chunks) == 1:
+        problem_number = chunks[0]
+        language = "python"
+    elif len(chunks) == 2:
+        problem_number, language = chunks
+        language = language.lower()
+    else:
+        return "Unknown command. Type 'man' for usage."
 
-            f.write(f"{code}\n")
+    history_openai_format = [
+        {
+            "role": "system",
+            "content": f"You're an expert in {language}. Given a problem, write a code that parse the input in {language}. Answer with code only.",
+        }
+    ]
+
+    history_openai_format.append(
+        {"role": "user", "content": _read_problem(problem_number)}
+    )
+
+    response = client.chat.completions.create(
+        model="gpt-4o", messages=history_openai_format, temperature=1.0, stream=True
+    )
+
+    answer = ""
+    for chunk in response:
+        if chunk.choices[0].delta.content is not None:
+            answer += chunk.choices[0].delta.content
+
+    start_code = answer.find(f"```{language}")
+    if start_code != -1:
+        answer = answer[start_code + len(f"```{language}") :]
+        end_code = answer.find("```")
+        if end_code != -1:
+            answer = answer[:end_code]
+            _write_to_draft(answer)
+
+    return "Finished writing to draft.py"
 
 
 def _write_to_draft(content):
@@ -156,8 +168,9 @@ def _manual():
         "## show list directory content\n```ls```",
         "## execute python file\n```python </path/to/python_file>```",
         "## get a hint\n```hint <boj-prob-number>```",
+        "## verify your logic\n```verify <your-logic>```",
         "## show algorithm tags\n```tag <algorithm-name>```",
-        "## write parsing codes on draft.py\n```io <io-examples-after-newline>```",
+        "## write parsing codes on draft.py\n```io <boj-prob-number> <language>```",
         "## fetch algorithm explanation\n```explain <algorithm-name>```",
         "## show general strategy for problem solving\n```help```",
         "## write code on draft.py based on the discussion\n```code```",
@@ -172,18 +185,17 @@ def execute_command(history):
     if cmd_name == "cd":
         history[-1][1] = change_directory(" ".join(command.split()[1:]))
         return history
-    elif cmd_name == "python":
-        history[-1][1] = _exec_python_code(" ".join(command.split()[1:]))
+    elif cmd_name == "verify":
+        history[-1][1] = _verify_logic(" ".join(command.split()[1:]))
         return history
-    elif cmd_name == "code":
-        return _write_code(history)
     elif cmd_name == "hint":
-        return _give_hint(history)
+        history[-1][1] = _give_hint(" ".join(command.split()[1:]))
+        return history
     elif cmd_name == "tag":
         history[-1][1] = _show_tag(" ".join(command.split()[1:]))
         return history
     elif cmd_name == "io":
-        history[-1][1] = _write_io_codes(command.split("\n")[1:])
+        history[-1][1] = _write_io_codes(" ".join(command.split()[1:]))
         return history
     elif cmd_name == "explain":
         history[-1][1] = _retrieve_description(" ".join(command.split()[1:]))
@@ -206,11 +218,10 @@ def is_command(prompt):
     commands = [
         "cd",
         "ls",
-        "python",
         # user-defined
         "man",
         "hint",
-        "code",
+        "verify",
         "tag",
         "io",
         "explain",
@@ -221,17 +232,17 @@ def is_command(prompt):
     return command in commands
 
 
-def reference_to_code(prompt, commands_discussion=["hint", "discuss"]):
+def reference_to_code(prompt, commands_discussion=["hint", "verify"]):
     command = prompt.split()[0]
     return command in commands_discussion
 
 
-def default_answer(history):
+def default_answer(history: List[List]) -> List[List]:
     history[-1][1] = "I don't know your intention. Type 'man' for available commands."
     return history
 
 
-def handle_query(history):
+def handle_query(history: List[List]) -> str:
     recent_user_message = history[-1][0]
     if is_command(recent_user_message):
         return execute_command(history)
@@ -239,45 +250,7 @@ def handle_query(history):
         return default_answer(history)
 
 
-def _write_code(history):
-    history_openai_format = [
-        {
-            "role": "system",
-            "content": "You're an expert in Python. Write a code-only solution to the problem discussed. At the end of your code, append if __name__ == '__main__': to call your function with sample arguments",
-        }
-    ]
-    for msg_user, msg_assistant in history:
-        if msg_assistant and reference_to_code(msg_user):
-            history_openai_format.append({"role": "user", "content": msg_user})
-            history_openai_format.append(
-                {"role": "assistant", "content": msg_assistant}
-            )
-
-    final_user_prompt = history[-1][0]
-    history_openai_format.append({"role": "user", "content": final_user_prompt})
-
-    response = client.chat.completions.create(
-        model="gpt-4o", messages=history_openai_format, temperature=1.0, stream=True
-    )
-
-    history[-1][1] = ""
-    for chunk in response:
-        if chunk.choices[0].delta.content is not None:
-            history[-1][1] += chunk.choices[0].delta.content
-
-    answer = history[-1][1]
-    start_code = answer.find("```python")
-    if start_code != -1:
-        answer = answer[start_code + len("```python") :]
-        end_code = answer.find("```")
-        if end_code != -1:
-            answer = answer[:end_code]
-            _write_to_draft(answer)
-
-    return history
-
-
-def read_txt(path):
+def read_txt(path: str):
     return open(path).read()
 
 
@@ -292,21 +265,31 @@ def _problem_tags(problem_number):
         return ", ".join(tags[0])
 
 
-def _problem_prompt(problem_num):
+def _read_problem(problem_num: str):
     try:
-        problem_desc = read_txt(os.path.join(homedir, f"problems/{problem_num}.txt"))
+        return read_txt(os.path.join(homedir, f"problems/{problem_num}.txt"))
     except Exception:
-        problem_desc = "Not found"
+        return "Not found"
 
-    try:
-        ptags = _problem_tags(problem_num)
-    except Exception:
-        ptags = "Not found"
 
+def _read_tags(problem_num: str):
     try:
-        solution = read_txt(os.path.join(homedir, f"solutions/{problem_num}.txt"))
+        return _problem_tags(problem_num)
     except Exception:
-        solution = "Not found"
+        return "Not found"
+
+
+def _read_solution(problem_num: str):
+    try:
+        return read_txt(os.path.join(homedir, f"solutions/{problem_num}.txt"))
+    except Exception:
+        return "Not found"
+
+
+def _problem_prompt(problem_num: str):
+    problem_desc = _read_problem(problem_num)
+    ptags = _read_tags(problem_num)
+    solution = _read_solution(problem_num)
 
     return (
         f"### problem: {problem_desc}\n\n"
@@ -315,36 +298,75 @@ def _problem_prompt(problem_num):
     )
 
 
-def _give_hint(history: str):
+def _verify_logic(prompt: str):
     try:
-        user_prompt = history[-1][0]
-        problem_num = str(int("".join(user_prompt.split()[1:])))
+        chunks = prompt.split()
+        problem_num = chunks[0]
+        logic = prompt[prompt.index(problem_num) + len(problem_num) + 1 :]
     except Exception:
-        pnum = " ".join(user_prompt.split()[1:])
-        history[-1][0] = "Failed command - " + history[-1][0]
-        history[-1][1] = f"Uknown problem number {pnum}"
-        return history
+        return f"Unknown arguments {prompt} for 'verify' command."
+
+    try:
+        problem_num = str(int(problem_num))
+    except Exception:
+        problem_num = str(int(problem_num))
+        return f"Unknown problem number {problem_num}"
 
     history_openai_format = [
         {
             "role": "system",
-            "content": "You're an expert in algorithm. Given a problem, and algorithms that consist of a solution, and a solution code, advise to provide the best lessons. Never write codes.",
+            "content": "You're an expert in algorithms. You've been presented with a problem, some algorithm tags, and a solution code that wasn't written by the user. Your task is to guide the user by verifying and explaining their approach to solving the problem, taking into account the provided solution code. Focus solely on the user's logic. Never explain the entire solution. Comment only on the user's logic. Answer briefly and without colloquialisms. Answer 'Correct' if the logic is accurate and conclude there. Answer 'Incorrect' if it isn't providing reasons.",
         }
     ]
 
-    history[-1][0] = _problem_prompt(problem_num)
-    history_openai_format.append({"role": "user", "content": history[-1][0]})
+    history_openai_format.append(
+        {
+            "role": "user",
+            "content": _problem_prompt(problem_num)
+            + "\n\n"
+            + f"### user's logic: {logic}",
+        }
+    )
 
     response = client.chat.completions.create(
         model="gpt-4o", messages=history_openai_format, temperature=1.0, stream=True
     )
 
-    history[-1][1] = ""
+    answer = ""
     for chunk in response:
         if chunk.choices[0].delta.content is not None:
-            history[-1][1] += chunk.choices[0].delta.content
+            answer += chunk.choices[0].delta.content
 
-    return history
+    return answer
+
+
+def _give_hint(problem_num: str):
+    try:
+        problem_num = str(int(problem_num))
+    except Exception:
+        return f"Unknown problem number {problem_num}"
+
+    history_openai_format = [
+        {
+            "role": "system",
+            "content": "You're an expert in algorithm. Given a problem, and algorithm tags, and a solution code, advise to provide the best lessons. Never write codes.",
+        }
+    ]
+
+    history_openai_format.append(
+        {"role": "user", "content": _problem_prompt(problem_num)}
+    )
+
+    response = client.chat.completions.create(
+        model="gpt-4o", messages=history_openai_format, temperature=1.0, stream=True
+    )
+
+    answer = ""
+    for chunk in response:
+        if chunk.choices[0].delta.content is not None:
+            answer += chunk.choices[0].delta.content
+
+    return answer
 
 
 def run_gradio():
