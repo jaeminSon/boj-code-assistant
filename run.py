@@ -129,7 +129,7 @@ def _write_io_codes(spec):
     history_openai_format = [
         {
             "role": "system",
-            "content": f"You're an expert in {language}. Given a problem, write a code that parse the input in {language}. Answer with code only.",
+            "content": f"As an expert in {language}, write a code snippet to parse the input using {language}. Answer only the code.",
         }
     ]
 
@@ -315,7 +315,7 @@ def _verify_logic(prompt: str):
     history_openai_format = [
         {
             "role": "system",
-            "content": "You're an expert in algorithms. You've been presented with a problem, some algorithm tags, and a solution code that wasn't written by the user. Your task is to guide the user by verifying and explaining their approach to solving the problem, taking into account the provided solution code. Focus solely on the user's logic. Never explain the entire solution. Comment only on the user's logic. Answer briefly and without colloquialisms. Answer 'Correct' if the logic is accurate and conclude there. Answer 'Incorrect' if it isn't providing reasons.",
+            "content": "You're an expert in algorithms. You are presented with a problem, algorithm tags, and a solution code. Your task is to guide the user by verifying the approach to solving the problem, taking into account the provided algorithm tags and solution code. Answer 'Correct' if the logic is accurate and conclude there. Answer 'Incorrect' if it isn't providing reasons briefly.",
         }
     ]
 
@@ -349,7 +349,7 @@ def _give_hint(problem_num: str):
     history_openai_format = [
         {
             "role": "system",
-            "content": "You're an expert in algorithm. Given a problem, and algorithm tags, and a solution code, advise to provide the best lessons. Never write codes.",
+            "content": "As an expert in algorithms, offer hints and valuable insights to a learner for the given problem. Consider the related algorithm tags and provided solution code. Do not write any code.",
         }
     ]
 
