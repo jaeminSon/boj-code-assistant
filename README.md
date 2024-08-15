@@ -17,7 +17,13 @@ $ python run.py
 ### 문제 긁어 오기 (web-crawling 은 boj 에서 권장하지 않음)
 ```
 $ cd data_preparation
-$ python crawl.py
+$ python crawl_boj_problems.py
+```
+
+### 문제 meta 정보 다운받기
+```
+$ cd data_preparation
+$ python collect_problem_list.py
 ```
 
 ### 알고리즘 설명 (재)생성
