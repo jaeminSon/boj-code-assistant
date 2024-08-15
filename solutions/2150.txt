@@ -1,0 +1,80 @@
+#include <iostream>
+#include <vector>
+#include <stack>
+#include <algorithm>
+#include <fstream>
+
+using namespace std;
+
+const int S = 1e4;
+int V, E, time, sccCount;
+int discovered[S+5], sccId[S+5];
+stack<int> st;
+vector<int> adj[S+5];
+vector<vector<int> > scc;
+
+int dfs(int here) {
+	int ret = discovered[here] = ++time;
+	
+	st.push(here);
+	
+	for(int i = 0; i<adj[here].size(); i++) {
+		int there = adj[here][i];
+	
+		if(discovered[there] == 0)
+			ret = min(ret, dfs(there));
+		else if(discovered[there] < discovered[here] && sccId[there] == 0)
+			ret = min(ret, discovered[there]);
+	}
+	
+	if(ret == discovered[here]) {
+		vector<int> tmp;
+		sccCount++;
+		
+		while(true) {
+			int t = st.top();
+			sccId[t] = sccCount;
+			st.pop();
+			
+			tmp.push_back(t);
+			if(t == here)
+				break;
+		}
+		sort(tmp.begin(), tmp.end());
+		scc.push_back(tmp);
+	}
+	return ret;
+}
+
+void dfsAll() {
+	for(int i = 1; i<=V; i++) {
+		if(discovered[i] == 0)
+			dfs(i);
+	}
+}
+
+int main() {
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL); cout.tie(NULL);
+	//fstream inf("prob.txt");
+	//inf >> V >> E;
+	cin >> V >> E;
+	
+	for(int a, b, i = 1; i<=E; i++) {
+		//inf >> a >> b;
+		cin >> a >> b;
+		adj[a].push_back(b);
+	}
+	
+	dfsAll();
+	sort(scc.begin(), scc.end());
+	
+	printf("%d\n", sccCount);
+	for(int i = 0; i<scc.size(); i++) {
+		for(int j = 0; j<scc[i].size(); j++)
+			printf("%d ", scc[i][j]);
+		printf("-1\n");
+	}
+	
+	return 0;
+}

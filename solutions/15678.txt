@@ -1,0 +1,46 @@
+#include <iostream>
+#include <deque>
+
+using namespace std;
+
+typedef long long ll;
+typedef pair<ll, int> pli;
+
+const ll INF = 1e15;
+const int S = 1e5;
+int N, D;
+int a[S+5];
+ll dp[S+5];
+
+ll solve() {
+    deque<pli> dq;
+    dp[1] = a[1];
+    dq.push_back({dp[1], 1});
+
+    for(int i = 2; i<=N; i++) {
+        while(!dq.empty() && dq.front().second < max(i-D, 1))
+            dq.pop_front();
+        dp[i] = max((ll)a[i], dq.front().first + a[i]);
+
+        while(!dq.empty() && dq.back().first < dp[i])
+            dq.pop_back();
+        dq.push_back({dp[i], i});
+    }
+    
+    ll ret = -INF;
+    for(int i = 1; i<=N; i++)
+        ret = max(ret, dp[i]);
+    return ret;
+}
+
+int main() {
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL); cout.tie(NULL);
+    cin >> N >> D;
+
+    for(int i = 1; i<=N; i++)
+        cin >> a[i];
+    cout << solve() << '\n';
+
+    return 0;
+}

@@ -1,0 +1,72 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <string>
+
+using namespace std;
+
+const int S = 3e5;
+string a, b;
+
+void solve() {
+    int N = a.size();
+    sort(a.begin(), a.end());
+    sort(b.rbegin(), b.rend());
+
+    vector<char> ret(N+5);
+    int p1 = 0, p2 = 0, len = 0;
+    bool t = true;
+
+    while(len < N) {
+        if(a[p1] == b[p2]) {
+            ret[len++] = a[p1++];
+            ret[len++] = b[p2++];
+            t = !t;
+        }
+        else if(a[p1] < b[p2]) {
+            if(t == true)
+                ret[len++] = a[p1++];
+            else
+                ret[len++] = b[p2++];
+        }
+        else {
+            if((N-len)&1) {
+                if(t == true) {
+                    ret[len++] = a[p1++];
+                    ret[len++] = b[p2++];
+                    t = !t;
+                }
+                else {
+                    ret[len++] = b[p2++];
+                    ret[len++] = a[p1++];
+                    t = !t;
+                }
+            }
+            else {
+                if(t == true) {
+                    ret[len++] = b[p2++];
+                    ret[len++] = a[p1++];
+                    t = !t;
+                }
+                else {
+                    ret[len++] = a[p1++];
+                    ret[len++] = b[p2++];
+                    t = !t;
+                }
+            }
+        }
+        t = !t;
+    }
+    for(int i = 0; i<N; i++)
+        cout << ret[i];
+    cout << '\n';
+}
+
+int main() {
+    ios_base :: sync_with_stdio(false);
+	cin.tie(NULL); cout.tie(NULL);
+    cin >> a >> b;
+    solve();
+
+    return 0;
+}

@@ -1,0 +1,34 @@
+#include <iostream>
+#include <fstream>
+
+using namespace std;
+
+int N, S, ret;
+int A[21];
+
+void solve(int index, int sum, int cnt) {
+	if(N < index)	return;
+	
+	if(cnt == 0 && A[index] == S)	ret++;
+	if(cnt != 0 && sum+A[index] == S)	ret++;
+	
+	solve(index+1, sum, cnt);
+	solve(index+1, sum+A[index], cnt+1);
+}
+
+int main() {
+	ios_base :: sync_with_stdio(false);
+	cin.tie(NULL); cout.tie(NULL);
+	//fstream inf("prob.txt");
+	//inf >> N >> S;
+	cin >> N >> S;
+	
+	for(int i = 1; i<=N; i++) {
+		//inf >> A[i];
+		cin >> A[i];
+	}
+	solve(1, 0, 0);
+	printf("%d", ret);
+	
+	return 0;
+}

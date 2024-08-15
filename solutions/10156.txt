@@ -1,0 +1,18 @@
+#include <iostream>
+#include <cstring>
+
+using namespace std;
+
+int k, n, m;
+
+int main() {
+	cin >> k >> n >> m;
+	
+	int ret = k * n - m;
+	if(ret >= 0)
+		cout << ret << endl;
+	else
+		cout << 0 << endl;
+	
+	return 0;
+}

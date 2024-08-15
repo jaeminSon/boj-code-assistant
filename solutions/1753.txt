@@ -1,0 +1,65 @@
+#include <iostream>
+#include <vector>
+#include <queue>
+#include <algorithm>
+#include <fstream>
+
+using namespace std;
+
+typedef pair<int, int> pii;
+
+const int S = 2e4, INF = 1e9;
+int V, E, K;
+int dist[S + 5];
+vector<pii> adj[S + 5];
+bool visited[S + 5];
+
+void dijkstra(int s) {
+    for (int i = 1; i <= V; i++)
+        dist[i] = INF;
+    priority_queue<pii, vector<pii>, greater<pii>> pq;
+    pq.push({ 0, s });
+    dist[s] = 0;
+
+    while (!pq.empty()) {
+        int d = pq.top().first;
+        int here = pq.top().second;
+        pq.pop();
+
+        if (visited[here] == true)
+            continue;
+        visited[here] = true;
+        dist[here] = min(dist[here], d);
+
+        for (int i = 0; i < adj[here].size(); i++) {
+            int there = adj[here][i].first;
+            int cost = adj[here][i].second;
+
+            pq.push({ dist[here] + cost, there });
+        }
+    }
+}
+
+int main(void) {
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL); cout.tie(NULL);
+    //fstream inf("prob.txt");
+    //inf >> V >> E >> K;
+    cin >> V >> E >> K;
+
+    for (int u, v, w, i = 0; i < E; i++) {
+        //inf >> u >> v >> w;
+        cin >> u >> v >> w;
+        adj[u].push_back({ v,w });
+    }
+
+    dijkstra(K);
+    for (int i = 1; i <= V; i++) {
+        if (dist[i] == INF)
+            printf("INF\n");
+        else
+            printf("%d\n", dist[i]);
+    }
+
+    return 0;
+}

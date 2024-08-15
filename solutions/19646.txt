@@ -1,0 +1,84 @@
+#include <iostream>
+#include <vector>
+
+using namespace std;
+
+const int S = 2e5;
+int T, N;
+int w[S+5], p[S+5], Tree[4*S+5];
+
+void init(int b, int s, int e) {
+    if(s == e) {
+        Tree[b] = w[s];
+        return;
+    }
+    int mid = (s+e)/2;
+    init(b*2, s, mid);
+    init(b*2+1, mid+1, e);
+    Tree[b] = Tree[b*2]+Tree[b*2+1];
+}
+
+void update(int b, int s, int e, int n, int x) {
+    if(n < s || e < n)
+        return;
+    if(s == e) {
+        Tree[b] += x;
+        return;
+    }
+
+    int mid = (s+e)/2;
+    update(b*2, s, mid, n, x);
+    update(b*2+1, mid+1, e, n, x);
+    Tree[b] = Tree[b*2]+Tree[b*2+1];
+}
+
+int get(int b, int s, int e, int l, int r) {
+    if(r < s || e < l)
+        return 0;
+    if(l <= s && e <= r)
+        return Tree[b];
+    
+    int mid = (s+e)/2;
+    return get(b*2, s, mid, l, r) + get(b*2+1, mid+1, e, l, r);
+}
+
+
+void solve() {
+    init(1, 1, N);
+    vector<int> ret;
+
+    for(int i = 1; i<=N; i++) {
+        int lo = 1, hi = N, mid;
+        
+        while(lo <= hi) {
+            mid = (lo+hi)/2;
+
+            int c = get(1, 1, N, 1, mid);
+            if(c < p[i])
+                lo = mid+1;
+            else
+                hi = mid-1;
+        }
+        ret.push_back(lo);
+        update(1, 1, N, lo, -w[lo]);
+    }
+
+    for(int i = 0; i<ret.size(); i++)
+        cout << ret[i] << " ";
+    cout << '\n';
+}
+
+int main() {
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL); cout.tie(NULL);
+    cin >> N;
+    
+    for(int i = 1; i<=N; i++)
+        cin >> w[i];
+    for(int i = 1; i<=N; i++)
+        cin >> p[i];
+    
+    solve();
+ 
+    return 0;
+}

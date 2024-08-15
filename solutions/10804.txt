@@ -1,0 +1,29 @@
+#include <iostream>
+#include <vector>
+
+using namespace std;
+
+vector<int> arr(21);
+int a, b;
+
+void reverse(int a, int b) {
+	vector<int> carr(arr);
+	
+	for(int i = 0; i<=b-a; i++)
+		arr[a + i] = carr[b - i];
+}
+
+int main() {
+	for(int i = 1; i<21; i++)
+		arr[i] = i;
+	
+	for(int i = 0; i<10; i++) {
+		cin >> a >> b;
+		reverse(a, b);
+	}
+	
+	for(int i = 1; i<21; i++)
+		cout << arr[i] << " ";
+	
+	return 0;
+}

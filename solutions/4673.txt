@@ -1,0 +1,38 @@
+#include <iostream>
+#include <sstream>
+#include <vector>
+#include <algorithm>
+#include <string>
+
+using namespace std;
+
+int era[10001];
+
+void solve() {
+	for(int i = 1; i<10001; i++) {
+		string sub;
+		stringstream s;
+		s << i;
+		
+		sub = s.str();
+		
+		int a = i;
+		
+		for(int j = 0; j<sub.size(); j++)
+			a += sub[j] - '0';
+		
+		era[a] = 1;
+	}
+}
+
+int main() {
+	
+	solve();
+	
+	for(int i = 1; i<10001; i++) {
+		if(era[i] == 0)
+			cout << i << endl;
+	}
+	
+	return 0;
+}

@@ -1,0 +1,66 @@
+#include <iostream>
+#include <vector>
+#include <set>
+#include <algorithm>
+#include <fstream>
+
+using namespace std;
+
+int N, K;
+vector<pair<int, int>> contest;
+
+bool cmp(const pair<int, int>& a, const pair<int, int>& b) {
+    if (a.second == b.second)
+        return a.first < b.first;
+
+    return a.second < b.second;
+}
+
+int solve() {
+    sort(contest.begin(), contest.end(), cmp);
+
+    multiset<int> st;
+    for (int i = 0; i < K - 1; i++)
+        st.insert(0);
+
+    int lt = 0, ret = 0;
+    for (int i = 0; i < N; i++) {
+        int cs = contest[i].first, ce = contest[i].second;
+
+        if (cs <= lt)
+            continue;
+
+        multiset<int>::iterator it = st.lower_bound(cs);
+
+        if (st.size() != 0 && it != st.begin()) {
+            it--;
+
+            st.erase(it);
+            st.insert(ce);
+            continue;
+        }
+
+        ret++;
+        lt = ce;
+    }
+
+    return ret;
+}
+
+int main(void) {
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL); cout.tie(NULL);
+    //fstream inf("prob.txt");
+    //inf >> N >> K;
+    cin >> N >> K;
+
+    for (int s, e, i = 0; i < N; i++) {
+        //inf >> s >> e;
+        cin >> s >> e;
+
+        contest.push_back({ s,e });
+    }
+    printf("%d\n", solve());
+
+    return 0;
+}

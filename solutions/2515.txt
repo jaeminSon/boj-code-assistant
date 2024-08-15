@@ -1,0 +1,87 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+
+using namespace std;
+
+typedef pair<int,int> pii;
+
+const int MX = 3e5, INF = 1e9;
+int N, S;
+int dp[MX+5], Tree[4*MX+5];
+vector<pii> a;
+
+void init(int b, int s, int e) {
+    if(s == e) {
+        Tree[b] = a[s].second;
+        return;
+    }
+
+    int mid = (s+e)/2;
+    init(b*2, s, mid);
+    init(b*2+1, mid+1, e);
+    Tree[b] = max(Tree[b*2], Tree[b*2+1]);
+}
+
+void update(int b, int s, int e, int n, int x) {
+    if(n < s || e < n)
+        return;
+    
+    if(s == e) {
+        Tree[b] = x;
+        return;
+    }
+
+    int mid = (s+e)/2;
+    update(b*2, s, mid, n, x);
+    update(b*2+1, mid+1, e, n, x);
+    Tree[b] = max(Tree[b*2], Tree[b*2+1]);
+}
+
+int get(int b, int s, int e, int l, int r) {
+    if(r < s || e < l)
+        return 0;
+    if(l <= s && e <= r)
+        return Tree[b];
+    
+    int mid = (s+e)/2;
+    return max(get(b*2, s, mid, l, r), get(b*2+1, mid+1, e, l, r));
+}
+
+int solve() {
+    sort(a.begin(), a.end());
+    N++;
+    init(1,1,N);
+
+    int p = 1;
+    for(int i = 2; i<=N; i++) {
+        while(a[p+1].first+S <= a[i].first)
+            p++;
+        int mx = get(1,1,N,1,p);
+        dp[i] = mx + a[i].second;
+        update(1,1,N,i,dp[i]);
+    }
+
+    int ret = 0;
+    for(int i = 1; i<=N; i++)
+        ret = max(ret, dp[i]);
+    return ret;
+}
+
+int main() {
+    ios_base :: sync_with_stdio(false);
+	cin.tie(NULL); cout.tie(NULL);
+    cin >> N >> S;
+
+    a.push_back({0,0});
+    a.push_back({0,0});
+    a.push_back({INF,INF});
+    for(int i = 1; i<=N; i++) {
+        int h, c;
+        cin >> h >> c;
+        a.push_back({h,c});
+    }
+    cout << solve() << '\n';
+
+    return 0;
+}

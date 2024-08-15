@@ -1,0 +1,95 @@
+#include <iostream>
+#include <vector>
+#include <stack>
+#include <algorithm>
+#include <fstream>
+
+using namespace std;
+
+int N, M;
+int time, sccCount;
+int discovered[51], sccId[51];
+vector<int> adj[51];
+stack<int> st;
+
+int dfs(int here) {
+    int ret = discovered[here] = ++time;
+    st.push(here);
+
+    for (int i = 0; i < adj[here].size(); i++) {
+        int there = adj[here][i];
+
+        if (discovered[there] == 0)
+            ret = min(ret, dfs(there));
+        else if (discovered[there] < discovered[here] && sccId[there] == 0)
+            ret = min(ret, discovered[there]);
+    }
+
+    if (ret == discovered[here]) {
+        sccCount++;
+
+        while (true) {
+            int t = st.top();
+            st.pop();
+            sccId[t] = sccCount;
+
+            if (t == here)
+                break;
+        }
+    }
+    return ret;
+}
+
+bool solve() {
+    for (int i = 2; i <= 2 * N + 1; i++) {
+        if (discovered[i] != 0)
+            continue;
+        dfs(i);
+    }
+
+    for (int i = 1; i <= N; i++) {
+        if (sccId[i * 2] == sccId[i * 2 + 1])
+            return false;
+    }
+    return true;
+}
+
+int main(void) {
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL); cout.tie(NULL);
+    //fstream inf("prob.txt");
+    //inf >> N >> M;
+    cin >> N >> M;
+
+    for (int s,e,s1,e1,i = 0; i < M; i++) {
+        //inf >> s >> e;
+        cin >> s >> e;
+
+        if (s < 0)
+            s = (-s) * 2 + 1;
+        else
+            s = s * 2;
+        if (e < 0)
+            e = (-e) * 2 + 1;
+        else
+            e = e * 2;
+
+        if (s % 2 == 0)
+            s1 = s + 1;
+        else
+            s1 = s - 1;
+        if (e % 2 == 0)
+            e1 = e + 1;
+        else
+            e1 = e - 1;
+
+        adj[s1].push_back(e);
+        adj[e1].push_back(s);
+    }
+    if (solve() == true)
+        printf("1");
+    else
+        printf("0");
+
+    return 0;
+}

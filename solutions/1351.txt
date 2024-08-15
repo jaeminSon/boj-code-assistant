@@ -1,0 +1,33 @@
+#include <iostream>
+#include <algorithm>
+#include <fstream>
+
+using namespace std;
+
+typedef long long ll;
+
+ll N, P, Q;
+ll DP[51][51];
+
+ll solve(ll n, int i, int j) {
+	if (n == 0)
+		return 1;
+
+	ll& ret = DP[i][j];
+	if (ret != 0)
+		return ret;
+
+	return ret = solve(n / P, i + 1, j) + solve(n / Q, i, j + 1);
+}
+
+int main(void) {
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL); cout.tie(NULL);
+	//fstream inf("prob.txt");
+	//inf >> N >> P >> Q;
+	cin >> N >> P >> Q;
+
+	printf("%lld", solve(N, 0, 0));
+
+	return 0;
+}

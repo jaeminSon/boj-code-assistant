@@ -1,0 +1,57 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+
+using namespace std;
+
+typedef long long ll;
+
+int N;
+vector<ll> pt;
+
+void dfs(int h, int n) {
+    if(n == 10) {
+        vector<ll> p;
+        ll r = 0;
+        while(h > 0) {
+            if(h&1)
+                p.push_back(r);
+            r++;
+            h /= 2;
+        }
+        sort(p.rbegin(), p.rend());
+
+        r = 0;
+        for(int i = 0; i<p.size(); i++) {
+            r += p[i];
+            r *= 10;
+        }
+        r /= 10;
+        pt.push_back(r);
+        return;
+    }
+
+    dfs(h, n+1);
+    h |= (1<<n);
+    dfs(h, n+1);
+}
+
+ll solve() {
+    sort(pt.begin(), pt.end());
+    pt.erase(unique(pt.begin(), pt.end()), pt.end());
+
+    if(N >= pt.size())
+        return -1;
+    return pt[N];
+}
+
+int main() {
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL); cout.tie(NULL);
+    cin >> N;
+
+    dfs(0, 0);
+    cout << solve() << '\n';
+ 
+    return 0;
+}

@@ -1,0 +1,125 @@
+#include <iostream>
+#include <vector>
+#include <stack>
+#include <queue>
+#include <algorithm>
+#include <fstream>
+
+using namespace std;
+
+const int S = 1e4, INF = 987654321;
+int N, M;
+int pt[S+5], d[S+5];
+bool selected[S+5];
+vector<int> adj[S+5];
+vector<pair<int, pair<int, int> > > edge;
+vector<pair<int, int> > padj[S+5];
+
+int findRoot(int a) {
+	stack<int> st;
+	
+	while(a != pt[a]) {
+		st.push(a);
+		a = pt[a];
+	}
+	while(!st.empty()) {
+		int t = st.top();
+		st.pop();
+		pt[t] = a;
+	}
+	return a;
+}
+
+void join(int a, int b) {
+	a = findRoot(a);
+	b = findRoot(b);
+	
+	if(a == b)
+		return;
+	
+	if(d[b] < d[a])
+		pt[b] = a;
+	else if(d[a] < d[b])
+		pt[a] = b;
+	else {
+		pt[b] = a;
+		d[a]++;
+	}
+}
+
+int kruskal() {
+	int cnt = 0;
+	sort(edge.begin(), edge.end());
+	
+	for(int a,b,c,i = 0; i<M; i++) {
+		c = edge[i].first;
+		a = edge[i].second.first;
+		b = edge[i].second.second;
+		
+		if(findRoot(a) != findRoot(b)) {
+			cnt += c;
+			join(a, b);
+		}
+	}
+	return cnt;
+}
+
+int prim() {
+	int ret = 0;
+	priority_queue<pair<int,int>, vector<pair<int,int> >, greater<pair<int,int> > > pq;
+	pq.push(make_pair(0, 1));
+	
+	for(int i = 1; i<=N; i++) {
+		int here, cost = INF;
+		
+		while(!pq.empty()) {
+			here = pq.top().second;
+			
+			if(selected[here] == false) {
+				cost = pq.top().first;
+				break;				
+			}
+			pq.pop();
+		}
+		if(cost == INF)	return	INF;
+		
+		ret += cost;
+		selected[here] = true;
+		
+		
+		for(int j = 0; j<padj[here].size(); j++)
+			pq.push(padj[here][j]);
+	}
+	
+	return ret;
+}
+
+int main() {
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL); cout.tie(NULL);
+	//fstream inf("prob.txt");
+	//inf >> N >> M;
+	cin >> N >> M;
+	
+	for(int i = 1; i<=N; i++)
+		pt[i] = i;
+	
+	for(int a,b,c,i = 0; i<M; i++) {
+		//inf >> a >> b >> c;
+		cin >> a >> b >> c;
+		
+		adj[a].push_back(b);
+		adj[b].push_back(a);
+		
+		padj[a].push_back({c, b});
+		padj[b].push_back({c, a});
+		
+		if(b < a)
+			swap(a,b);
+		edge.push_back(make_pair(c, make_pair(a, b)));
+	}
+	
+	printf("%d", prim());
+	
+	return 0;
+}

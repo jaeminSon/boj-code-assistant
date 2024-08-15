@@ -1,0 +1,46 @@
+#include <iostream>
+#include <string.h>
+
+using namespace std;
+
+int n;
+int map[101][101];
+bool visit[101];
+
+
+void dfs(int start, bool first) {
+	if(first != true)
+		visit[start] = true;
+	
+	for(int i = 0; i<n; i++) {
+		if(visit[i] || map[start][i] == 0) continue;
+		
+		dfs(i, false);
+	}
+}
+
+int main() {
+	cin >> n;
+	
+	for(int i = 0; i<n; i++) {
+		for(int j = 0; j<n; j++) {
+			cin >> map[i][j];
+		}
+	}
+	
+	for(int i = 0; i<n; i++) {
+		for(int j = 0; j<n; j++) {
+			dfs(i, true);
+			
+			if(visit[j] == true)
+				cout << 1 << " ";
+			else
+				cout << 0 << " ";
+				
+			memset(visit, 0, sizeof(visit));
+		}
+		printf("\n");
+	}
+	
+	return 0;
+}

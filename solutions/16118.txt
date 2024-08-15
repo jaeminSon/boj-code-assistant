@@ -1,0 +1,102 @@
+#include <iostream>
+#include <vector>
+#include <queue>
+
+using namespace std;
+
+typedef long long ll;
+typedef pair<ll,ll> pll;
+typedef pair<ll, pll> pdl;
+
+const ll INF = 1e15;
+const int S = 4000;
+int N, M;
+ll d1[S+5], d2[S+5][2];
+vector<pll> adj[S+5];
+
+ll solve() {
+    for(int i = 1; i<=N; i++) {
+        d1[i] = INF;
+        d2[i][0] = INF;
+        d2[i][1] = INF;
+    }
+
+    priority_queue<pll, vector<pll>, greater<pll>> pq1;
+    pq1.push({0,1});
+    d1[1] = 0;
+    
+    while(!pq1.empty()) {
+        ll here = pq1.top().second;
+        ll dist = pq1.top().first;
+        pq1.pop();
+
+        if(d1[here] < dist)
+            continue;
+
+        for(int i = 0; i<adj[here].size(); i++) {
+            ll there = adj[here][i].first;
+            ll cost = adj[here][i].second;
+
+            if(d1[there] <= d1[here]+cost)
+                continue;
+            
+            d1[there] = d1[here]+cost;
+            pq1.push({d1[there], there});
+        }
+    }
+
+
+    priority_queue<pdl, vector<pdl>, greater<pdl>> pq2;
+    pq2.push({0,{1,0}});
+    d2[1][0] = 0;
+
+    while(!pq2.empty()) {
+        ll here = pq2.top().second.first;
+        ll dist = pq2.top().first;
+        ll t = pq2.top().second.second;
+        pq2.pop();
+
+        if(d2[here][t] < dist)
+            continue;
+
+        for(int i = 0; i<adj[here].size(); i++) {
+            ll there = adj[here][i].first;
+            ll cost = adj[here][i].second;
+
+            ll d = (t==0 ? cost/2 : cost*2);
+            ll nt = !t;
+
+            if(d2[there][nt] <= d2[here][t]+d)
+                continue;
+            
+            d2[there][nt] = d2[here][t]+d;
+            pq2.push({d2[there][nt], {there, nt}});
+        }
+    }
+
+    int ret = 0;
+    for(int i = 1; i<=N; i++) {
+        if(d1[i] < d2[i][0] && d1[i] < d2[i][1])
+            ret++;
+    }
+    return ret;
+}
+
+int main() {
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL); cout.tie(NULL);
+    cin >> N >> M;
+
+    for(int i = 1; i<=M; i++) {
+        ll a, b, d;
+        cin >> a >> b >> d;
+
+        d *= 2;
+        
+        adj[a].push_back({b,d});
+        adj[b].push_back({a,d});
+    }
+    cout << solve() << '\n';
+ 
+    return 0;
+}

@@ -1,0 +1,91 @@
+#include <iostream>
+#include <cstring>
+#include <fstream>
+
+using namespace std;
+
+const int S = 5e5;
+int N, M;
+int Tree[4*S+5], lazy[4*S+5], A[S+5];
+
+int init(int bucket, int start, int end) {
+	if(start == end)	return Tree[bucket] = A[start];
+	
+	return Tree[bucket] = init(bucket*2, start, (start+end)/2) 
+			^ init(bucket*2+1, (start+end)/2+1, end);
+}
+
+void lazyp(int bucket, int start, int end) {
+	if(lazy[bucket] == 0)	return;
+	
+	if((end-start+1) & 1)
+		Tree[bucket] ^= lazy[bucket];
+	
+	if(start != end) {
+		lazy[bucket*2] ^= lazy[bucket];
+		lazy[bucket*2+1] ^= lazy[bucket];
+	}
+	
+	lazy[bucket] = 0;
+}
+
+void update(int bucket, int start, int end, int left, int right, int c) {
+	lazyp(bucket, start, end);
+	
+	if(right < start || end < left)	return;
+	
+	if(left <= start && end <= right) {
+		lazy[bucket] ^= c;
+		lazyp(bucket, start, end);
+		return;
+	}
+	
+	update(bucket*2, start, (start+end)/2, left, right, c);
+	update(bucket*2+1, (start+end)/2+1, end, left, right, c);
+	Tree[bucket] = Tree[bucket*2] ^ Tree[bucket*2+1];
+}
+
+int get(int bucket, int start, int end, int left, int right) {
+	lazyp(bucket, start, end);
+	
+	if(right < start || end < left)	return 0;
+	if(left <= start && end <= right)	return  Tree[bucket];
+	
+	return get(bucket*2, start, (start+end)/2, left, right)
+	^ get(bucket*2+1, (start+end)/2+1, end, left, right);
+}
+
+int main() {
+	//fstream inf("prob.txt");
+	//inf >> N;
+	scanf("%d", &N);
+	
+	for(int i = 1; i<=N; i++) {
+		//inf >> A[i];
+		scanf("%d", &A[i]);
+	}
+	init(1, 1, N);
+	
+	//inf >> M;
+	scanf("%d", &M);
+	for(int i = 0; i<M; i++) {
+		int t, a, b, c;
+		//inf >> t;
+		scanf("%d", &t);
+		
+		if(t == 1) {
+			//inf >> a >> b >> c;
+			scanf("%d %d %d", &a, &b, &c);
+			if(b < a)	swap(a, b);
+			update(1, 1, N, a+1, b+1, c);
+		}
+		else {
+			//inf >> a >> b;
+			scanf("%d %d", &a, &b);
+			if(b < a)	swap(a, b);
+			printf("%d\n", get(1, 1, N, a+1, b+1));
+		}
+	}
+	
+	return 0;
+}

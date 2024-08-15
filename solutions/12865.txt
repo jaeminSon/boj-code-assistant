@@ -1,0 +1,48 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <fstream>
+
+using namespace std;
+
+typedef pair<int, int> pii;
+
+int N, K;
+int dp[101][100001];
+vector<pii> p;
+
+int solve(int index, int wgt) {
+    if (index == N)
+        return 0;
+
+    int& ret = dp[index][wgt];
+    if (ret != -1)
+        return ret;
+
+    ret = solve(index + 1, wgt);
+    if (wgt + p[index].first <= K)
+        ret = max(ret, solve(index + 1, wgt + p[index].first) + p[index].second);
+    return ret;
+}
+
+int main(void) {
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL); cout.tie(NULL);
+    //fstream inf("prob.txt");
+    //inf >> N >> K;
+    cin >> N >> K;
+    
+    for (int w, v, i = 0; i < N; i++) {
+        //inf >> w >> v;
+        cin >> w >> v;
+
+        p.push_back({ w,v });
+    }
+    for (int i = 0; i < N; i++) {
+        for (int j = 0; j <= K; j++)
+            dp[i][j] = -1;
+    }
+    printf("%d", solve(0, 0));
+
+    return 0;
+}

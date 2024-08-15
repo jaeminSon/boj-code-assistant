@@ -1,0 +1,67 @@
+#include <iostream>
+#include <string>
+#include <fstream>
+
+using namespace std;
+
+string s;
+int N;
+
+bool check(const string &d) {
+	int M = s.size(), N = d.size();
+	int dif, cnt = 0;
+
+	for (int i = 0; i <= M - N; i++, cnt = 0) {
+		dif = s[i] - d[0];
+
+		for (int ch, j = i; j < i + N; j++) {
+			ch = (int)d[j - i] + dif;
+			if (ch > 'z')
+				ch -= 26;
+			if (ch < 'a')
+				ch += 26;
+
+			if (ch == s[j]) {
+				cnt++;
+				continue;
+			}
+			break;
+		}
+		if (cnt == N)
+			break;
+	}
+	if (cnt == 0)
+		return false;
+	
+	for (int i = 0; i < M; i++) {
+		int ch = s[i] - dif;
+
+		if (ch > 'z')
+			ch -= 26;
+		if (ch < 'a')
+			ch += 26;
+
+		cout << (char)ch;
+	}
+
+	return true;
+}
+
+int main() {
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL); cout.tie(NULL);
+	//fstream inf("prob.txt");
+	//inf >> s >> N;
+	cin >> s >> N;
+
+	string dict;
+	for (int i = 0; i < N; i++) {
+		//inf >> dict;
+		cin >> dict;
+
+		if (check(dict) == true)
+			break;
+	}
+
+	return 0;
+}

@@ -1,0 +1,37 @@
+#include <iostream>
+#include <string.h>
+
+using namespace std;
+
+const int INF = 987654321;
+int n;
+int cost[1001][3];
+int cache[1001][4];
+
+int solve(int index, int last) {
+	if(index == n)	return 0;
+	
+	int& ret = cache[index][last+1];
+	if(ret != -1)	return ret;
+	
+	ret = INF;
+	
+	for(int i = 0; i<3; i++) {
+		if(last == -1 || i != last)
+			ret = min(ret, cost[index][i] + solve(index+1, i));
+	}
+	return ret;
+}
+
+int main() {
+	cin >> n;
+	memset(cache, -1, sizeof(cache));
+	
+	for(int i = 0; i<n; i++)
+		cin >> cost[i][0] >> cost[i][1] >> cost[i][2];
+
+	
+	cout << solve(0, -1) << endl;
+	
+	return 0;
+}

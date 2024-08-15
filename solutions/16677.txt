@@ -1,0 +1,54 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <fstream>
+
+using namespace std;
+
+int N;
+string M;
+vector<pair<pair<double, int>, string>> candidate;
+
+bool check(const string &N) {
+	int m = M.size(), n = N.size();
+	
+	int j = 0;
+	for(int i = 0; i<n; i++) {
+		if(j<m && M[j]==N[i])
+			j++;
+	}
+	if(j == m)
+		return true;
+		
+	return false;
+}
+
+int main() {
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL); cout.tie(NULL);
+	//fstream inf("prob.txt");
+	//inf >> M >> N;
+	cin >> M >> N;
+	
+	int m = M.size();
+	string s;
+	for(int c,i = 0; i<N; i++) {
+		//inf >> s >> c;
+		cin >> s >> c;
+		
+		int n = s.size();
+		if(m >= n)
+			continue;
+		
+		if(check(s) == true)
+			candidate.push_back({{1.0*c/(n-m), N-i}, s});
+	}
+	sort(candidate.begin(), candidate.end());
+	
+	if(!candidate.empty())
+		cout << candidate.back().second;
+	else
+		cout << "No Jam";
+	
+	return 0;
+}

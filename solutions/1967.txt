@@ -1,0 +1,63 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <cstring>
+#include <fstream>
+
+using namespace std;
+
+typedef pair<int, int> pii;
+
+const int S = 1e4;
+int N;
+int s, d[S + 5];
+vector<pii> adj[S + 5];
+bool visited[S + 5];
+
+void dfs(int here, int dist) {
+    visited[here] = true;
+    d[here] = dist;
+
+    for (int i = 0; i < adj[here].size(); i++) {
+        int there = adj[here][i].first;
+        int cost = adj[here][i].second;
+
+        if (visited[there] == true)
+            continue;
+
+        dfs(there, dist + cost);
+    }
+}
+
+
+int main(void) {
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL); cout.tie(NULL);
+    //fstream inf("prob.txt");
+    //inf >> N;
+    cin >> N;
+
+    for (int a, b, w, i = 0; i < N - 1; i++) {
+        //inf >> a >> b >> w;
+        cin >> a >> b >> w;
+
+        adj[a].push_back({ b, w });
+        adj[b].push_back({ a, w });
+    }
+    dfs(1, 0);
+    for (int dist = 0, i = 1; i <= N; i++) {
+        if (dist <= d[i]) {
+            s = i;
+            dist = d[i];
+        }
+    }
+    memset(visited, 0, sizeof(visited));
+    dfs(s, 0);
+
+    int ret = 0;
+    for (int i = 1; i <= N; i++)
+        ret = max(ret, d[i]);
+    printf("%d", ret);
+
+    return 0;
+}

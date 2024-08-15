@@ -1,0 +1,71 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <fstream>
+
+using namespace std;
+
+const int S = 1e4;
+int V, E, time, cnt;
+int discovered[S+5];
+bool atc[S+5];
+vector<int> adj[S+5];
+
+int dfs(int here, int isRoot) {
+	int ret = discovered[here] = ++time;
+	int children = 0;
+	
+	for(int i = 0; i<adj[here].size(); i++) {
+		int there = adj[here][i];
+	
+		if(discovered[there] == 0) {
+			children++;
+			int subTree = dfs(there, false);
+			if(!isRoot && subTree >= discovered[here] && atc[here] != true) {
+				atc[here] = true;
+				cnt++;
+			}
+			ret = min(ret, subTree);
+		}
+		else
+			ret= min(ret, discovered[there]);
+	}
+	if(isRoot == true && children >= 2) {
+		atc[here] = true;
+		cnt++;
+	}
+
+	return ret;
+}
+
+void dfsAll() {
+	for(int i = 1; i<=V; i++) {
+		if(discovered[i] == 0)
+			dfs(i, true);
+	}
+}
+
+int main() {
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL); cout.tie(NULL);
+	//fstream inf("prob.txt");
+	//inf >> V >> E;
+	cin >> V >> E;
+	
+	for(int a, b, i = 1; i<=E; i++) {
+		//inf >> a >> b;
+		cin >> a >> b;
+		adj[a].push_back(b);
+		adj[b].push_back(a);
+	}
+	
+	dfsAll();
+	
+	printf("%d\n", cnt);
+	for(int i = 1; i<=V; i++) {
+		if(atc[i] == true)
+			printf("%d ", i);
+	}
+	
+	return 0;
+}

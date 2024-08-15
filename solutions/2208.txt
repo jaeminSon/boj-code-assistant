@@ -1,0 +1,31 @@
+#include <iostream>
+
+using namespace std;
+
+const int S = 1e5, INF = 1e9;
+int N, M;
+int psum[S+5];
+
+int solve() {
+    int ret = -INF, p = INF;
+    for(int i = M, j = 1; i<=N; i++) {
+        for(; j<=i-M+1; j++)
+            p = min(p, psum[j-1]);
+        ret = max(ret, psum[i] - p);
+    }
+    return max(ret, 0);
+}
+
+int main() {
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL); cout.tie(NULL);
+    cin >> N >> M;
+
+    for(int i = 1; i<=N; i++) {
+        cin >> psum[i];
+        psum[i] += psum[i-1];
+    }
+    cout << solve() << '\n';
+
+    return 0;
+}

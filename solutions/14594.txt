@@ -1,0 +1,58 @@
+#include <iostream>
+#include <fstream>
+
+using namespace std;
+
+const int S = 1e6;
+int N, M;
+int pt[S + 5], nxt[S + 5];
+
+int find(int a) {
+    if (a == pt[a])
+        return a;
+    return pt[a] = find(pt[a]);
+}
+
+void join(int a, int b) {
+    a = find(a);
+    b = find(b);
+
+    if (a == b)
+        return;
+
+    if (a > b)
+        swap(a, b);
+    pt[a] = b;
+}
+
+int main(void) {
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL); cout.tie(NULL);
+    //fstream inf("prob.txt");
+    //inf >> N >> M;
+    cin >> N >> M;
+
+    for (int i = 1; i <= N; i++) {
+        pt[i] = i;
+        nxt[i] = i + 1;
+    }
+
+    for (int x,y,i = 0; i < M; i++) {
+        //inf >> x >> y;
+        cin >> x >> y;
+        
+        while (find(x) != find(y)) {
+            nxt[x] = nxt[find(x)];
+            join(x, y);
+            x = nxt[x];
+        }
+    }
+    int ret = 0;
+    for (int i = 1; i <= N; i++) {
+        if (pt[i] == i)
+            ret++;
+    }
+    printf("%d", ret);
+
+    return 0;
+}

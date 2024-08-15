@@ -1,0 +1,71 @@
+#include <iostream>
+#include <queue>
+#include <algorithm>
+#include <cstring>
+#include <fstream>
+
+using namespace std;
+
+struct Point {
+    int x, t, d;
+};
+
+const int S = 5e5;
+int N, K;
+int dp[S + 5][2];
+
+int solve() {
+    memset(dp, -1, sizeof(dp));
+    queue<Point> q;
+    q.push({ N, 0, 0 });
+
+    while (!q.empty()) {
+        int here = q.front().x;
+        int t = q.front().t;
+        int d = q.front().d;
+        q.pop();
+
+        if (dp[here][d] != -1)
+            continue;
+        dp[here][d] = t;
+
+        d = (d == 0 ? 1 : 0);
+
+        if(here - 1 >= 0)
+            q.push({ here - 1, t + 1, d });
+        if(here + 1 <= S)
+            q.push({ here + 1, t + 1, d });
+        if(here * 2 <= S)
+            q.push({ here * 2, t + 1, d });
+    }
+
+    int t = 0, ret = S;
+    while (K <= S) {
+        if (dp[K][0] == t || dp[K][1] == t)
+            ret = min(ret, t);
+        if (dp[K][0] < t && (t - dp[K][0]) % 2 == 0)
+            ret = min(ret, t);
+        if (dp[K][1] < t && (t - dp[K][1]) % 2 == 0)
+            ret = min(ret, t);
+        if (dp[K][0] < t && (t - dp[K][0]) % (K + 1) == 0)
+            ret = min(ret, t);
+        if (dp[K][1] < t && (t - dp[K][1]) % (K + 1) == 0)
+            ret = min(ret, t);
+
+        t++;
+        K += t;
+    }
+    return ret == S ? -1:ret;
+}
+
+int main(void) {
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL); cout.tie(NULL);
+    //fstream inf("prob.txt");
+    //inf >> N >> K;
+    cin >> N >> K;
+
+    printf("%d", solve());
+
+    return 0;
+}

@@ -1,0 +1,39 @@
+#include <iostream>
+#include <vector>
+
+using namespace std;
+
+int n;
+
+string solve(const vector<string>& s) {
+	string ret = "";
+	
+	for(int i = 0; i<s[0].size(); i++) {
+		bool ins = true;
+		
+		for(int j = 1; j<n; j++) {
+			if(s[j][i] != s[j-1][i]) {
+				ins = false;
+				break;
+			}
+		}
+		
+		if(ins == true)
+			ret += s[0][i];
+		else
+			ret += '?';
+	}
+	return ret;
+}
+
+int main() {
+	cin >> n;
+	
+	vector<string> s(n);
+	for(int i = 0; i<n; i++)
+		cin >> s[i];
+	
+	cout << solve(s) << endl;
+	
+	return 0;
+}

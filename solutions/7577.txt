@@ -1,0 +1,66 @@
+#include <iostream>
+#include <vector>
+
+using namespace std;
+
+const int INF = 987654321;
+int k, n;
+vector<pair<int, int> > adj[45];
+
+vector<int> bellmanFord(int src) {
+	vector<int> upper(k+2, INF);
+	upper[k] = 0;
+	upper[src] = 0;
+	bool updated;
+	
+	for(int iter = 0; iter <= k+1; iter++) {
+		updated = false;
+		for(int here = 0; here <= k+1; here++) {
+			for(int i = 0; i<adj[here].size(); i++) {
+				int there = adj[here][i].first;
+				int cost = adj[here][i].second;
+				
+				if(upper[there] > upper[here] + cost) {
+					upper[there] = upper[here] + cost;
+					updated = true;
+				}
+			}
+		}
+		if(!updated)	break;
+	}
+	if(updated)	upper.clear();
+	return upper;
+}
+
+int main() {
+	cin >> k >> n;
+
+	for(int i = 0; i<=k; i++) {
+		adj[i].push_back(make_pair(i+1, 1));
+		adj[i+1].push_back(make_pair(i, 0));
+	}
+	
+	for(int i = 0; i<n; i++) {
+		int a, b, w;
+		cin >> a >> b >> w;
+		adj[a-1].push_back(make_pair(b, w));
+		adj[b].push_back(make_pair(a-1, -w));
+	}
+	
+	for(int i = 0; i<=k; i++)
+		adj[k+1].push_back(make_pair(i, 0));
+		
+	vector<int> dist = bellmanFord(k+1);	
+	if(dist.empty()) {
+		printf("NONE");
+		return 0;
+	}
+	for(int i = 1; i<=k; i++) {
+		if(dist[i] - dist[i-1] == 1)
+			printf("#");
+		else
+			printf("-");
+	}
+	
+	return 0;
+}

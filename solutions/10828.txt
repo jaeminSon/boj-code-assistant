@@ -1,0 +1,45 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+
+using namespace std;
+
+int main() {
+	int n;
+	vector<int> st;
+	cin >> n;
+	
+	for(int i = 0; i<n; i++) {
+		string s;
+		cin >> s;
+		
+		if(s == "push") {
+			int a;
+			cin >> a;
+			st.push_back(a);
+		}
+		else if(s == "pop") {
+			if(!st.empty()) {
+				cout << st[st.size()-1] << endl;
+				st.pop_back();
+			}
+			else	cout << -1 << endl;
+		}
+		else if(s == "size")
+			cout << st.size() << endl;
+		else if(s == "empty") {
+			if(st.empty())
+				cout << 1 << endl;
+			else
+				cout << 0 << endl;
+		}
+		else if(s == "top") {
+			if(!st.empty())	cout << st[st.size()-1] << endl;
+			else	cout << -1 << endl;
+		}
+	}
+		
+	return 0;
+}
+
+

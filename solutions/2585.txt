@@ -1,0 +1,98 @@
+#include <iostream>
+#include <vector>
+#include <queue>
+#include <algorithm>
+#include <cstring>
+#include <cmath>
+#include <fstream>
+
+using namespace std;
+
+struct Point {
+	int idx, x, y, d;
+	
+	bool operator<(Point p) {
+		return d < p.d;
+	}
+};
+
+int N, K;
+vector<Point> v;
+bool visited[1005];
+
+bool cmp(const Point &x, const Point &y) {
+	return x.d < y.d;
+}
+
+int dist(const Point &a, const Point &b) {
+	return (int)(sqrt((a.x-b.x)*(a.x-b.x) + (a.y-b.y)*(a.y-b.y)) + 10) / 10;
+}
+
+bool bfs(int c) {
+	memset(visited, 0, sizeof(visited));
+	queue<pair<Point, int>> q;
+	q.push({v[0],0});
+	
+	while(!q.empty()) {
+		Point here = q.front().first;
+		int depth = q.front().second;
+		q.pop();
+
+		visited[here.idx] = true;
+
+		for(int i = 1; i<=N+1; i++) {
+			Point there = v[i];
+			
+			if(K < depth || visited[there.idx] == true || c < dist(here, there))
+				continue;
+				
+			if(there.idx == N+1)
+				return true;
+			
+			visited[there.idx] = true;
+			q.push({there,depth+1});
+		}
+	}
+	return false;
+}
+
+int solve() {
+	Point s = {0,0,0,0}, t = {N+1, 10000, 10000, 0};
+	t.d = dist(s, t);
+	
+	v.push_back(s);
+	v.push_back(t);
+	sort(v.begin(), v.end(), cmp);
+	
+	int lo = 0, hi = 15000, mid;
+	while(lo <= hi) {
+		mid = (lo+hi)/2;
+		
+		if(bfs(mid) == true)
+			hi = mid-1;
+		else
+			lo = mid+1;
+	}
+	
+	return lo;
+}
+
+int main() {
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL); cout.tie(NULL);
+	//fstream inf("prob.txt");
+	//inf >> N >> K;
+	cin >> N >> K;
+	
+	for(int x,y,d,i = 1; i<=N; i++) {
+		//inf >> x >> y;
+		cin >> x >> y;
+		d = dist({i,x,y,0}, {0,0,0,0});
+		
+		v.push_back({i,x,y,d});
+	}
+	
+	printf("%d", solve());
+	
+	return 0;
+}

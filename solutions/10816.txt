@@ -1,0 +1,36 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <fstream>
+
+using namespace std;
+
+int N, M;
+vector<int> a;
+
+int main(void) {
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL); cout.tie(NULL);
+    //fstream inf("prob.txt");
+    //inf >> N;
+    cin >> N;
+
+    for (int x, i = 0; i < N; i++) {
+        //inf >> x;
+        cin >> x;
+
+        a.push_back(x);
+    }
+    sort(a.begin(), a.end());
+
+    //inf >> M;
+    cin >> M;
+    for(int x, i = 0; i < M; i++) {
+        //inf >> x;
+        cin >> x;
+
+        printf("%d ", upper_bound(a.begin(), a.end(), x) - lower_bound(a.begin(), a.end(), x));
+    }
+    
+    return 0;
+}

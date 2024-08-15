@@ -1,0 +1,74 @@
+#include <iostream>
+#include <stack>
+#include <fstream>
+
+using namespace std;
+
+string s;
+
+int isrank(char ch) {
+    if (ch == '(' || ch == ')')
+        return -1;
+    if (ch == '+' || ch == '-')
+        return 0;
+    if (ch == '*' || ch == '/')
+        return 1;
+
+    return 2;
+}
+
+void solve() {
+    stack<char> st;
+
+    for (int i = 0; i < s.size(); i++) {
+        if (isrank(s[i]) == 2) {
+            cout << s[i];
+            continue;
+        }
+        if (st.empty() || s[i] == '(') {
+            st.push(s[i]);
+            continue;
+        }
+        if (s[i] == ')') {
+            while (!st.empty()) {
+                char t = st.top();
+                st.pop();
+
+                if (t == '(')
+                    break;
+
+                cout << t;
+            }
+        }
+        else {
+            while (!st.empty()) {
+                char t = st.top();
+                st.pop();
+
+                if (isrank(s[i]) > isrank(t)) {
+                    st.push(t);
+                    st.push(s[i]);
+                    break;
+                }
+                cout << t;
+            }
+            if (st.empty())
+                st.push(s[i]);
+        }
+    }
+    while (!st.empty()) {
+        cout << st.top();
+        st.pop();
+    }
+}
+
+int main(void) {
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL); cout.tie(NULL);
+    //fstream inf("prob.txt");
+    //inf >> s;
+    cin >> s;
+    solve();
+
+    return 0;
+}

@@ -1,0 +1,110 @@
+#include <stdio.h>
+#include <windows.h>
+
+using namespace std;
+
+int G[801][801];
+int N, E, nd1, nd2, mind, idx;
+int cost[801], visit[801];
+int dist1[3], dist2[3];
+int inf = 200000000;
+
+int search(int s, int e) {
+	cost[s] = 0;
+	
+	for (int i = 0; i < N; i++) {
+		mind = inf + 1;
+
+		for (int j = 1; j <= N; j++) {
+			if (visit[j] == 0 && mind > cost[j]) {
+				mind = cost[j];
+				idx = j;
+			}
+		}
+
+		visit[idx] = 1;
+
+		if (visit[e] == 1)
+			return cost[e];
+		
+		for (int j = 1; j <= N; j++) {
+			if (G[idx][j] == 0 || visit[j] == 1)
+				continue;
+
+			if (cost[j] > cost[idx] + G[idx][j])
+				cost[j] = cost[idx] + G[idx][j];
+		}
+	}
+}
+
+void clear(void) {
+	for (int i = 1; i <= N; i++) {
+		cost[i] = inf;
+		visit[i] = 0;
+	}
+}
+
+int main(void) {
+	scanf("%d %d", &N, &E);
+	for (int i = 2; i <= N; i++)
+		cost[i] = inf;
+
+	for (int i = 0; i < E; i++) {
+		int a, b, c;
+		scanf("%d %d %d", &a, &b, &c);
+		G[a][b] = c;
+		G[b][a] = c;
+	}
+	scanf("%d %d", &nd1, &nd2);
+
+
+	dist1[0] = search(1, nd1);
+	if (cost[nd1] == inf) {
+		printf("-1");
+		return 0;
+	}
+	clear();
+	
+	dist1[1] = search(nd1, nd2);
+	if (cost[nd2] == inf) {
+		printf("-1");
+		return 0;
+	}
+	clear();
+	
+	dist1[2] = search(nd2, N);
+	if (cost[N] == inf) {
+		printf("-1");
+		return 0;
+	}
+	clear();
+	
+	dist2[0] = search(1, nd2);
+	if (cost[nd2] == inf) {
+		printf("-1");
+		return 0;
+	}
+	clear();
+	
+	dist2[1] = search(nd2, nd1);
+	if (cost[nd1] == inf) {
+		printf("-1");
+		return 0;
+	}
+	clear();
+	
+	dist2[2] = search(nd1, N);
+	if (cost[N] == inf) {
+		printf("-1");
+		return 0;
+	}
+
+	if (dist1[0] + dist1[1] + dist1[2] > dist2[0] + dist2[1] + dist2[2])
+		printf("%d", dist2[0] + dist2[1] + dist2[2]);
+	else
+		printf("%d", dist1[0] + dist1[1] + dist1[2]);
+
+
+	system("pause");
+	return 0;
+}

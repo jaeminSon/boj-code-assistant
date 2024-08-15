@@ -1,0 +1,70 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <cstring>
+#include <fstream>
+
+using namespace std;
+
+typedef long long ll;
+typedef pair<int, ll> pil;
+
+const int S = 1e5, mod = 1e9 + 7;
+int N;
+ll DP[S + 5], ret;
+vector<pil> adj[S + 5];
+bool visited[S + 5];
+
+void dfs(int here) {
+    visited[here] = true;
+    vector<pil> p;
+
+    for (int i = 0; i < adj[here].size(); i++) {
+        int there = adj[here][i].first;
+        ll cost = adj[here][i].second;
+
+        if (visited[there] == true)
+            continue;
+
+        dfs(there);
+
+        ll pc = cost + (DP[there] * cost % mod) % mod;
+        DP[here] += pc;
+        DP[here] %= mod;
+        p.push_back({ there, pc });
+    }
+
+    ret += DP[here];
+    ret %= mod;
+    ll psum = DP[here];
+    for (int i = 0; i < p.size(); i++) {
+        int there = p[i].first;
+        ll pc = p[i].second;
+
+        psum -= pc;
+        psum = psum < 0 ? psum + mod : psum;
+        ret += psum * pc % mod;
+        ret %= mod;
+    }
+}
+
+int main(void) {
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL); cout.tie(NULL);
+    //fstream inf("prob.txt");
+    //inf >> N;
+    cin >> N;
+
+    ll w;
+    for (int a, b, i = 0; i < N - 1; i++) {
+        //inf >> a >> b >> w;
+        cin >> a >> b >> w;
+
+        adj[a].push_back({ b, w });
+        adj[b].push_back({ a, w });
+    }
+    dfs(1);
+    printf("%lld", ret);
+
+    return 0;
+}

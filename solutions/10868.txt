@@ -1,0 +1,59 @@
+#include <iostream>
+#include <fstream>
+
+using namespace std;
+
+typedef long long LL;
+
+const int S = 1e5, INF = 2123456789;
+int N, M;
+int Tree[4*S+5];
+
+void prev() {
+	for(int i = 1; i<=4*S; i++)
+		Tree[i] = INF;
+}
+
+void update(int bucket, int node, int start, int end, int x) {
+	if(node < start || end < node)	return;
+	
+	Tree[bucket] = min(Tree[bucket], x);
+	
+	if(start != end) {
+		update(bucket*2, node, start, (start+end)/2, x);
+		update(bucket*2+1, node, (start+end)/2+1, end, x);
+	}	
+}
+
+int get(int bucket, int start, int end, int left, int right) {
+	if(right < start || end < left)	return INF;
+	
+	if(left <= start && end <= right)	return Tree[bucket];
+	
+	return min(get(bucket*2, start, (start+end)/2, left, right),
+			get(bucket*2+1, (start+end)/2+1, end, left, right));
+}
+
+int main() {
+	//fstream inf("prob.txt");
+	//inf >> N >> M;
+	scanf("%d %d", &N, &M);
+	
+	prev();
+	for(int i = 1; i<=N; i++) {
+		int x;
+		//inf >> x;
+		scanf("%d", &x);
+		update(1, i, 1, N, x);
+	}
+	
+	for(int i = 1; i<=M; i++) {
+		int a, b;
+		//inf >> a >> b;
+		scanf("%d %d", &a, &b);
+		printf("%d\n", get(1, 1, N, a, b));
+	}
+	
+	
+	return 0;
+}

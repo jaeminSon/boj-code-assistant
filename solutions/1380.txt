@@ -1,0 +1,45 @@
+#include <iostream>
+#include <vector>
+#include <cstring>
+#include <fstream>
+
+using namespace std;
+
+int N;
+vector<string> name;
+
+int main() {
+	ios_base :: sync_with_stdio(false);
+	cin.tie(NULL); cout.tie(NULL);
+	//fstream inf("prob.txt");
+	
+	string str;
+	int se, idx = 1;
+	bool cnt[101];
+	char ch;
+	while(true) {
+		//inf >> N;
+		cin >> N;
+		if(N == 0)	break;
+		
+		memset(cnt, 0, sizeof(cnt));
+		name.clear();
+		cin.ignore();
+		for(int i = 0; i<N; i++) {
+			getline(cin, str);
+			name.push_back(str);
+		}
+		for(int i = 0; i<2*N-1; i++) {
+			//inf >> se >> ch;
+			cin >> se >> ch;
+			cnt[se] = !cnt[se];
+		}
+		for(int i = 1; i<=N; i++) {
+			if(cnt[i] == true)
+				cout << idx << " " << name[i-1] << endl;
+		}
+		idx++;
+	}
+	
+	return 0;
+}

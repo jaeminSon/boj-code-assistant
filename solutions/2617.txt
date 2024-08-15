@@ -1,0 +1,68 @@
+#include <iostream>
+#include <vector>
+#include <cstring>
+
+using namespace std;
+
+int n, m;
+vector<int> adj[100], radj[100];
+bool visited[100];
+int cnt, ret;
+
+void dfs(int here) {
+	visited[here] = true;
+	cnt++;
+	
+	for(int i = 0; i<adj[here].size(); i++) {
+		int there = adj[here][i];
+		
+		if(visited[there] == true)	continue;
+		dfs(there);
+	}
+}
+void dfs2(int here) {
+	visited[here] = true;
+	cnt++;
+	
+	for(int i = 0; i<radj[here].size(); i++) {
+		int there = radj[here][i];
+		
+		if(visited[there] == true)	continue;
+		dfs2(there);
+	}
+}
+
+int solve() {
+	for(int i = 1; i<=n; i++) {
+		memset(visited, false, sizeof(visited));
+		cnt = 0;
+		dfs(i);
+		
+		if(cnt > (n+1)/2)
+			ret++;
+	}
+	for(int i = 1; i<=n; i++) {
+		memset(visited, false, sizeof(visited));
+		cnt = 0;
+		dfs2(i);
+		
+		if(cnt > (n+1)/2)
+			ret++;
+	}
+	return ret;
+}
+
+int main() {
+	cin >> n >> m;
+	
+	for(int i = 0; i<m; i++) {
+		int a, b;
+		cin >> a >> b;
+		
+		adj[a].push_back(b);
+		radj[b].push_back(a);
+	}
+	cout << solve() << endl;
+		
+	return 0;
+}

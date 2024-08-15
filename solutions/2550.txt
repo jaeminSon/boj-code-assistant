@@ -1,0 +1,102 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <cstring>
+#include <fstream>
+
+using namespace std;
+
+typedef pair<int, int> pii;
+
+const int S = 1e4;
+int N;
+int dp[S + 5], a[S + 5], b[S + 5], pp[S + 5];
+pii Tree[4 * S + 5];
+vector<pii> p;
+
+bool cmp(const pii& a, const pii& b) {
+    if (a.first == b.first)
+        return a.second > b.second;
+    return a.first < b.first;
+}
+
+void update(int b, int s, int e, int n) {
+    if (n < s || e < n)
+        return;
+
+    if (s == e) {
+        Tree[b] = { dp[n], n };
+        return;
+    }
+
+    int mid = (s + e) / 2;
+    update(b * 2, s, mid, n);
+    update(b * 2 + 1, mid + 1, e, n);
+    Tree[b] = max(Tree[b * 2], Tree[b * 2 + 1]);
+}
+
+pii get(int b, int s, int e, int l, int r) {
+    if (r < s || e < l)
+        return { 0,0 };
+
+    if (l <= s && e <= r)
+        return Tree[b];
+
+    int mid = (s + e) / 2;
+    return max(get(b * 2, s, mid, l, r), get(b * 2 + 1, mid + 1, e, l, r));
+}
+
+void solve() {
+    sort(p.begin(), p.end(), cmp);
+
+    for (int i = 0; i < p.size(); i++) {
+        int idx = p[i].second;
+        pii ret = get(1, 1, N, 1, idx - 1);
+
+        dp[idx] = ret.first + 1;
+        pp[idx] = ret.second;
+        update(1, 1, N, idx);
+    }
+
+    pii ret = { 0,0 };
+    for (int i = 1; i <= N; i++)
+        ret = max(ret, { dp[i], i });
+    printf("%d\n", ret.first);
+
+    vector<int> aa;
+    int c = ret.second;
+    while (c != 0) {
+        aa.push_back(a[c]);
+        c = pp[c];
+    }
+    sort(aa.begin(), aa.end());
+    for (int i = 0; i < aa.size(); i++)
+        printf("%d ", aa[i]);
+}
+
+int main(void) {
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL); cout.tie(NULL);
+    //fstream inf("prob.txt");
+    //inf >> N;
+    cin >> N;
+
+    for (int x, i = 1; i <= N; i++) {
+        //inf >> x;
+        cin >> x;
+
+        a[i] = x;
+    }
+    for (int x, i = 1; i <= N; i++) {
+        //inf >> x;
+        cin >> x;
+
+        b[x] = i;
+    }
+    for (int i = 1; i <= N; i++)
+        p.push_back({ b[a[i]], i });
+    
+    solve();
+    
+    return 0;
+}

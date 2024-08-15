@@ -1,0 +1,90 @@
+#include <iostream>
+#include <vector>
+#include <queue>
+#include <stack>
+#include <algorithm>
+#include <cstring>
+#include <fstream>
+
+using namespace std;
+
+typedef pair<int, int> pii;
+typedef pair<int, pii> pdi;
+
+const int S = 300, INF = 1e9;
+int N;
+int w[S + 5], p[S + 5][S + 5], pt[S + 5], d[S + 5], ret;
+pii st;
+vector<int> adj[S + 5];
+vector<pdi> edge;
+
+int findRoot(int a) {
+    if (a == pt[a]) return a;
+    else return (pt[a] = findRoot(pt[a]));
+}
+
+void join(int a, int b) {
+    a = findRoot(a);
+    b = findRoot(b);
+
+    if (a == b)
+        return;
+
+    if (d[b] < d[a])
+        pt[b] = a;
+    else if (d[a] < d[b])
+        pt[a] = b;
+    else {
+        pt[b] = a;
+        d[a]++;
+    }
+}
+
+int solve() {
+    sort(edge.begin(), edge.end());
+
+    for (int a, b, c, i = 0; i < edge.size(); i++) {
+        c = edge[i].first;
+        a = edge[i].second.first;
+        b = edge[i].second.second;
+
+        if (findRoot(a) != findRoot(b)) {
+            ret += c;
+            join(a, b);
+            adj[a].push_back(b);
+            adj[b].push_back(a);
+        }
+    }
+
+    return ret;
+}
+
+int main(void) {
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL); cout.tie(NULL);
+    //fstream inf("prob.txt");
+    //inf >> N;
+    cin >> N;
+
+    st = { INF, 0 };
+    for (int i = 1; i <= N; i++) {
+        //inf >> w[i];
+        cin >> w[i];
+
+        pt[i] = i;
+    }
+
+    for (int i = 1; i <= N; i++) {
+        for (int j = 1; j <= N; j++) {
+            //inf >> p[i][j];
+            cin >> p[i][j];
+
+            if(i < j)
+                edge.push_back({ p[i][j], {i, j} });
+        }
+        edge.push_back({ w[i], {0, i} });
+    }
+    printf("%d", solve());
+
+    return 0;
+}

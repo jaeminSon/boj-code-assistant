@@ -1,0 +1,21 @@
+#include <iostream>
+#define _USE_MATH_DEFINES
+#include <cmath>
+#include <fstream>
+
+using namespace std;
+
+double R;
+
+int main() {
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL); cout.tie(NULL);
+	//fstream inf("prob.txt");
+	//inf >> R;
+	cin >> R;
+	
+	printf("%f\n", M_PI*R*R);
+	printf("%f", 4*R*R/2);
+	
+	return 0;
+}

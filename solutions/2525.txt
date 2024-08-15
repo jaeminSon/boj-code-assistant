@@ -1,0 +1,24 @@
+#include <iostream>
+
+using namespace std;
+
+int a, b, c;
+
+int main() {
+	cin >> a >> b >> c;
+	
+	int h = a, m = b;
+	h += c/60;
+	m += c%60;
+	
+	if(m >= 60) {
+		m -= 60;
+		h++;
+	}
+	if(h >= 24)
+		h -= 24;
+	
+	cout << h << " " << m << endl;
+	
+	return 0;
+}

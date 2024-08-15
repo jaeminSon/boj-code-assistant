@@ -1,0 +1,120 @@
+#include <iostream>
+#include <vector>
+#include <set>
+#include <algorithm>
+#include <cstring>
+#include <fstream>
+
+using namespace std;
+
+const int S = 1e5;
+int N, M;
+vector<int> met[S + 5], pt[S + 5];
+set<int> st;
+bool ft[S + 5], ret[S + 5], sim[S + 5], visited[S + 5], cln[S + 5];
+
+void dfs(int here) {
+	visited[here] = true;
+
+	for (int i = 0; i < met[here].size(); i++) {
+		int p = met[here][i];
+		ret[p] = false;
+
+		for (int j = 0; j < pt[p].size(); j++) {
+			int there = pt[p][j];
+
+			if (visited[there] == true || there >= here)
+				continue;
+
+			dfs(there);
+		}
+	}
+}
+
+bool solve() {
+	for (int i = 1; i <= N; i++) {
+		if (ft[i] == false) {
+			for (int j = 0; j < pt[i].size(); j++) {
+				int midx = pt[i][j];
+
+				if (cln[midx] == true)
+					continue;
+				cln[midx] = true;
+				
+				for (int k = 0; k < met[midx].size(); k++) {
+					int p = met[midx][k];
+					ret[p] = false;
+				}
+			}
+		}
+	}
+	for (int i = 1; i <= M; i++) {
+		if (visited[i] == true || cln[i] == false)
+			continue;
+		dfs(i);
+	}
+	for (int i = 1; i <= N; i++)
+		sim[i] = ret[i];
+
+	for (int i = 1; i <= M; i++) {
+		bool check = false;
+		for (int j = 0; j < met[i].size(); j++) {
+			int p = met[i][j];
+
+			if (sim[p] == true) {
+				check = true;
+				break;
+			}
+		}
+
+		if (check == true) {
+			for (int j = 0; j < met[i].size(); j++) {
+				int p = met[i][j];
+				sim[p] = true;
+			}
+		}
+	}
+
+	for (int i = 1; i <= N; i++) {
+		if (sim[i] != ft[i])
+			return false;
+	}
+	return true;
+}
+
+int main(void) {
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL); cout.tie(NULL);
+	//fstream inf("prob.txt");
+	//inf >> N >> M;
+	cin >> N >> M;
+
+	for (int k, i = 1; i <= M; i++) {
+		//inf >> k;
+		cin >> k;
+
+		for (int p, j = 0; j < k; j++) {
+			//inf >> p;
+			cin >> p;
+
+			met[i].push_back(p);
+			pt[p].push_back(i);
+		}
+	}
+
+	for (int i = 1; i <= N; i++) {
+		//inf >> ft[i];
+		cin >> ft[i];
+		ret[i] = ft[i];
+	}
+
+	if (solve() == true) {
+		printf("YES\n");
+		for (int i = 1; i <= N; i++)
+			printf("%d ", ret[i]);
+	}
+	else
+		printf("NO");
+
+	return 0;
+}

@@ -1,0 +1,40 @@
+#include <iostream>
+#include <fstream>
+
+using namespace std;
+
+int T, k, n;
+int pp[15][15], psum[15][15];
+
+void prev() {
+	for(int i = 1; i<=14; i++) {
+		pp[0][i] = i;
+		psum[0][i] = psum[0][i-1] + i;
+	}
+			
+	for(int i = 1; i<=14; i++) {
+		for(int j = 1; j<=14; j++)
+			pp[i][j] = psum[i-1][j];
+
+		for(int j = 1; j<=14; j++)
+			psum[i][j] = psum[i][j-1] + pp[i][j];
+	}
+}
+
+
+int main() {
+	ios_base :: sync_with_stdio(false);
+	cin.tie(NULL); cout.tie(NULL);
+	//fstream inf("prob.txt");
+	//inf >> T;
+	cin >> T;
+
+	prev();
+	for(int i = 0; i<T; i++) {
+		//inf >> k >> n;
+		cin >> k >> n;
+		printf("%d\n", pp[k][n]);
+	}
+	
+	return 0;
+}

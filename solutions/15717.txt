@@ -1,0 +1,27 @@
+#include <iostream>
+
+using namespace std;
+
+typedef long long ll;
+
+const int mod = 1e9+7;
+ll N;
+
+ll power(ll a, ll b) {
+	ll ret = 1;
+	for(; b > 0; b >>= 1, a = a * a % mod) {
+		if(b & 1)
+			ret = ret * a % mod;
+	}
+	return ret;
+}
+
+int main() {
+    ios_base::sync_with_stdio(false);
+	cin.tie(NULL); cout.tie(NULL);
+    cin >> N;
+
+    cout << power(2,N-1) << '\n';
+
+    return 0;
+}

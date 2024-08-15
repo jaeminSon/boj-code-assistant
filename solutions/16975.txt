@@ -1,0 +1,92 @@
+#include <iostream>
+
+using namespace std;
+
+typedef long long ll;
+
+const int S = 1e5;
+int N, M;
+ll Tree[4*S+5], lazy[4*S+5], a[S+5];
+
+void lp(int b, int s, int e, int l, int r) {
+    if(lazy[b] == 0)
+        return;
+    
+    Tree[b] += ((ll)e-s+1) * lazy[b];
+    if(s != e) {
+        lazy[b*2] += lazy[b];
+        lazy[b*2+1] += lazy[b];
+    }
+    lazy[b] = 0;
+}
+
+void init(int b, int s, int e) {
+    if(s == e) {
+        Tree[b] = a[s];
+        return;
+    }
+    int mid = (s+e)/2;
+    init(b*2, s, mid);
+    init(b*2+1, mid+1, e);
+    Tree[b] = Tree[b*2]+Tree[b*2+1];
+}
+
+void update(int b, int s, int e, int l, int r, ll x) {
+    lp(b, s, e, l, r);
+
+    if(r < s || e < l)
+        return;
+    if(l <= s && e <= r) {
+        Tree[b] += ((ll)e-s+1) * x;
+        if(s != e) {
+            lazy[b*2] += x;
+            lazy[b*2+1] += x;
+        }
+        return;
+    }
+
+    int mid = (s+e)/2;
+    update(b*2, s, mid, l, r, x);
+    update(b*2+1, mid+1, e, l, r, x);
+    Tree[b] = Tree[b*2]+Tree[b*2+1];
+}
+
+ll get(int b, int s, int e, int l, int r) {
+    lp(b, s, e, l, r);
+
+    if(r < s || e < l)
+        return 0;
+    if(l <= s && e <= r)
+        return Tree[b];
+    
+    int mid = (s+e)/2;
+    return get(b*2, s, mid, l, r) + get(b*2+1, mid+1, e, l, r);
+}
+
+int main() {
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL); cout.tie(NULL);
+    cin >> N;
+
+    for(int i = 1; i<=N; i++)
+        cin >> a[i];
+    
+    cin >> M;
+    init(1, 1, N);
+    for(int i = 1; i<=M; i++) {
+        int t, l, r, x;
+        ll k;
+
+        cin >> t;
+        if(t == 1) {
+            cin >> l >> r >> k;
+            update(1, 1, N, l, r, k);
+        }
+        else {
+            cin >> x;
+            cout << get(1, 1, N, x, x) << '\n';
+        }
+    }
+ 
+    return 0;
+}

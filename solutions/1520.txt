@@ -1,0 +1,50 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <string.h>
+
+using namespace std;
+
+int m, n;
+int board[501][501];
+bool visited[501][501];
+int cache[501][501];
+
+int solve(int y, int x) {
+	if(y == m-1 && x == n-1)	return 1;
+	
+	int& ret = cache[y][x];
+	if(ret != -1)	return ret;
+	
+	ret = 0;
+	visited[y][x] = true;
+	
+	int curhi = board[y][x];
+	
+	if(y < m-1 && visited[y+1][x] == false && board[y+1][x] < curhi)
+		ret += solve(y+1, x);
+	if(y > 0 && visited[y-1][x] == false && board[y-1][x] < curhi)
+		ret += solve(y-1, x);
+	if(x < n-1 && visited[y][x+1] == false && board[y][x+1] < curhi)
+		ret += solve(y, x+1);
+	if(x > 0 && visited[y][x-1] == false && board[y][x-1] < curhi)
+		ret += solve(y, x-1);
+	
+	visited[y][x] = false;
+	
+	return ret;
+}
+
+int main() {
+	cin >> m >> n;
+	memset(cache, -1, sizeof(cache));
+	
+	for(int y = 0; y<m; y++) {
+		for(int x = 0; x<n; x++)
+			cin >> board[y][x];
+	}
+
+	cout << solve(0, 0) << endl;	
+	
+	return 0;
+}

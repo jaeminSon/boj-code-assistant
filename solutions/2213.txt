@@ -1,0 +1,90 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <cstring>
+#include <fstream>
+
+using namespace std;
+
+typedef pair<int, int> pii;
+typedef pair<pii, int> pdi;
+
+const int S = 1e4;
+int N;
+int w[S + 5];
+pii dp[S + 5];
+vector<int> adj[S + 5], ret;
+bool visited[S + 5];
+
+pii dfs(int here) {
+    visited[here] = true;
+
+    dp[here] = { 0, w[here] };
+    vector<pdi> p;
+    for (int i = 0; i < adj[here].size(); i++) {
+        int there = adj[here][i];
+
+        if (visited[there] == true)
+            continue;
+
+        p.push_back({ dfs(there), there });
+    }
+
+    for (int i = 0; i < p.size(); i++) {
+        dp[here].first += max(p[i].first.first, p[i].first.second);
+        dp[here].second += p[i].first.first;
+    }
+
+    return dp[here];
+}
+
+void reconstruct(int here, int prev) {
+    if (dp[here].first < dp[here].second && visited[prev] == false) {
+        ret.push_back(here);
+        visited[here] = true;
+    }
+
+    for (int i = 0; i < adj[here].size(); i++) {
+        int there = adj[here][i];
+
+        if (prev == there)
+            continue;
+
+        reconstruct(there, here);
+    }
+}
+
+void solve() {
+    pii a = dfs(1);
+    printf("%d\n", max(a.first, a.second));
+    memset(visited, 0, sizeof(visited));
+    reconstruct(1, 0);
+
+    sort(ret.begin(), ret.end());
+    for (int i = 0; i < ret.size(); i++)
+        printf("%d ", ret[i]);
+}
+
+int main(void) {
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL); cout.tie(NULL);
+    //fstream inf("prob.txt");
+    //inf >> N;
+    cin >> N;
+
+    for (int i = 1; i <= N; i++) {
+        //inf >> w[i];
+        cin >> w[i];
+    }
+
+    for (int a,b,i = 1; i <= N - 1; i++) {
+        //inf >> a >> b;
+        cin >> a >> b;
+
+        adj[a].push_back(b);
+        adj[b].push_back(a);
+    }
+    solve();
+
+    return 0;
+}

@@ -1,0 +1,31 @@
+#include <iostream>
+#include <fstream>
+
+using namespace std;
+
+int A[6];
+
+int main() {
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL); cout.tie(NULL);
+	//fstream inf("prob.txt");
+	
+	for(int i = 1; i<=5; i++) {
+		//inf >> A[i];
+		cin >> A[i];
+	}
+
+	for(int i = 1; i<=5; i++) {
+		for(int j = 1; j<5; j++) {
+			if(A[j] > A[j+1]) {
+				swap(A[j], A[j+1]);
+			
+				for(int k = 1; k<=5; k++)
+					printf("%d ", A[k]);
+				printf("\n");
+			}
+		}
+	}
+	
+	return 0;
+}

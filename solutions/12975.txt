@@ -1,0 +1,48 @@
+#include <iostream>
+
+using namespace std;
+
+const int INF = 1e9;
+int N;
+int S, a[105], dp[105][260][260][8];
+
+int solve(int index, int A, int B, int t) {
+    if(index == N+1) {
+        if(t == 7)
+            return A + B + (S^A^B);
+        else
+            return -INF;
+    }
+
+    int& ret = dp[index][A][B][t];
+    if(ret != -1)
+        return ret;
+    
+    ret = solve(index+1, A^a[index], B, t|(1<<2));
+    ret = max(ret, solve(index+1, A, B^a[index], t|(1<<1)));
+    ret = max(ret, solve(index+1, A, B, t|1));
+    return ret;
+}
+
+int main() {
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL); cout.tie(NULL);
+    cin >> N;
+
+    for(int i = 1; i<=N; i++) {
+        cin >> a[i];
+        S = S ^ a[i];
+    }
+
+    for(int i = 1; i<=N; i++) {
+        for(int j = 0; j<=255; j++) {
+            for(int k = 0; k<=255; k++) {
+                for(int l = 0; l<=7; l++)
+                    dp[i][j][k][l] = -1;
+            }
+        }
+    }
+    cout << solve(1, 0, 0, 0) << '\n';
+
+    return 0;
+}

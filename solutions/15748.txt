@@ -1,0 +1,51 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <string>
+
+using namespace std;
+
+typedef long long ll;
+typedef pair<ll,ll> pll;
+
+const int S = 1e6;
+int L, N, rf, rb;
+ll b[S+5];
+vector<pll> a;
+
+ll solve() {
+    sort(a.rbegin(), a.rend());
+    for(int i = 1; i<=L; i++)
+        b[i] = b[i-1] + rf;
+
+    ll ret = 0, t = 0;
+    ll p = 0;
+    for(int i = 0; i<a.size(); i++) {
+        ll c = a[i].first;
+        ll x = a[i].second;
+
+        if(x <= p)
+            continue;
+
+        t += (x-p)*rb;
+        ret += (b[x]-t) * c;
+        t = b[x];
+        p = x;
+    }
+    return ret;
+}
+
+int main() {
+    ios_base :: sync_with_stdio(false);
+	cin.tie(NULL); cout.tie(NULL);
+    cin >> L >> N >> rf >> rb;
+
+    for(int i = 1; i<=N; i++) {
+        ll x, c;
+        cin >> x >> c;
+        a.push_back({c,x});
+    }
+    cout << solve() << '\n';
+
+    return 0;
+}

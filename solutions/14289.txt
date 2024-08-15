@@ -1,0 +1,72 @@
+#include <iostream>
+
+using namespace std;
+
+typedef long long ll;
+
+const int S = 50, mod = 1e9+7;
+int N, M, D;
+ll adj[S+5][S+5];
+
+struct matrix {
+    ll mt[S+5][S+5];
+
+    matrix() {
+    }
+
+    matrix(ll adj[S+5][S+5]) {
+        for(int i = 1; i<=N; i++) {
+            for(int j = 1; j<=N; j++)
+                mt[i][j] = adj[i][j];
+        }
+    }
+
+    matrix operator*(const matrix& a) {
+        matrix ret;
+        for(int i = 1; i<=N; i++) {
+            for(int j = 1; j<=N; j++) {
+                for(int k = 1; k<=N; k++) {
+                    ret.mt[i][j] += mt[i][k] * a.mt[k][j] % mod;
+                    ret.mt[i][j] %= mod;
+                }
+            }
+        }
+        return ret;
+    }
+};
+
+matrix solve(int n) {
+    if(n == 1) {
+        matrix b(adj);
+        return b;
+    }
+
+    if(n % 2 == 0) {
+        matrix ret = solve(n/2);
+        return ret * ret;
+    }
+    else {
+        matrix ret = solve(n/2);
+        matrix b(adj);
+        return ret * ret * b;
+    }
+}
+
+int main() {
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL); cout.tie(NULL);
+    cin >> N >> M;
+
+    for(int i = 0; i<M; i++) {
+        int a, b;
+        cin >> a >> b;
+        
+        adj[a][b] = 1;
+        adj[b][a] = 1;
+    }
+    cin >> D;
+    matrix ret = solve(D);
+    cout << ret.mt[1][1] << '\n';
+
+    return 0;
+}

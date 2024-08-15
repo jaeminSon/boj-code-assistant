@@ -1,0 +1,46 @@
+#include <iostream>
+#include <map>
+
+using namespace std;
+
+typedef long long ll;
+
+const int S = 1000;
+ll T, N, M;
+ll a[S+5], b[S+5], apsum[S+5], bpsum[S+5];
+map<ll,int> mp;
+
+ll solve() {
+    for(int i = 1; i<=N; i++)
+        apsum[i] = apsum[i-1] + a[i];
+    for(int i = 1; i<=N; i++) {
+        for(int j = i; j<=N; j++)
+            mp[apsum[j]-apsum[i-1]]++;
+    }
+
+    for(int i = 1; i<=M; i++)
+        bpsum[i] = bpsum[i-1] + b[i];
+    
+    ll ret = 0;
+    for(int i = 1; i<=M; i++) {
+        for(int j = i; j<=M; j++)
+            ret += mp[T-(bpsum[j]-bpsum[i-1])];
+    }
+    return ret;
+}
+
+int main() {
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL); cout.tie(NULL);
+    cin >> T >> N;
+
+    for(int i = 1; i<=N; i++)
+        cin >> a[i];
+    cin >> M;
+    for(int i = 1; i<=M; i++)
+        cin >> b[i];
+    
+    cout << solve() << '\n';
+ 
+    return 0;
+}

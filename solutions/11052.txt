@@ -1,0 +1,36 @@
+#include <iostream>
+#include <string.h>
+
+using namespace std;
+
+const int NINF = -987654321;
+int num;
+int P[1001];
+int cache[1001];
+
+int solve(int n) {
+	if(n == 0)	return 0;
+	if(n < 0)	return NINF;
+	
+	int& ret = cache[n];
+	if(ret != -1)	return ret;
+	
+	ret = NINF;
+	
+	for(int i = 0; i<num; i++)
+		ret = max(ret, solve(n - i - 1) + P[i]);
+
+	return ret;
+}
+
+int main() {
+	cin >> num;
+	memset(cache, -1, sizeof(cache));
+
+	for(int i = 0; i<num; i++)
+		cin >> P[i];
+	
+	cout << solve(num) << endl;
+	
+	return 0;
+}

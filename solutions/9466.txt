@@ -1,0 +1,61 @@
+#include <iostream>
+#include <vector>
+#include <cstring>
+
+using namespace std;
+
+int t, n;
+int adj[100001];
+int discovered[100001], group[100001];
+bool finished[100001];
+int counter;
+int ret = 0;
+
+void check(int u, int v) {
+	ret++;
+	if(u == v)	return;
+	check(u, adj[v]);
+}
+
+void dfs(int here) {
+	discovered[here] = counter++;
+	int there = adj[here];
+	
+	if(discovered[there] == 0)
+		dfs(there);
+	else if(finished[there] == false)
+ 		check(here, there);
+	
+	finished[here] = true;
+}
+
+int solve() {
+	for(int here = 1; here <= n; here++) {
+		if(discovered[here] != 0)	continue;
+		
+		dfs(here);
+	}
+	
+	return n - ret;
+}
+
+int main() {
+	cin >> t;
+	
+	for(int i = 0; i<t; i++) {
+		cin >> n;
+		memset(adj, 0, sizeof(adj));
+		memset(discovered, 0, sizeof(discovered));
+		memset(finished, 0, sizeof(finished));
+		counter = 1;
+		ret = 0;
+		
+		for(int j = 1; j<=n; j++)
+			cin >> adj[j];
+
+		cout << solve() << endl;
+	}
+	
+	
+	return 0;
+}

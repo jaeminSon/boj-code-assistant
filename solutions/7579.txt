@@ -1,0 +1,51 @@
+#include <iostream>
+#include <fstream>
+
+using namespace std;
+
+const int S = 10000, INF = 1e9;
+int N, M;
+int m[S+5], c[105], dp[105][S+105];
+
+int solve() {
+    for(int i = 1; i<=N; i++) {
+        for(int j = 0; j<=S; j++)
+            dp[i][j] = -1;
+        dp[i][c[i]] = m[i];
+    }
+
+    for(int i = 1; i<=N; i++) {
+        for(int j = 0; j<=S; j++) {
+            if(dp[i-1][j] == -1)
+                continue;
+            dp[i][j+c[i]] = max(dp[i][j+c[i]], dp[i-1][j] + m[i]);
+            dp[i][j] = max(dp[i][j], dp[i-1][j]);
+        }
+    }
+
+    for(int i = 0; i<=S; i++) {
+        if(dp[N][i] >= M)
+            return i;
+    }
+    return -1;
+}
+
+int main() {
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL); cout.tie(NULL);
+    //fstream inf("prob.txt");
+    //inf >> N >> M;
+    cin >> N >> M;
+
+    for(int i = 1; i<=N; i++) {
+        //inf >> m[i];
+        cin >> m[i];
+    }
+    for(int i = 1; i<=N; i++) {
+        //inf >> c[i];
+        cin >> c[i];
+    }
+    cout << solve() << '\n';
+
+    return 0;
+}

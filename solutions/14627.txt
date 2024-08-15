@@ -1,0 +1,54 @@
+#include <iostream>
+#include <fstream>
+
+using namespace std;
+
+typedef long long ll;
+
+const int MX = 1e6;
+int S, C;
+int p[MX + 5];
+
+ll check(int k) {
+    if (k == 0)
+        return 0;
+
+    ll cnt = 0;
+    for (int i = 1; i <= S; i++)
+        cnt += p[i] / k;
+
+    return cnt;
+}
+
+ll solve() {
+    ll lo = 1, hi = 1e9, mid;
+    while (lo <= hi) {
+        mid = (lo + hi) / 2;
+
+        if (check(mid) >= (ll)C)
+            lo = mid + 1;
+        else
+            hi = mid - 1;
+    }
+
+    ll ret = 0;
+    for (int i = 1; i <= S; i++)
+        ret += p[i];
+    return ret - hi * C;
+}
+
+int main(void) {
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL); cout.tie(NULL);
+    //fstream inf("prob.txt");
+    //inf >> S >> C;
+    cin >> S >> C;
+
+    for (int i = 1; i <= S; i++) {
+        //inf >> p[i];
+        cin >> p[i];
+    }
+    printf("%lld", solve());
+
+    return 0;
+}

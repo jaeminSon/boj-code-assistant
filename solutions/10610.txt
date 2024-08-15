@@ -1,0 +1,25 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+
+using namespace std;
+
+string s;
+
+void solve() {
+	for(int i = s.size()-1; i>=0; i--)	cout << s[i];
+	return;
+}
+
+int main() {
+	cin >> s;
+	sort(s.begin(), s.end());
+	
+	int sum = 0;
+	for(int i = 0; i<s.size(); i++)	sum += s[i]-'0';
+	
+	if(sum % 3 != 0 || s[0] != '0')	cout << -1 << endl;
+	else solve();
+	
+	return 0;
+}

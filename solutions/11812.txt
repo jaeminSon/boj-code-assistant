@@ -1,0 +1,58 @@
+#include <iostream>
+#include <fstream>
+
+using namespace std;
+
+typedef long long ll;
+
+int k, Q;
+ll N;
+
+int depth(ll a) {
+	int d = 0;
+	
+	while(1 <= a) {
+		++d;
+		a = (a+k-2)/k;
+	}
+	return d;
+}
+
+ll lca(ll a, ll b) {
+	if(b < a)
+		swap(a, b);
+	if(k == 1)	return b-a;
+	
+	int ret = 0, dif = depth(b)-depth(a);
+	for(ll i = 1; i<=dif; ++i) {
+		b = (b+k-2)/k;
+		++ret;
+	}
+	
+	if(a == b)	return (ll)ret;
+	
+	while(a != b) {
+		a = (a+k-2)/k;
+		b = (b+k-2)/k;
+		ret += 2;
+	}
+	return (ll)ret;
+}
+
+int main() {
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL);
+	//fstream inf("prob.txt");
+	//inf >> N >> k >> Q;
+	cin >> N >> k >> Q;
+	
+	for(int i = 1; i<=Q; ++i) {
+		ll a, b;
+		//inf >> a >> b;
+		cin >> a >> b;
+		
+		printf("%lld\n", lca(a, b));
+	}
+	
+	return 0;
+}

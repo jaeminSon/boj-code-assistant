@@ -1,0 +1,56 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+
+using namespace std;
+
+int main() {
+	int n;
+	int aver = 0;
+	int mid, com, range;
+	cin >> n;
+	vector<int> s(n);
+	
+	for(int i = 0; i<n; i++) {
+		cin >> s[i];
+		s[i] += 4000;
+	}
+	
+	for(int i = 0; i<n; i++)
+		aver += s[i];
+		
+	if(aver/n - 4000 < 0)	aver = int((double)aver/n - 4000 - 0.5);
+	else	aver = int((double)aver/n - 4000 + 0.5);
+	
+	sort(s.begin(), s.end());
+	mid = s[n/2] - 4000;
+		
+	vector<int> count(8001, 0);
+	vector<int> sol;
+	for(int i = 0; i<n; i++)
+		count[s[i]]++;
+
+	int mcnt = 0;
+	for(int i = 0; i<n; i++) {
+		if(mcnt < count[s[i]])
+			mcnt = count[s[i]];
+	}
+	
+	for(int i = 0; i<8001; i++) {
+		if(mcnt == count[i])
+			sol.push_back(i - 4000);
+	}
+	
+	sort(sol.begin(), sol.end());
+	if(sol.size() == 1)	com = sol[0];
+	else	com = sol[1];
+
+	range = s[s.size()-1] - s[0];
+	
+	cout << aver << endl;
+	cout << mid << endl;
+	cout << com << endl;
+	cout << range << endl;
+		
+	return 0;
+}

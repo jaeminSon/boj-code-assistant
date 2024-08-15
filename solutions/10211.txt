@@ -1,0 +1,38 @@
+#include <iostream>
+#include <cstring>
+
+using namespace std;
+
+const int S = 1000, INF = 1e9;
+int T, N;
+int psum[S+5];
+
+int solve() {
+    int ret = -INF, p = INF;
+    for(int i = 1, j = 1; i<=N; i++) {
+        for(; j<=i; j++) {
+            p = min(p, psum[j-1]);
+            ret = max(ret, psum[i] - p);
+        }
+    }
+    return ret;
+}
+
+int main() {
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL); cout.tie(NULL);
+    cin >> T;
+
+    for(int i = 0; i<T; i++) {
+        cin >> N;
+
+        memset(psum, 0, sizeof(psum));
+        for(int j = 1; j<=N; j++) {
+            cin >> psum[j];
+            psum[j] += psum[j-1];
+        }
+        cout << solve() << '\n';
+    }
+
+    return 0;
+}

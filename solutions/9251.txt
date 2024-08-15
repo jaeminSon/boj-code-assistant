@@ -1,0 +1,38 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <string.h>
+
+using namespace std;
+
+int n, m;
+string s1, s2;
+int cache[1001][1001];
+
+int solve(int pos1, int pos2) {
+	if(pos1 == n || pos2 == m)	return 0;
+	
+	int& ret = cache[pos1][pos2];
+	if(ret != -1)	return ret;
+	
+	ret = 0;
+	
+	if(s1[pos1] == s2[pos2])
+		ret = 1 + solve(pos1 + 1, pos2 + 1);
+	else
+		ret = max(solve(pos1 + 1, pos2), solve(pos1, pos2 + 1));
+	
+	return ret;
+}
+
+int main() {
+	cin >> s1 >> s2;
+	n = s1.size();
+	m = s2.size();
+	
+	memset(cache, -1, sizeof(cache));
+			
+	cout << solve(0, 0) << endl;
+	
+	return 0;
+}

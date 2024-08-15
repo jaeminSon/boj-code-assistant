@@ -1,0 +1,53 @@
+#include <iostream>
+#include <queue>
+#include <fstream>
+
+using namespace std;
+
+const int INF = 987654321;
+int n, a, b;
+bool visited[1005][11][1005];
+
+struct Point {
+	int s, t, c;
+};
+
+int bfs() {
+	queue<Point> q;
+	q.push({0,0,0});
+	
+	int ret = INF;
+	while(!q.empty()) {
+		Point p = q.front();
+		q.pop();
+		int s = p.s, t = p.t, c = p.c;
+		
+		if(visited[s][t][c] == true)
+			continue;
+		
+		visited[s][t][c] = true;
+		
+		if(n <= s && s < n+a)
+			ret = min(ret, c);
+		
+		if(s+a < n+a)
+			q.push({s+a, t, c+1});
+		if(s+b < n+a)
+			q.push({s+b, t, c+1});
+		if(s*2 < n+a && t+1 <= (c+1)/10)
+			q.push({s*2, t+1, c+1});
+	}
+	return ret;
+}
+
+int main() {
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL); cout.tie(NULL);
+	//fstream inf("prob.txt");
+	//inf >> n >> a >> b;
+	cin >> n >> a >> b;
+	
+	printf("%d", bfs());
+	
+	return 0;
+}

@@ -1,0 +1,55 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <fstream>
+
+using namespace std;
+
+const int S = 1e6, INF = 1e9;
+int N;
+int dp[S + 5][2];
+vector<int> adj[S + 5];
+bool visited[S + 5];
+
+void dfs(int here) {
+    visited[here] = true;
+
+    int a = 0, b = 0;
+    for (int i = 0; i < adj[here].size(); i++) {
+        int there = adj[here][i];
+
+        if (visited[there] == true)
+            continue;
+
+        dfs(there);
+        a += min(dp[there][0], dp[there][1]);
+        b += dp[there][1];
+    }
+    dp[here][0] = min(dp[here][0], b);
+    dp[here][1] = min(dp[here][1], a + 1);
+}
+
+int main(void) {
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL); cout.tie(NULL);
+    //fstream inf("prob.txt");
+    //inf >> N;
+    cin >> N;
+
+    for (int u, v, i = 0; i < N - 1; i++) {
+        //inf >> u >> v;
+        cin >> u >> v;
+
+        adj[u].push_back(v);
+        adj[v].push_back(u);
+    }
+    for (int i = 0; i <= N; i++) {
+        for (int j = 0; j < 2; j++)
+            dp[i][j] = INF;
+    }
+    dfs(1);
+
+    printf("%d", min(dp[1][0], dp[1][1]));
+    
+    return 0;
+}

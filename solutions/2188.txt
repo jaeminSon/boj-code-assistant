@@ -1,0 +1,89 @@
+#include <iostream>
+#include <vector>
+#include <queue>
+#include <algorithm>
+#include <cstring>
+#include <fstream>
+
+using namespace std;
+
+const int INF = 1e9;
+int N, M;
+int adj[405][405], c[405][405], f[405][405], p[405];
+
+int solve() {
+    for (int i = 1; i <= N; i++) {
+        adj[0][i] = 1;
+        adj[i][0] = 1;
+
+        c[0][i] = 1;
+    }
+    for (int i = N + 1; i <= N + M; i++) {
+        adj[i][N + M + 1] = 1;
+        adj[N + M + 1][i] = 1;
+
+        c[i][N + M + 1] = 1;
+    }
+
+    int ret = 0;
+    while (true) {
+        queue<int> q;
+        q.push(0);
+
+        memset(p, -1, sizeof(p));
+        p[0] = 0;
+
+        while (!q.empty() && p[N + M + 1] == -1) {
+            int here = q.front();
+            q.pop();
+
+            for (int there = 0; there <= N + M + 1; there++) {
+                if (adj[here][there] == 0)
+                    continue;
+
+                if (c[here][there] - f[here][there] > 0 && p[there] == -1) {
+                    p[there] = here;
+                    q.push(there);
+                }
+            }
+        }
+        if (p[N + M + 1] == -1)
+            break;
+
+        int flow = INF;
+        for (int t = N + M + 1; t != p[t]; t = p[t])
+            flow = min(flow, c[p[t]][t] - f[p[t]][t]);
+        for (int t = N + M + 1; t != p[t]; t = p[t]) {
+            f[p[t]][t] += flow;
+            f[t][p[t]] -= flow;
+        }
+        ret += flow;
+    }
+    return ret;
+}
+
+int main(void) {
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL); cout.tie(NULL);
+    //fstream inf("prob.txt");
+    //inf >> N >> M;
+    cin >> N >> M;
+
+    for (int S, i = 1; i <= N; i++) {
+        //inf >> S;
+        cin >> S;
+
+        for (int x, j = 0; j < S; j++) {
+            //inf >> x;
+            cin >> x;
+
+            adj[i][x + N] = 1;
+            adj[x + N][i] = 1;
+
+            c[i][x + N] = 1;
+        }
+    }
+    printf("%d", solve());
+
+    return 0;
+}

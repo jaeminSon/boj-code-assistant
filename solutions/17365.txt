@@ -1,0 +1,111 @@
+#include <iostream>
+#include <cstring>
+#include <cstdlib>
+#include <algorithm>
+#include <fstream>
+
+using namespace std;
+
+typedef long long ll;
+
+const int ALPHABETS = 26, mod = 1e9 + 7;
+
+int toNumber(char ch) { return ch - 'a'; };
+
+struct TrieNode {
+	TrieNode* children[ALPHABETS];
+	bool terminal;
+	ll count;
+
+	TrieNode() : terminal(false), count(0) {
+		memset(children, 0, sizeof(children));
+	}
+	~TrieNode() {
+		for (int i = 0; i < ALPHABETS; i++)
+			if (children[i])
+				delete children[i];
+	}
+
+	void insert(const char* key, int idx) {
+		count++;
+		count %= mod;
+
+		if (*key == 0)
+			terminal = true;
+		else {
+			int next = toNumber(*key);
+			if (children[next] == NULL)
+				children[next] = new TrieNode();
+
+			children[next]->insert(key + 1, idx + 1);
+		}
+	}
+
+	TrieNode* find(const char* key, int st, int idx, ll DP[]) {
+		if (*key == 0)	return this;
+		int next = toNumber(*key);
+
+		if (children[next] == NULL)	return NULL;
+
+		if (st == 0)
+			DP[st + idx] += children[next]->count;
+		else
+			DP[st + idx] += (children[next]->count * DP[st - 1]) % mod;
+
+		DP[st + idx] %= mod;
+
+		return children[next]->find(key + 1, st, idx + 1, DP);
+	}
+};
+
+int N;
+ll DP[200001];
+TrieNode* trie;
+
+ll solve(char* s) {
+	ll ret = 0;
+	TrieNode* t;
+	char* str = (char*)malloc(sizeof(char) * 200001);
+
+	for (int i = 0; i < strlen(s); i++) {
+		int len = min(300, (int)strlen(s) - i);
+
+		strncpy(str, s + i, len);
+		str[len] = 0;
+
+		t = trie->find(str, i, 0, DP);
+	}
+
+	free(str);
+	return DP[strlen(s)-1];
+}
+
+int main(void) {
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL); cout.tie(NULL);
+	//fstream inf("prob.txt");
+	//inf >> N;
+	cin >> N;
+
+	trie = new TrieNode();
+
+	for (int i = 0; i < N; i++) {
+		char* str = (char*)malloc(sizeof(char) * 301);
+		//inf >> str;
+		cin >> str;
+
+		trie->insert(str, 0);
+
+		free(str);
+	}
+	
+	char* s = (char*)malloc(sizeof(char) * 200001);
+	//inf >> s;
+	cin >> s;
+
+	cout << solve(s);
+
+	free(s);
+	delete trie;
+	return 0;
+}

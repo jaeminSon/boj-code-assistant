@@ -1,0 +1,56 @@
+#include <iostream>
+#include <vector>
+#include <cstring>
+
+using namespace std;
+
+const int S = 5e4;
+int N;
+int dp[S+5][2], p[S+5];
+vector<int> adj[S+5];
+bool visited[S+5];
+
+int dfs(int here, bool t) {
+    if(dp[here][t] != -1)
+        return dp[here][t];
+    if(t == true)
+        dp[here][t] = 1;
+    else
+        dp[here][t] = 0;
+
+    for(int i = 0; i<adj[here].size(); i++) {
+        int there = adj[here][i];
+        
+        if(p[here] == there)
+            continue;
+
+        p[there] = here;
+        if(t == true)
+            dp[here][t] += dfs(there, false);
+        else
+            dp[here][t] += max(dfs(there, false), dfs(there, true));
+    }
+    return dp[here][t];
+}
+
+int main() {
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL); cout.tie(NULL);
+    cin >> N;
+
+    for(int i = 0; i<N-1; i++) {
+        int u, v;
+        cin >> u >> v;
+
+        adj[u].push_back(v);
+        adj[v].push_back(u);
+    }
+
+    for(int i = 1; i<=N; i++) {
+        dp[i][0] = -1;
+        dp[i][1] = -1;
+    }
+    cout << max(dfs(1,0), dfs(1,1)) << '\n';
+
+    return 0;
+}

@@ -1,0 +1,64 @@
+#include <iostream>
+
+using namespace std;
+
+int N, B, W;
+string st;
+
+int solve() {
+    int s = 0, e = 1, b = 0, w = 0;
+    if(st[0] == 'B')
+        b++;
+    else
+        w++;
+
+    int ret = 0;
+    while(s < N) {
+        if(b <= B && W <= w)
+            ret = max(ret, e-s);
+
+        if(e < N && w < W) {
+            if(st[e] == 'B')
+                b++;
+            else
+                w++;
+            e++;
+            continue;
+        }
+        if(s < e && B < b) {
+            if(st[s] == 'B')
+                b--;
+            else
+                w--;
+            s++;
+            continue;
+        }
+
+        if(e < N) {
+            if(st[e] == 'B')
+                b++;
+            else
+                w++;
+            e++;
+            continue;
+        }
+        if(st[s] == 'B')
+            b--;
+        else
+            w--;
+        s++;
+    }
+
+    return ret;
+}
+
+int main() {
+    ios_base::sync_with_stdio(false);
+	cin.tie(NULL); cout.tie(NULL);
+    cin >> N >> B >> W;
+    cin >> st;
+
+    cout << solve() << '\n';
+
+    return 0;
+}

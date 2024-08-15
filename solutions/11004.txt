@@ -1,0 +1,28 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <fstream>
+
+using namespace std;
+
+int N, K;
+vector<int> a;
+
+int main() {
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL);
+	//fstream inf("prob.txt");
+	//inf >> N >> K;
+	cin >> N >> K;
+	
+	for(int i = 0; i<N; ++i) {
+		int x;
+		//inf >> x;
+		cin >> x;
+		a.push_back(x);
+	}
+	sort(a.begin(), a.end());
+	printf("%d", a[K-1]);
+	
+	return 0;
+}

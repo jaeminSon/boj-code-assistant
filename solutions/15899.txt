@@ -1,0 +1,94 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <fstream>
+
+using namespace std;
+
+typedef long long ll;
+
+const int S = 2e5, mod = 1e9 + 7;
+int N, M, C;
+int a[S + 5];
+vector<int> adj[S + 5], Tree[8 * S + 5];
+int time = 1, discovered[S + 5], finished[S + 5], dT[2 * S + 5];
+
+void update(int b, int n, int s, int e, int x) {
+	if (n < s || e < n)
+		return;
+
+	Tree[b].push_back(x);
+
+	if (s != e) {
+		int mid = (s + e) / 2;
+		update(b * 2, n, s, mid, x);
+		update(b * 2 + 1, n, mid + 1, e, x);
+	}
+}
+
+ll get(int b, int s, int e, int l, int r, int c) {
+	if (r < s || e < l)
+		return 0;
+
+	if (l <= s && e <= r)
+		return (upper_bound(Tree[b].begin(), Tree[b].end(), c) - Tree[b].begin()) % mod;
+
+	int mid = (s + e) / 2;
+	return (get(b * 2, s, mid, l, r, c) + get(b * 2 + 1, mid + 1, e, l, r, c)) % mod;
+}
+
+void dfs(int here) {
+	dT[time] = here;
+	discovered[here] = time++;
+
+	for (int i = 0; i < adj[here].size(); i++) {
+		int there = adj[here][i];
+
+		if (discovered[there] != 0)
+			continue;
+
+		dfs(there);
+	}
+
+	dT[time] = here;
+	finished[here] = time++;
+}
+
+int main(void) {
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL); cout.tie(NULL);
+	//fstream inf("prob.txt");
+	//inf >> N >> M >> C;
+	cin >> N >> M >> C;
+
+	for (int i = 1; i <= N; i++) {
+		//inf >> a[i];
+		cin >> a[i];
+	}
+
+	for (int a,b,i = 0; i < N - 1; i++) {
+		//inf >> a >> b;
+		cin >> a >> b;
+
+		adj[a].push_back(b);
+		adj[b].push_back(a);
+	}
+	dfs(1);
+
+	for (int i = 1; i <= 2 * N; i++)
+		update(1, i, 1, 2 * N, a[dT[i]]);
+	for (int i = 0; i < 8 * S + 5; i++)
+		sort(Tree[i].begin(), Tree[i].end());
+
+	ll ret = 0;
+	for (int v,c,i = 0; i < M; i++) {
+		//inf >> v >> c;
+		cin >> v >> c;
+
+		ret += (get(1, 1, 2 * N, discovered[v], finished[v], c) / 2);
+		ret %= mod;
+	}
+	printf("%lld", ret);
+
+	return 0;
+}

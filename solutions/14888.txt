@@ -1,0 +1,55 @@
+#include <iostream>
+#include <climits>
+#include <fstream>
+
+using namespace std;
+
+const int INF = INT_MAX;
+int N;
+int a, b, c, d, A[15];
+int rmax = -INF, rmin = INF;
+
+void solve(int idx, int a, int b, int c, int d, int val) {
+	if(idx == N) {
+		rmax = max(rmax, val);
+		rmin = min(rmin, val);
+		return;
+	}
+	
+	if(a > 0) {
+		int x = val+A[idx+1];
+		solve(idx+1, a-1, b, c, d, x);
+	}
+	if(b > 0) {
+		int x = val-A[idx+1];
+		solve(idx+1, a, b-1, c, d, x);
+	}
+	if(c > 0) {
+		int x = val*A[idx+1];
+		solve(idx+1, a, b, c-1, d, x);
+	}
+	if(d > 0) {
+		int x = val/A[idx+1];
+		solve(idx+1, a, b, c, d-1, x);
+	}
+}
+
+int main() {
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL); cout.tie(NULL);
+	//fstream inf("prob.txt");
+	//inf >> N;
+	cin >> N;
+	
+	for(int i = 1; i<=N; i++) {
+		//inf >> A[i];
+		cin >> A[i];
+	}
+	//inf >> a >> b >> c >> d;
+	cin >> a >> b >> c >> d;
+	
+	solve(1, a, b, c, d, A[1]);
+	printf("%d\n%d", rmax, rmin);
+	
+	return 0;
+}

@@ -1,0 +1,72 @@
+#include <iostream>
+
+using namespace std;
+
+typedef long long ll;
+
+const int S = 3e5;
+int T, N, Q;
+ll Tree[4*S+5], c[S+5];
+
+void init(int b, int s, int e) {
+    if(s == e) {
+        if(s % 2 == 0)
+            Tree[b] = c[s];
+        else
+            Tree[b] = -c[s];
+        return;
+    }
+    int mid = (s+e)/2;
+    init(b*2, s, mid);
+    init(b*2+1, mid+1, e);
+    Tree[b] = Tree[b*2]+Tree[b*2+1];
+}
+
+void update(int b, int s, int e, int n, ll x) {
+    if(n < s || e < n)
+        return;
+    if(s == e) {
+        if(s % 2 == 0)
+            Tree[b] += x;
+        else
+            Tree[b] -= x;
+        return;
+    }
+
+    int mid = (s+e)/2;
+    update(b*2, s, mid, n, x);
+    update(b*2+1, mid+1, e, n, x);
+    Tree[b] = Tree[b*2]+Tree[b*2+1];
+}
+
+ll get(int b, int s, int e, int l, int r) {
+    if(r < s || e < l)
+        return 0;
+    if(l <= s && e <= r)
+        return Tree[b];
+    
+    int mid = (s+e)/2;
+    return get(b*2, s, mid, l, r) + get(b*2+1, mid+1, e, l, r);
+}
+
+int main() {
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL); cout.tie(NULL);
+    cin >> N >> Q;
+
+    for(int i = 1; i<=N; i++)
+        cin >> c[i];
+    
+    init(1, 1, N);
+    for(int i = 1; i<=Q; i++) {
+        int a, b, c;
+        cin >> a >> b >> c;
+
+        if(a == 1)
+            cout << abs(get(1, 1, N, b, c)) << '\n';
+        else
+            update(1, 1, N, b, c);
+    }
+ 
+    return 0;
+}

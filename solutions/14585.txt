@@ -1,0 +1,51 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <fstream>
+
+using namespace std;
+
+typedef long long ll;
+
+int N, M;
+ll DP[301];
+vector<pair<pair<int, int>, int>> c;
+
+ll solve() {
+	sort(c.begin(), c.end());
+	DP[0] = (ll)c[0].second;
+
+	ll ret = DP[0];
+	for (int i = 1; i < N; i++) {
+		int cy = c[i].first.second;
+
+		DP[i] = (ll)c[i].second;
+		for (int j = 0; j < i; j++) {
+			int y = c[j].first.second;
+
+			if (cy < y)
+				continue;
+
+			DP[i] = max(DP[i], DP[j] + (ll)c[i].second);
+		}
+		ret = max(ret, DP[i]);
+	}
+	return ret;
+}
+
+int main() {
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL); cout.tie(NULL);
+	//fstream inf("prob.txt");
+	//inf >> N >> M;
+	cin >> N >> M;
+
+	for (int x, y, i = 0; i < N; i++) {
+		//inf >> x >> y;
+		cin >> x >> y;
+		c.push_back({ {x,y}, max(0, M - x - y) });
+	}
+	printf("%lld", solve());
+
+	return 0;
+}

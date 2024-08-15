@@ -1,0 +1,20 @@
+#include <iostream>
+
+using namespace std;
+
+string p;
+
+int main() {
+	cin >> p;
+	
+	int ret = 10;
+	for(int i = 1; i<p.size(); i++) {
+		if(p[i-1] == p[i])
+			ret += 5;
+		else
+			ret += 10;
+	}
+	cout << ret << endl;
+		
+	return 0;
+}

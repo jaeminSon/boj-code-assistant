@@ -1,0 +1,90 @@
+#include <iostream>
+#include <set>
+#include <algorithm>
+#include <fstream>
+
+using namespace std;
+
+typedef long long ll;
+
+int N;
+multiset<ll> st;
+
+bool check(ll k) {
+	ll s1 = 0, s2 = 0;
+	multiset<ll> s = st;
+
+	//printf("start: %lld\n", k);
+
+	for (ll i = 1; i <= N; i++) {
+		ll len = i * k - s2;
+		multiset<ll>::iterator it = s.lower_bound(len);
+
+		if (it == s.begin() && len < (*it)) {
+			//printf("check it: %lld, len: %lld\n", *it, len);
+			return false;
+		}
+		if (it == s.end()) {
+
+			it--;
+
+			if (len < *it) {
+				return false;
+			}
+		}
+
+		if (len < *it) {
+			it--;
+		}
+
+
+		s1 = i * k;
+
+		if (k < *it)
+			s2 = (i - 1) * k;
+
+		//printf("select: %lld, s1: %lld, s2: %lld len: %lld\n", *it, s1, s2, len);
+		s.erase(it);
+	}
+	return true;
+}
+
+int solve() {
+	ll lo = 0, hi = 1e9, m = 0;
+
+	//return check(5);
+
+	while (lo <= hi) {
+		m = (lo + hi) / 2;
+
+		if (check(m) == true) {
+			hi = m - 1;
+			//printf("%d pos\n", m);
+		}
+		else {
+			lo = m + 1;
+			//printf("%d impos\n", m);
+		}
+	}
+
+	return lo;
+}
+
+int main(void) {
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL); cout.tie(NULL);
+	//fstream inf("prob.txt");
+	//inf >> N;
+	cin >> N;
+
+	for (int i = 0; i < N; i++) {
+		ll x;
+		//inf >> x;
+		cin >> x;
+
+		st.insert(x);
+	}
+	printf("%d", solve());
+
+	return 0;
+}

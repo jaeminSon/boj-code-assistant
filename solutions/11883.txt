@@ -1,0 +1,89 @@
+#include <iostream>
+#include <vector>
+#include <fstream>
+
+using namespace std;
+
+struct Point {
+    int a, b, c;
+
+    bool operator>(Point p) {
+        if (a + b + c == p.a + p.b + p.c) {
+            if (a == p.a)
+                return b < p.b;
+            return a < p.a;
+        }
+        else
+            return a + b + c > p.a + p.b + p.c;
+    }
+
+    bool operator==(Point p) {
+        if (a == p.a && b == p.b && c == p.c)
+            return true;
+        return false;
+    }
+};
+
+const int S = 1e6;
+int T, N;
+Point dp[S + 20], INF = { S,S,S };
+
+void prev() {
+    for (int i = 0; i <= S; i++)
+        dp[i] = { S,S,S };
+
+    dp[3] = { 1, 0, 0 };
+    dp[5] = { 0, 1, 0 };
+    dp[8] = { 0, 0, 1 };
+
+    for (int i = 0; i <= S; i++) {
+        if (dp[i] == INF)
+            continue;
+
+        Point t = dp[i];
+        t.a++;
+        if (dp[i + 3] > t)
+            dp[i + 3] = t;
+        t.a--;
+
+
+        t.b++;
+        if (dp[i + 5] > t)
+            dp[i + 5] = t;
+        t.b--;
+
+        t.c++;
+        if (dp[i + 8] > t)
+            dp[i + 8] = t;
+        t.c--;
+    }
+}
+
+int main(void) {
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL); cout.tie(NULL);
+    //fstream inf("prob.txt");
+    //inf >> T;
+    cin >> T;
+
+    prev();
+    for (int i = 0; i < T; i++) {
+        //inf >> N;
+        cin >> N;
+
+        if (dp[N] == INF) {
+            printf("-1\n");
+            continue;
+        }
+
+        for (int j = 0; j < dp[N].a; j++)
+            printf("3");
+        for (int j = 0; j < dp[N].b; j++)
+            printf("5");
+        for (int j = 0; j < dp[N].c; j++)
+            printf("8");
+        printf("\n");
+    }
+
+    return 0;
+}

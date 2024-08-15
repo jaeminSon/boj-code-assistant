@@ -1,0 +1,54 @@
+#include <iostream>
+#include <queue>
+#include <fstream>
+
+using namespace std;
+
+int N;
+string ins;
+
+int main() {
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL); cout.tie(NULL);
+	//fstream inf("prob.txt");
+	//inf >> N;
+	cin >> N;
+	
+	queue<int> q;
+	for(int x, i = 0; i<N; i++) {
+		//inf >> ins;
+		cin >> ins;
+		
+		if(ins == "push") {
+			//inf >> x;
+			cin >> x;
+			q.push(x);
+		}
+		else if(ins == "pop") {
+			if(q.empty())
+				printf("-1\n");
+			else {
+				printf("%d\n", q.front());
+				q.pop();
+			}
+		}
+		else if(ins == "size")
+			printf("%d\n", q.size());
+		else if(ins == "empty")
+			printf("%d\n", q.empty());
+		else if(ins == "front") {
+			if(q.empty())
+				printf("-1\n");
+			else
+				printf("%d\n", q.front());
+		}
+		else if(ins == "back") {
+			if(q.empty())
+				printf("-1\n");
+			else
+				printf("%d\n", q.back());
+		}
+	}
+
+	return 0;
+}

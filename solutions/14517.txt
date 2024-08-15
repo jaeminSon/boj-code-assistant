@@ -1,0 +1,47 @@
+#include <iostream>
+#include <string>
+#include <fstream>
+
+using namespace std;
+
+const int mod = 10007;
+string s;
+int DP[1001][1001];
+
+int solve() {
+	int N = s.size();
+
+	for (int i = 0; i < N; i++)
+		DP[i][i] = 1;
+	for (int i = 1; i < N; i++) {
+		if (s[i - 1] == s[i])
+			DP[i - 1][i] = 3;
+		else
+			DP[i - 1][i] = 2;
+	}
+
+	for (int k = 2; k < N; k++) {
+		for (int i = 0; i < N - k; i++) {
+			if (s[i] == s[i + k])
+				DP[i][i + k] = (DP[i + 1][i + k] + DP[i][i + k - 1] + 1) % mod;
+			else {
+				DP[i][i + k] = (DP[i + 1][i + k] + DP[i][i + k - 1]) % mod - DP[i + 1][i + k - 1];
+				if (DP[i][i + k] < 0)
+					DP[i][i + k] += mod;
+			}
+		}
+	}
+	return DP[0][N-1];
+}
+
+int main() {
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL); cout.tie(NULL);
+	//fstream inf("prob.txt");
+	//inf >> s;
+	cin >> s;
+
+	printf("%d", solve());
+
+	return 0;
+}

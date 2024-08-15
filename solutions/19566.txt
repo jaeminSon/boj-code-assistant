@@ -1,0 +1,55 @@
+#include <iostream>
+#include <map>
+#include <fstream>
+
+using namespace std;
+
+typedef long long ll;
+
+const int S = 2e5;
+int N, K;
+int a[S + 5];
+ll psum[S + 5];
+map<ll, int> mp;
+
+ll solve() {
+    for (int i = 1; i <= N; i++) {
+        psum[i] = psum[i - 1] + a[i];
+
+        if(mp.count(psum[i]) == 0)
+            mp.insert({ psum[i], 1 });
+        else {
+            int cnt = mp.find(psum[i])->second;
+            mp.erase(psum[i]);
+            mp.insert({ psum[i], cnt + 1 });
+        }
+    }
+
+    ll ret = 0;
+    if (mp.count(0) != 0)
+        ret += mp.find(0)->second;
+
+    for (map<ll, int>::iterator it = mp.begin(); it != mp.end(); it++) {
+        ll cnt = mp.find((*it).first)->second;
+        ret += cnt * (cnt - 1) / 2;
+    }
+    return ret;
+}
+
+int main(void) {
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL); cout.tie(NULL);
+    //fstream inf("prob.txt");
+    //inf >> N >> K;
+    cin >> N >> K;
+
+    for (int i = 1; i <= N; i++) {
+        //inf >> a[i];
+        cin >> a[i];
+
+        a[i] -= K;
+    }
+    printf("%lld", solve());
+
+    return 0;
+}

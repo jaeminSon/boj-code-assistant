@@ -1,0 +1,136 @@
+#include <iostream>
+#include <stdlib.h>
+#include <string.h>
+#include <Windows.h>
+
+using namespace std;
+
+int heap[1000001];
+int numOfData = 0;
+
+int GetHiPri(int idx)
+{
+	if (heap[idx * 2] > heap[idx * 2 + 1])
+		return idx * 2;
+	else
+		return idx * 2 + 1;
+}
+
+void HInsert(int n)
+{
+	int idx = numOfData + 1;
+
+	while (idx != 1)
+	{
+		if (n > heap[idx])
+		{
+			heap[idx] = heap[idx / 2];
+			idx /= 2;
+		}
+		else
+			break;
+	}
+
+	heap[idx] = n;
+	numOfData++;
+}
+
+void HDelete(int n)
+{
+	if (numOfData == 0)
+		return;
+	else if (n == -1)
+	{
+		int x = heap[numOfData];
+		int idx = numOfData;
+
+		for (int i = numOfData; i > 0; i--)
+		{
+			if (x > heap[i])
+			{
+				x = heap[i];
+				idx = i;
+			}
+		}
+
+		heap[idx] = 0;
+		numOfData--;
+	}
+	else if (n == 1)
+	{
+		heap[1] = heap[numOfData];
+		heap[numOfData] = 0;
+
+		int lastElem = heap[1];
+		int parentidx = 1;
+		int childidx;
+
+		while (childidx = GetHiPri(parentidx))
+		{
+			if (childidx > numOfData)
+				break;
+			else if (lastElem < heap[childidx])
+			{
+				heap[parentidx] = heap[childidx];
+				parentidx = childidx;
+			}
+			else
+				break;
+		}
+
+		heap[parentidx] = lastElem;
+		numOfData--;
+	}
+}
+
+int main(void)
+{
+	int t;
+
+	scanf("%d", &t);
+
+	for (int i = 0; i < t; i++)
+	{
+		int k;
+		scanf("%d", &k);
+		getchar();
+
+		for (int j = 0; j < k; j++)
+		{
+			char c;
+			int num;
+
+			scanf("%c %d", &c, &num);
+			getchar();
+
+			if (c == 'I')
+				HInsert(num);
+			else if (c == 'D')
+				HDelete(num);
+
+			for (int z = 1; z <= numOfData; z++)
+				printf("%d ", heap[z]);
+			
+			printf("\nj : %d\n", j);
+		}
+
+		if (numOfData == 0)
+			printf("EMPTY\n");
+		else
+		{
+			int x = heap[numOfData];
+
+			for (int j = numOfData; j > 0; j--)
+			{
+				if (x > heap[j])
+					x = heap[j];
+			}
+			printf("%d %d", heap[1], x);
+		}
+
+		for (int j = 0; j <= numOfData; j++)
+			heap[j] = 0;
+		numOfData = 0;
+	}
+}
+

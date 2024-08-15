@@ -1,0 +1,57 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+
+using namespace std;
+
+typedef pair<int,int> pii;
+
+const int S = 3e5;
+int N, K;
+pii c[S+5];
+vector<int> p[S+5];
+
+void solve() {
+    sort(c+1, c+K+1);
+
+    int sum = 0;
+    for(int i = 1; i<=K-1; i++)
+        sum += c[i].first;
+    
+    if(sum+1 < c[K].first) {
+        cout << -1 << '\n';
+        return;
+    }
+
+    int j = 0;
+    for(int i = 1; i<=K-1; i++) {
+        while(c[i].first > 0) {
+            p[j].push_back(c[i].second);
+            c[i].first--;
+
+            j++;
+            j %= c[K].first;
+        }
+    }
+    
+    for(int i = 0; i<c[K].first; i++) {
+        cout << c[K].second << " ";
+        for(int j = 0; j<p[i].size(); j++)
+            cout << p[i][j] << " ";
+    }
+}
+
+int main() {
+    ios_base::sync_with_stdio(false);
+	cin.tie(NULL); cout.tie(NULL);
+    cin >> N >> K;
+
+    for(int i = 1; i<=K; i++) {
+        int x;
+        cin >> x;
+        c[i] = {x,i};
+    }
+    solve();
+
+    return 0;
+}

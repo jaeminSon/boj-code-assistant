@@ -1,0 +1,34 @@
+#include <iostream>
+
+using namespace std;
+
+int n;
+int map[3];
+int dpmax[2][3], dpmin[2][3];
+
+int Max(int a, int b) { return a > b ? a : b; }
+int Min(int a, int b) { return a < b ? a : b; }
+
+void solve() {
+	for(int i = 1; i<=n; i++) {
+		scanf("%d %d %d", &map[0], &map[1], &map[2]);
+		
+		dpmax[i%2][0] = Max(dpmax[(i-1)%2][0], dpmax[(i-1)%2][1]) + map[0];
+		dpmax[i%2][1] = Max(dpmax[(i-1)%2][0], Max(dpmax[(i-1)%2][1], dpmax[(i-1)%2][2])) + map[1];
+		dpmax[i%2][2] = Max(dpmax[(i-1)%2][1], dpmax[(i-1)%2][2]) + map[2];
+		
+		dpmin[i%2][0] = Min(dpmin[(i-1)%2][0], dpmin[(i-1)%2][1]) + map[0];
+		dpmin[i%2][1] = Min(dpmin[(i-1)%2][0], Min(dpmin[(i-1)%2][1], dpmin[(i-1)%2][2])) + map[1];
+		dpmin[i%2][2] = Min(dpmin[(i-1)%2][1], dpmin[(i-1)%2][2]) + map[2];
+	}
+	
+	printf("%d %d", Max(dpmax[n%2][0], Max(dpmax[n%2][1], dpmax[n%2][2])), Min(dpmin[n%2][0], Min(dpmin[n%2][1], dpmin[n%2][2])));
+}
+
+
+int main() {
+	scanf("%d", &n);
+	solve();
+	
+	return 0;
+}

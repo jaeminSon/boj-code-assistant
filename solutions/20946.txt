@@ -1,0 +1,47 @@
+#include <iostream>
+#include <vector>
+
+using namespace std;
+
+typedef long long ll;
+
+const int S = 1e6;
+ll N;
+vector<ll> p, ret;
+
+void solve() {
+    ll M = N;
+    for(ll i = 2; i*i<=M; i++) {
+        if(N%i != 0)
+            continue;
+        while(N%i == 0) {
+            p.push_back(i);
+            N /= i;
+        }
+    }
+    if(N != 1)
+        p.push_back(N);
+
+    if(M == N || p.size() == 0) {
+        cout << -1 << '\n';
+        return;
+    }
+
+    for(int i = 0; i<p.size()-1; i+=2)
+        ret.push_back(p[i]*p[i+1]);
+    if(p.size()%2 == 1)
+        ret[ret.size()-1] *= p.back();
+
+    for(int i = 0; i<ret.size(); i++)
+        cout << ret[i] << " ";
+}
+
+int main() {
+    ios_base::sync_with_stdio(false);
+	cin.tie(NULL); cout.tie(NULL);
+    cin >> N;
+
+    solve();
+
+    return 0;
+}

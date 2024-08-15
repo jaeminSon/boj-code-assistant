@@ -1,0 +1,30 @@
+#include <iostream>
+#include <cstring>
+
+using namespace std;
+
+char arr[5][15];
+
+int main() {
+	memset(arr, -1, sizeof(arr));
+	for(int i = 0; i<5; i++) {
+		string s;
+		cin >> s;
+		
+		for(int j = 0; j<s.size(); j++)
+			arr[i][j] = s[j];
+	}
+	
+	string s = "";
+	for(int i = 0; i<15; i++) {
+		for(int j = 0; j<5; j++) {
+			if(arr[j][i] == -1)	continue;
+			
+			s += arr[j][i];
+		}
+	}
+	
+	cout << s << endl;
+	
+	return 0;
+}

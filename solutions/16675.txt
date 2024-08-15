@@ -1,0 +1,60 @@
+#include <iostream>
+#include <string.h>
+
+using namespace std;
+
+string s;
+
+bool judge(char a, char b) {	// a has win : return true 
+	bool check = false;
+	if(a == 'S' && b == 'P')
+		check = true;
+	else if(a == 'R' && b == 'S')
+		check = true;
+	else if(a == 'P' && b == 'R')
+		check = true;
+		
+	return check;
+}
+
+
+string solve() {
+	if(s[0] == s[1] && s[2] == s[3]) {
+		if(s[0] == s[2])
+			return string("?");
+		
+		if(judge(s[0], s[2]))
+			return string("MS");
+		return string("TK");
+	}
+	else if(s[0] == s[1]) {
+		int check = judge(s[2], s[0]);
+		check = check | judge(s[3], s[0]);
+		
+		if(check)
+			return string("TK");
+		else
+			return string("?");
+	}
+	else if(s[2] == s[3]) {
+		int check = judge(s[0], s[2]);
+		check = check | judge(s[1], s[2]);
+		
+		if(check)		
+			return string("MS");
+		else
+			return string("?");
+	}
+	else
+		return string("?");
+}
+
+
+int main() {
+	for(int i = 0; i<4; i++)
+		cin >> s[i];
+
+	cout << solve() << endl;
+	
+	return 0;
+}

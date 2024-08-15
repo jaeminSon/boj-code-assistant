@@ -1,0 +1,17 @@
+#include <iostream>
+
+using namespace std;
+
+int main() {
+	string s, ret = "";
+	cin >> s;
+	
+	for(int i = 0; i<s.size(); i++) {
+		if(s[i] != '-' && s[i] < 'a')
+			ret += s[i];
+	}
+	
+	cout << ret << endl;
+	
+	return 0;
+}

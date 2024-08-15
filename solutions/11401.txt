@@ -1,0 +1,42 @@
+#include <iostream>
+#include <fstream>
+
+using namespace std;
+
+typedef long long ll;
+
+const ll mod = 1e9 + 7;
+const int S = 4e6;
+ll N, K;
+ll fac[S + 5];
+
+ll power(ll a, ll b) {
+	ll ret = 1;
+	for (; b > 0; b >>= 1, a = a * a % mod) {
+		if (b & 1)
+			ret = ret * a % mod;
+	}
+	return ret;
+}
+
+ll solve() {
+	fac[0] = 1;
+	for (int i = 1; i <= N; i++)
+		fac[i] = fac[i - 1] * i % mod;
+
+	ll ret = fac[N] * power(fac[N - K], mod - 2) % mod;
+	ret = ret * power(fac[K], mod - 2) % mod;
+	return ret;
+}
+
+int main(void) {
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL); cout.tie(NULL);
+    //fstream inf("prob.txt");
+    //inf >> N >> K;
+	cin >> N >> K;
+
+    printf("%lld", solve());
+
+    return 0;
+}

@@ -1,0 +1,52 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+
+using namespace std;
+
+struct Point {
+	int x, y;
+};
+
+bool cmp(Point &a, Point &b) {
+	return a.x < b.x;
+}
+
+int dist(int m, Point p) {
+	return abs(m-p.x) + p.y;
+}
+
+int M, N, L;
+vector<int> m;
+vector<Point> a;
+
+int main() {
+	scanf("%d %d %d", &M, &N, &L);
+	
+	m = vector<int>(M);
+	for(int i = 0; i<M; i++)
+		scanf("%d", &m[i]);
+	for(int i = 0; i<N; i++) {
+		int x, y;
+		scanf("%d %d", &x, &y);
+        
+		a.push_back({x, y});
+	}
+	sort(m.begin(), m.end());
+	sort(a.begin(), a.end(), cmp);
+	
+	int idx = 0, ret = 0;
+	for(int i = 0; i<N; i++) {
+		while(idx < M-1 && m[idx+1] < a[i].x)
+			idx++;
+		
+		if(dist(m[idx], a[i]) <= L)
+			ret++;
+		else if(idx < M-1 && dist(m[idx+1], a[i]) <= L)
+			ret++;
+	}
+	
+	printf("%d\n", ret);
+	
+	return 0;
+}

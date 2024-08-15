@@ -1,0 +1,78 @@
+#include <iostream>
+#include <algorithm>
+
+using namespace std;
+
+typedef pair<int,int> pii;
+
+const int S = 1e5, INF = 2e9;
+int N, M;
+int a[S+5];
+pii Tree[4*S+5];
+
+void init(int b, int s, int e) {
+    if(s == e) {
+        Tree[b] = {a[s], s};
+        return;
+    }
+
+    int mid = (s+e)/2;
+    init(b*2, s, mid);
+    init(b*2+1, mid+1, e);
+    Tree[b] = min(Tree[b*2], Tree[b*2+1]);
+}
+
+void update(int b, int s, int e, int n, int x) {
+    if(n < s || e < n)
+        return;
+    
+    if(s == e) {
+        Tree[b] = {x,n};
+        return;
+    }
+    int mid = (s+e)/2;
+    update(b*2, s, mid, n, x);
+    update(b*2+1, mid+1, e, n, x);
+    Tree[b] = min(Tree[b*2], Tree[b*2+1]);
+}
+
+pii get(int b, int s, int e, int l, int r) {
+    if(r < s || e < l)
+        return {INF, INF};
+    if(l <= s && e <= r)
+        return Tree[b];
+    
+    int mid = (s+e)/2;
+    return min(get(b*2, s, mid, l, r), get(b*2+1, mid+1, e, l, r));
+}
+
+int main() {
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL); cout.tie(NULL);
+    cin >> N;
+
+    for(int i = 1; i<=N; i++)
+        cin >> a[i];
+    init(1,1,N);
+    cin >> M;
+    for(int i = 1; i<=M; i++) {
+        int t;
+        cin >> t;
+
+        if(t == 1) {
+            int b, c;
+            cin >> b >> c;
+
+            update(1,1,N,b,c);
+        }
+        else {
+            int b, c;
+            cin >> b >> c;
+
+            pii ret = get(1,1,N,b,c);
+            cout << ret.second << '\n';
+        }
+    }
+ 
+    return 0;
+}

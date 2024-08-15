@@ -1,0 +1,96 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <fstream>
+
+using namespace std;
+
+const int S = 1e5, INF = 987654321;
+int T, N, K;
+int org[S + 5];
+pair<int,int> Tree[4 * S + 5];
+
+void init(int b, int s, int e) {
+    if (s == e) {
+        Tree[b] = { org[s], org[s] };
+        return;
+    }
+
+    int mid = (s + e) / 2;
+    init(b * 2, s, mid);
+    init(b * 2 + 1, mid + 1, e);
+
+    Tree[b] = { min(Tree[b * 2].first, Tree[b * 2 + 1].first),
+        max(Tree[b * 2].second, Tree[b * 2 + 1].second) };
+}
+
+void update(int b, int n, int s, int e, int x) {
+    if (n < s || e < n)
+        return;
+
+    if (s == e) {
+        Tree[b].first = Tree[b].first + x;
+        Tree[b].second = Tree[b].second + x;
+        return;
+    }
+
+    int mid = (s + e) / 2;
+    update(b * 2, n, s, mid, x);
+    update(b * 2 + 1, n, mid + 1, e, x);
+    Tree[b] = { min(Tree[b * 2].first, Tree[b * 2 + 1].first),
+        max(Tree[b * 2].second, Tree[b * 2 + 1].second) };
+}
+
+pair<int, int> get(int b, int s, int e, int l, int r) {
+    if (r < s || e < l)
+        return { INF, -INF };
+
+    if (l <= s && e <= r)
+        return { Tree[b].first, Tree[b].second };
+
+    int mid = (s + e) / 2;
+    pair<int, int> left = get(b * 2, s, mid, l, r);
+    pair<int, int> right = get(b * 2 + 1, mid + 1, e, l, r);
+
+    return { min(left.first, right.first), max(left.second, right.second) };
+}
+
+int main(void) {
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL); cout.tie(NULL);
+    //fstream inf("prob.txt");
+    //inf >> T;
+    cin >> T;
+
+    for (int i = 0; i < T; i++) {
+        //inf >> N >> K;
+        cin >> N >> K;
+
+        for (int j = 1; j <= N; j++)
+            org[j] = j;
+        init(1, 1, N);
+
+        for (int q,a,b,j = 0; j < K; j++) {
+            //inf >> q >> a >> b;
+            cin >> q >> a >> b;
+            a++;
+            b++;
+
+            if (q == 0) {
+                update(1, a, 1, N, org[b] - org[a]);
+                update(1, b, 1, N, org[a] - org[b]);
+
+                swap(org[a], org[b]);
+            }
+            else {
+                pair<int, int> ret = get(1, 1, N, a, b);
+                if (ret.first == a && ret.second == b)
+                    printf("YES\n");
+                else
+                    printf("NO\n");
+            }
+        }
+    }
+
+    return 0;
+}

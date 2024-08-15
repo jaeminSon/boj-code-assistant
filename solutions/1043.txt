@@ -1,0 +1,65 @@
+#include <iostream>
+#include <vector>
+
+using namespace std;
+
+const int S = 50;
+int N, M, T;
+vector<int> pt[S+5], tk[S+5];
+bool t[S+5], visited[S+5];
+
+int solve() {
+    for(int p = 1; p<=M; p++) {
+        for(int i = 1; i<=N; i++) {
+            if(t[i] == true) {
+                for(int j = 0; j<tk[i].size(); j++) {
+                    int pt_n = tk[i][j];
+
+                    if(visited[pt_n] == true)
+                        continue;
+                    
+                    visited[pt_n] = true;
+                    for(int k = 0; k<pt[pt_n].size(); k++) {
+                        int pp = pt[pt_n][k];
+                        t[pp] = true;
+                    }
+                }
+            }
+        }
+    }
+
+    int ret = 0;
+    for(int i = 1; i<=M; i++) {
+        if(visited[i] == true)
+            continue;
+        ret++;
+    }
+    return ret;
+}
+
+int main() {
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL); cout.tie(NULL);
+    cin >> N >> M;
+
+    cin >> T;
+    for(int i = 1; i<=T; i++) {
+        int x;
+        cin >> x;
+        t[x] = true;
+    }
+    for(int i = 1; i<=M; i++) {
+        int n;
+        cin >> n;
+        for(int j = 1; j<=n; j++) {
+            int x;
+            cin >> x;
+
+            pt[i].push_back(x);
+            tk[x].push_back(i);
+        }
+    }
+    cout << solve() << '\n';
+ 
+    return 0;
+}

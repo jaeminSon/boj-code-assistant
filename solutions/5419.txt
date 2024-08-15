@@ -1,0 +1,93 @@
+#include <iostream>
+#include <vector>
+#include <set>
+#include <algorithm>
+#include <cstring>
+#include <fstream>
+
+using namespace std;
+
+typedef long long ll;
+
+const int S = 75000;
+int t, n;
+int Tree[4*S+5];
+vector<pair<int,int>> pos;
+
+bool cmp(const pair<int,int> &a, const pair<int,int> &b) {
+	if(a.first == b.first)
+		return b.second < a.second;
+	
+	return a.first < b.first;
+}
+
+bool ycmp(const pair<int,int> &a, const pair<int,int> &b) {
+	return a.second < b.second;
+}
+
+int update(int bucket, int node, int s, int e, int x) {
+	if(node < s || e < node)	return Tree[bucket];
+	
+	if(s == e)
+		return Tree[bucket] += x;
+	
+	int mid = (s+e)/2;
+	return Tree[bucket] = update(bucket*2, node, s, mid, x)+update(bucket*2+1, node, mid+1, e, x);
+}
+
+int get(int bucket, int s, int e, int l, int r) {
+	if(r < s || e < l)	return 0;
+	
+	if(l <= s && e <= r)	return Tree[bucket];
+	
+	int mid = (s+e)/2;
+	return get(bucket*2, s, mid, l, r)+get(bucket*2+1, mid+1, e, l, r);
+}
+
+ll solve() {
+	sort(pos.begin(), pos.end(), ycmp);
+	int npos[S+5];
+	for(int idx=1, i=0; i<n; i++) {
+		if(i!=0 && pos[i].second != pos[i-1].second)
+			idx++;
+		npos[i] = idx;
+	}
+	for(int i = 0; i<n; i++)
+		pos[i].second = npos[i];
+	
+	sort(pos.begin(), pos.end(), cmp);
+	
+	ll ret = 0;
+	for(int i = 0; i<n; i++) {
+		pair<int,int> cur = pos[i];
+		
+		ret += (ll)get(1, 1, n, cur.second, n);
+		update(1, cur.second, 1, n, 1);
+	}
+	
+	return ret;
+}
+
+int main() {
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL); cout.tie(NULL);
+	//fstream inf("prob.txt");
+	//inf >> t;
+	cin >> t;
+	
+	for(int i = 0; i<t; i++) {
+		//inf >> n;
+		cin >> n;
+		
+		pos.clear();
+		memset(Tree, 0, sizeof(Tree));
+		for(int x,y,j = 0; j<n; j++) {
+			//inf >> x >> y;
+			cin >> x >> y;
+			pos.push_back({x,y});
+		}
+		printf("%lld\n", solve());
+	}
+	
+	return 0;
+}

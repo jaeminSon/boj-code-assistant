@@ -1,0 +1,93 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <cstring>
+
+using namespace std;
+
+typedef pair<int,int> pii;
+
+const int S = 1e5;
+int N;
+int idx[10*S+5], Tree1[8*S+5], Tree2[8*S+5], MX;
+vector<int> d;
+vector<pii> p;
+
+void update(int Tree[], int b, int s, int e, int n, int x) {
+    if(n < s || e < n)
+        return;
+    if(s == e) {
+        Tree[b] += x;
+        return;
+    }
+
+    int mid = (s+e)/2;
+    update(Tree, b*2, s, mid, n, x);
+    update(Tree, b*2+1, mid+1, e, n, x);
+    Tree[b] = Tree[b*2] + Tree[b*2+1];
+}
+
+int get(int b, int s, int e, int l1, int r1, int l2, int r2) {
+    if(s == e)
+        return max(max(l1, r1)+Tree1[b], max(l2, r2)+Tree2[b]);
+    
+    int left = max(l1+Tree1[b*2], l2+Tree2[b*2]);
+    int right = max(r1+Tree1[b*2+1], r2+Tree2[b*2+1]);
+
+    if(left == right)
+        return left;
+
+    int mid = (s+e)/2;
+    if(left > right)
+        return get(b*2, s, mid, l1, r1+Tree1[b*2+1], l2, r2+Tree2[b*2+1]);
+    return get(b*2+1, mid+1, e, l1+Tree1[b*2], r1, l2+Tree2[b*2], r2);
+}
+
+int solve() {
+    sort(p.begin(), p.end());
+    sort(d.begin(), d.end());
+    d.erase(unique(d.begin(), d.end()), d.end());
+
+    for(int i=0,j=1; i<d.size(); i++) {
+        MX = j;
+        if(idx[d[i]] == 0)
+            idx[d[i]] = j++;
+    }
+
+    for(int i = 0; i<p.size(); i++) {
+        p[i].first = idx[p[i].first];
+        p[i].second = idx[p[i].second];
+    }
+
+    for(int i = 0; i<p.size(); i++)
+        update(Tree1, 1, 1, MX, p[i].second, 1);
+    
+    int ret = S;
+    for(int y=0, i=0; y<=MX; y++) {
+        while(i<N && p[i].first<=y) {
+            update(Tree1, 1, 1, MX, p[i].second, -1);
+            update(Tree2, 1, 1, MX, p[i].second, 1);
+            i++;
+        }
+        int c = get(1, 1, MX, 0, 0, 0, 0);
+        ret = min(ret, c);
+    }
+    return ret;
+}
+
+int main() {
+    ios_base :: sync_with_stdio(false);
+	cin.tie(NULL); cout.tie(NULL);
+    cin >> N;
+    
+    for(int i = 0; i<N; i++) {
+        int x,y;
+        cin >> x >> y;
+        p.push_back({y,x});
+        d.push_back(x);
+        d.push_back(y);
+    }
+    cout << solve() << '\n';
+
+    return 0;
+}

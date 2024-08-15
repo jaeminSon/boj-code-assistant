@@ -1,0 +1,72 @@
+#include <stdio.h>
+#include <vector>
+#include <windows.h>
+
+using namespace std;
+
+typedef struct node {
+	int x, y;
+	int h, g;
+} Node;
+
+int a, b, c, d, n;
+int lx[1001], ly[1001], hx[1001], hy[1001];
+int dist[1001];
+vector<Node> open;
+vector<Node> close;
+
+int add_id[4][2] = {
+	{0, -1},
+	{1, 0},
+	{0, 1},
+	{-1, 0}
+};
+
+void Astar(Node cur_nd) {
+	int min_cost = 100000000;
+	int id;
+	Node min_nd;
+
+	for (int i = 0; i < 4; i++) {
+		Node new_nd;
+		new_nd.x = cur_nd.x + add_id[i][0];
+		new_nd.y = cur_nd.y + add_id[i][1];
+
+
+
+		open.push_back(new_nd);
+	}
+
+	for (int i = 0; i < open.size(); i++) {
+		if (open[i].h < min_cost) {
+			min_cost = open[i].h;
+			min_nd = open[i];
+			id = i;
+		}
+	}
+
+	close.push_back(min_nd);
+	open.erase(open.begin() + id);
+
+
+
+//	close.push_back()
+
+}
+
+int main(void) {
+	/*
+	scanf("%d %d %d %d", &a, &b, &c, &d);
+	scanf("%d", &n);
+
+	for (int i = 0; i < n; i++)
+		scanf("%d %d %d %d %d", &lx[i], &ly[i], &hx[i], &hx[i], &dist[i]);
+	*/
+
+
+	
+
+
+	system("pause");
+	return 0;
+}

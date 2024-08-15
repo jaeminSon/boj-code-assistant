@@ -1,0 +1,81 @@
+#include <iostream>
+#include <vector>
+#include <queue>
+#include <algorithm>
+#include <climits>
+#include <fstream>
+
+using namespace std;
+
+typedef long long ll;
+
+const ll INF = LLONG_MAX;
+const int S = 1e5;
+int N;
+bool selected[S+5];
+vector<pair<int, int>> xadj, yadj, zadj, adj[S+5];
+
+ll prim() {
+	ll ret = 0;
+	sort(xadj.begin(), xadj.end());
+	sort(yadj.begin(), yadj.end());
+	sort(zadj.begin(), zadj.end());
+	
+	for(int i = 1; i<N; i++) {
+		adj[xadj[i-1].second].push_back({xadj[i].first-xadj[i-1].first, xadj[i].second});
+		adj[xadj[i].second].push_back({xadj[i].first-xadj[i-1].first, xadj[i-1].second});
+		
+		adj[yadj[i-1].second].push_back({yadj[i].first-yadj[i-1].first, yadj[i].second});
+		adj[yadj[i].second].push_back({yadj[i].first-yadj[i-1].first, yadj[i-1].second});
+		
+		adj[zadj[i-1].second].push_back({zadj[i].first-zadj[i-1].first, zadj[i].second});
+		adj[zadj[i].second].push_back({zadj[i].first-zadj[i-1].first, zadj[i-1].second});
+	}
+	
+	priority_queue<pair<int,int>, vector<pair<int,int>>, greater<pair<int,int>>> pq;
+	pq.push({0,1});
+	
+	for(int i = 1; i<=N; i++) {
+		int here;
+		ll cost = INF;
+		
+		while(!pq.empty()) {
+			here = pq.top().second;
+			
+			if(selected[here] == false) {
+				cost = pq.top().first;
+				break;
+			}
+			pq.pop();
+		}
+		if(cost == INF)	return INF;
+		
+		ret += cost;
+		selected[here] = true;
+		
+		for(int j = 0; j<adj[here].size(); j++)
+			pq.push(adj[here][j]);
+	}
+	return ret;
+}
+
+int main() {
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL); cout.tie(NULL);
+	//fstream inf("prob.txt");
+	//inf >> N;
+	cin >> N;
+	
+	for(int x,y,z,i = 1; i<=N; i++) {
+		//inf >> x >> y >> z;
+		cin >> x >> y >> z;
+		
+		xadj.push_back({x,i});
+		yadj.push_back({y,i});
+		zadj.push_back({z,i});
+	}
+	
+	printf("%lld", prim());
+	
+	return 0;
+}

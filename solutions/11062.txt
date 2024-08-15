@@ -1,0 +1,57 @@
+#include <iostream>
+#include <fstream>
+
+using namespace std;
+
+const int S = 1000, INF = 1e9;
+int T, N;
+int a[S+5], dp[S+5][S+5];
+
+int solve(int l, int r, bool t) {
+    if(l == r) {
+        if(t == true)
+            return a[l];
+        return -a[l];
+    }
+
+    int& ret = dp[l][r];
+    if(ret != -1)
+        return ret;
+
+    if(t == true) {
+        ret = solve(l+1, r, false) + a[l];
+        ret = max(ret, solve(l, r-1, false) + a[r]);
+    }
+    else {
+        ret = solve(l+1, r, true) - a[l];
+        ret = min(ret, solve(l, r-1, true) - a[r]);
+    }
+    return ret;
+}
+
+int main() {
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL); cout.tie(NULL);
+    //fstream inf("prob.txt");
+    //inf >> T;
+    cin >> T;
+
+    for(int i = 0; i<T; i++) {
+        //inf >> N;
+        cin >> N;
+
+        int sum = 0;
+        for(int j = 1; j<=N; j++) {
+            //inf >> a[j];
+            cin >> a[j];
+            sum += a[j];
+            
+            for(int k = 1; k<=N; k++)
+                dp[j][k] = -1;
+        }
+
+        cout << (sum + solve(1, N, true)) / 2 << '\n';
+    }
+
+    return 0;
+}

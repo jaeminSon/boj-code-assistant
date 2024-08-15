@@ -1,0 +1,35 @@
+#include <iostream>
+#include <fstream>
+
+using namespace std;
+
+typedef long long ll;
+
+const int mod = 1e9 + 7;
+
+int N, x;
+ll pw[1000001];
+
+int main(void) {
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL); cout.tie(NULL);
+    //fstream inf("prob.txt");
+    //inf >> N >> x;
+    cin >> N >> x;
+
+    pw[0] = 1;
+    for (int i = 1; i <= N; i++)
+        pw[i] = (pw[i - 1] * x) % mod;
+
+    ll ret = 0;
+    for (int a, b, i = 0; i <= N; i++) {
+        //inf >> a >> b;
+        cin >> a >> b;
+
+        ret += (a * pw[b]) % mod;
+        ret %= mod;
+    }
+    printf("%lld", ret);
+
+    return 0;
+}

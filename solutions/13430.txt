@@ -1,0 +1,72 @@
+#include <iostream>
+
+using namespace std;
+
+typedef long long ll;
+
+const int S = 52, mod = 1e9+7;
+int K, N;
+
+struct matrix {
+    ll m[S+5][S+5];
+
+    matrix() {
+    }
+
+    matrix(int k) {
+        for(int i = 1; i<=k+2; i++) {
+            for(int j = 1; j<=i; j++)
+                m[i][j] = 1;
+        }
+    }
+
+    matrix operator*(const matrix& a) {
+        matrix c;
+        for(int i = 1; i<=K+2; i++) {
+            for(int j = 1; j<=K+2; j++) {
+                for(int k = 1; k<=K+2; k++) {
+                    c.m[i][j] += m[i][k] * a.m[k][j] % mod;
+                    c.m[i][j] %= mod;
+                }
+            }
+        }
+        return c;
+    }
+};
+
+matrix solve(int n) {
+    if(n == 1) {
+        matrix b(K);
+        return b;
+    }
+
+    if(n % 2 == 0) {
+        matrix ret = solve(n/2);
+        return ret * ret;
+    }
+    else {
+        matrix ret = solve(n/2);
+        matrix b(K);
+        return ret * ret * b;
+    }
+}
+
+int main() {
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL); cout.tie(NULL);
+    cin >> K >> N;
+    
+    if(N == 1)
+        cout << 1 << '\n';
+    else {
+        matrix a = solve(N-1);
+        ll ret = 0;
+        for(int i = 1; i<=K+2; i++) {
+            ret += a.m[K+2][i];
+            ret %= mod;
+        }
+        cout << ret << '\n';
+    }
+
+    return 0;
+}

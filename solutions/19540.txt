@@ -1,0 +1,113 @@
+#include <iostream>
+#include <vector>
+#include <fstream>
+
+using namespace std;
+
+const int S = 3e5;
+int N;
+int idx;
+vector<int> adj[S + 5];
+bool visited[S + 5];
+
+void connect(int u, int v) {
+	adj[u].push_back(v);
+	adj[v].push_back(u);
+}
+
+void make(int x) {
+	for (int i = 1; i < x; i++)
+		connect(i, i + 1);
+
+	idx = x + 1;
+	connect(1, idx++);
+	connect(x, idx++);
+
+	for (int i = 1; i <= x; i++) {
+		connect(i, idx++);
+		connect(i, idx++);
+	}
+}
+
+void add(int x, int a, int b) {
+	while (a > 0) {
+		for (int i = 1; i < idx; i++) {
+			if (adj[i].size() == 1) {
+				connect(i, idx++);
+				a--;
+				break;
+			}
+		}
+	}
+
+	int there = idx - 1;
+	for (int i = 0; i < b; i++) {
+		connect(there, idx);
+		there = idx++;
+	}
+}
+
+void dfs(int here) {
+	visited[here] = true;
+
+	for (int i = 0; i < adj[here].size(); i++) {
+		int there = adj[here][i];
+
+		if (visited[there] == true)
+			continue;
+
+		printf("%d %d\n", here, there);
+		dfs(there);
+	}
+}
+
+void solve() {
+	if (N & 1) {
+		int x = 1;
+		while (true) {
+			if (4 * x + 5 <= N && N <= 6 * x + 9)
+				break;
+			x++;
+		}
+		make(x);
+
+		int a = (6 * x + 11 - N) / 2;
+		int b = N - (3 * x + 2) - a;
+		add(x, a, b);
+	}
+	else {
+		int x = 1;
+		while (true) {
+			if (4 * x + 6 <= N && N <= 6 * x + 8)
+				break;
+			x++;
+		}
+		make(x);
+		connect(adj[x][1], idx++);
+		connect(adj[x][1], idx++);
+
+		int a = (6 * x + 10 - N) / 2;
+		int b = N - (3 * x + 4) - a;
+		add(x, a, b);
+	}
+	dfs(1);
+}
+
+int main(void) {
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL); cout.tie(NULL);
+	//fstream inf("prob.txt");
+	//inf >> N;
+	cin >> N;
+	
+	if (N == 6)
+		printf("1 2\n2 3\n3 4\n4 5\n4 6");
+	else if (N == 7)
+		printf("1 2\n2 3\n3 4\n4 5\n4 6\n3 7");
+	else if (N == 8)
+		printf("1 2\n2 3\n3 4\n4 5\n5 6\n2 7\n4 8");
+	else
+		solve();
+
+	return 0;
+}

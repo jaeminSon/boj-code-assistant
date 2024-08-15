@@ -1,0 +1,93 @@
+#include <iostream>
+#include <map>
+#include <stack>
+#include <fstream>
+
+using namespace std;
+
+int N, M, nodeId = 1, node[1001][1001];
+int b[1001][1001], ret[1001][1001], mv[4][2] = { {1,0}, {0,1}, {-1, 0}, {0, -1} };
+bool visited[1001][1001];
+stack<pair<int, int>> st;
+
+void dfs(int y, int x) {
+    visited[y][x] = true;
+    st.push({ y,x });
+
+    for (int type = 0; type < 4; type++) {
+        int ny = mv[type][0] + y;
+        int nx = mv[type][1] + x;
+
+        if (ny < 0 || N <= ny || nx < 0 || M <= nx)
+            continue;
+        if (b[ny][nx] == 1 || visited[ny][nx] == true)
+            continue;
+
+        dfs(ny, nx);
+    }
+}
+
+void dfsAll() {
+    for (int i = 0; i < N; i++) {
+        for (int j = 0; j < M; j++) {
+            if (b[i][j] == 1 || visited[i][j] == true)
+                continue;
+            dfs(i, j);
+
+            int x, y, cnt = st.size();
+            while (!st.empty()) {
+                y = st.top().first;
+                x = st.top().second;
+                st.pop();
+                ret[y][x] = cnt;
+                node[y][x] = nodeId;
+            }
+            nodeId++;
+        }
+    }
+
+    for (int i = 0; i < N; i++) {
+        for (int j = 0; j < M; j++) {
+            if (b[i][j] == 0) {
+                printf("%d", b[i][j]);
+                continue;
+            }
+
+            map<int, int> mp;
+            for (int type = 0; type < 4; type++) {
+                int ny = mv[type][0] + i;
+                int nx = mv[type][1] + j;
+
+                if (ny < 0 || N <= ny || nx < 0 || M <= nx)
+                    continue;
+                if (ret[ny][nx] == 0 || mp.count(node[ny][nx]) >= 1)
+                    continue;
+
+                b[i][j] += ret[ny][nx];
+                mp.insert(make_pair(node[ny][nx], 0));
+            }
+            printf("%d", b[i][j] % 10);
+        }
+        printf("\n");
+    }
+}
+
+int main(void) {
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL); cout.tie(NULL);
+    //fstream inf("prob.txt");
+    //inf >> N >> M;
+    cin >> N >> M;
+
+    for (int i = 0; i < N; i++) {
+        string s;
+        //inf >> s;
+        cin >> s;
+
+        for (int j = 0; j < M; j++)
+            b[i][j] = s[j] - '0';
+    }
+    dfsAll();
+
+    return 0;
+}

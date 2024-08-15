@@ -1,0 +1,36 @@
+#include <iostream>
+#include <cstring>
+
+using namespace std;
+
+const int INF = 987654321;
+int n, m;
+int cache[10001][101];
+
+int solve(int n, int m) {
+	if(n == m)	return 1;
+	if(n == 1)	return m;
+	if(m == 1) 	return n;
+	
+	int& ret = cache[n][m];
+	if(ret != -1)	return ret;
+	ret = n * m;
+	
+	if(n >= 4 * m)	return ret = min(ret, solve(n - m, m) + 1);
+	
+	for(int i = 1; i<n; i++)
+		ret = min(ret, solve(i, m) + solve(n-i, m));
+	for(int i = 1; i<m; i++)
+		ret = min(ret, solve(n, i) + solve(n, m-i));
+	
+	return ret;
+}
+
+int main() {
+	cin >> n >> m;
+	
+	memset(cache, -1, sizeof(cache));
+	cout << solve(n, m) << endl;
+	
+	return 0;
+}

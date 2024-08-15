@@ -1,0 +1,45 @@
+#include <iostream>
+
+using namespace std;
+
+const int S = 2e5;
+int M, Q;
+int n, x, f[S+5][21];
+
+void init() {
+    for(int j = 2; j<=20; j++) {
+        for(int i = 1; i<=M; i++)
+            f[i][j] = f[f[i][j-1]][j-1];
+    }
+}
+
+int solve() {
+    int ret = x;
+
+    int p = 1;
+    while(n > 0) {
+        if(n&1)
+            ret = f[ret][p];
+        p++;
+        n = (n>>1);
+    }
+    return ret;
+}
+
+int main() {
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL); cout.tie(NULL);
+    cin >> M;
+
+    for(int i = 1; i<=M; i++)
+        cin >> f[i][1];
+    init();
+
+    cin >> Q;
+    for(int i = 1; i<=Q; i++) {
+        cin >> n >> x;
+        cout << solve() << '\n';
+    }
+ 
+    return 0;
+}

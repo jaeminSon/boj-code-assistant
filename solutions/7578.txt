@@ -1,0 +1,61 @@
+#include <iostream>
+#include <vector>
+
+using namespace std;
+
+typedef unsigned long long ULL;
+
+struct FenwickTree {
+	vector<int> tree;
+	FenwickTree(int n): tree(n+1) {}
+	
+	ULL sum(int pos) {
+		pos++;
+		ULL ret = 0;
+		
+		while(pos > 0) {
+			ret += tree[pos];
+			pos &= (pos-1);
+		}
+		return ret;
+	}
+	
+	void add(int pos, int val) {
+		pos++;
+		
+		while(pos < tree.size()) {
+			tree[pos] += val;
+			pos += (pos & -pos);
+		}
+	}
+};
+
+int n;
+int a[500001], idx[1000001];
+
+int main() {
+	scanf("%d", &n);
+	
+	FenwickTree ft(n);
+	ULL total, ret = 0;
+	
+	for(int i = 0; i<n; i++) {
+		int x;
+		scanf("%d", &x);
+		a[i] = x;
+		idx[x] = i;
+	}
+	
+	for(int i = 0; i<n; i++) {
+		int x;
+		scanf("%d", &x);
+		
+		total = ft.sum(n-1);
+		ret += total - ft.sum(idx[x]);
+		ft.add(idx[x], 1);
+	}
+	
+	cout << ret << endl;
+	
+	return 0;
+}

@@ -1,0 +1,54 @@
+#include <iostream>
+#include <string.h>
+
+using namespace std;
+
+const int INF = 987654321;
+int t, n;
+int cache[100001][3];	
+int sti[100001][2];
+
+int solve(int index, int last) {
+	if(index == n)	return 0;
+	if(index > n)	return INF;
+	
+	if(last == -1)	{
+		int ret = 0;
+		for(int i = 0; i<2; i++)
+			ret = max(ret, solve(index+1, i) + sti[index][i]);
+		ret = max(ret, solve(index+1, 2));
+		
+		return ret;
+	}
+	
+	int& ret = cache[index][last];
+	if(ret != -1)	return ret;
+	
+	if(last == 0)
+		ret = max(solve(index+1, 1) + sti[index][1], solve(index+1, 2));
+	else if(last == 1)
+		ret = max(solve(index+1, 0) + sti[index][0], solve(index+1, 2));
+	else if(last == 2)
+		ret = max(solve(index+1, 0) + sti[index][0], solve(index+1, 1) + sti[index][1]);
+		
+	return ret;
+}
+
+int main() {
+	cin >> t;
+	
+	for(int i = 0; i<t; i++) {
+		cin >> n;
+		memset(cache, -1, sizeof(cache));
+		memset(sti, 0, sizeof(sti));
+		
+		for(int k = 0; k<n; k++)
+			cin >> sti[k][0];
+		for(int k = 0; k<n; k++)
+			cin >> sti[k][1];
+		
+		cout << solve(0, -1) << endl;
+	}
+	
+	return 0;
+}

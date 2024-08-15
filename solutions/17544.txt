@@ -1,0 +1,102 @@
+#include <iostream>
+#include <deque>
+#include <cstring>
+#include <fstream>
+
+using namespace std;
+
+const int S = 1000, INF = 1e9;
+int R, C, K;
+int bd[S+5][S+5];
+int mv[4][2] = {
+    {1,0}, {-1,0}, {0,1}, {0,-1}
+};
+int dist[S+5][S+5];
+
+struct P {
+    int y, x;
+    int c;
+};
+
+bool check(int k) {
+    for(int i = 1; i<=R; i++) {
+        for(int j = 1; j<=C; j++)
+            dist[i][j] = INF;
+    }
+    deque<P> dq;
+    int a[R+5][C+5];
+
+    for(int i = 1; i<=R; i++) {
+        for(int j = 1; j<=C; j++) {
+            if(bd[i][j] < k)
+                a[i][j] = 1;
+            else
+                a[i][j] = 0;
+        }
+    }
+
+    for(int i = 1; i<=C; i++)
+        dq.push_back({1, i, a[1][i]});
+
+    while(!dq.empty()) {
+        P p = dq.front();
+        dq.pop_front();
+
+        if(p.c > K)
+            continue;
+        if(p.c <= K && p.y == R)
+            return true;
+
+        for(int type = 0; type<4; type++) {
+            int y = p.y + mv[type][0];
+            int x = p.x + mv[type][1];
+
+            if(y <= 0 || y > R || x <= 0 || x > C)
+                continue;
+            if(dist[y][x] <= p.c + a[y][x])
+                continue;
+
+            dist[y][x] = p.c + a[y][x];
+            if(a[y][x] == 1)
+                dq.push_back({y,x,p.c+1});
+            else
+                dq.push_front({y,x,p.c});
+        }
+    }
+
+    return false;
+}
+
+int solve() {
+    int lo = 0, hi = INF, mid;
+
+    while(lo <= hi) {
+        mid = (lo+hi)/2;
+
+        if(check(mid) == false)
+            hi = mid-1;
+        else
+            lo = mid+1;
+
+    }
+    return lo-1;
+}
+
+int main() {
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL); cout.tie(NULL);
+    //fstream inf("prob.txt");
+    //inf >> R >> C >> K;
+    cin >> R >> C >> K;
+
+    for(int i = 1; i<=R; i++) {
+        for(int j = 1; j<=C; j++) {
+            //inf >> bd[i][j];
+            cin >> bd[i][j];
+        }
+    }
+
+    cout << solve() << '\n';
+
+    return 0;
+}

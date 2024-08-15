@@ -1,0 +1,103 @@
+#include <iostream>
+#include <vector>
+
+using namespace std;
+
+typedef long long ll;
+
+class seg2d {
+public:
+    int n;
+    vector<vector<ll>> a;
+    seg2d(int n) : n(n), a(2*n, vector<ll>(2*n)) {}
+
+    void init(vector<vector<ll>> &v) {
+        for(int i = 0; i<n; i++) {
+            for(int j = 0; j<n; j++)
+                a[i+n][j+n] = v[i][j];
+        }
+
+        for(int i = n; i<2*n; i++) {
+            for(int j = n-1; j>0; j--)
+                a[i][j] = a[i][j<<1] + a[i][j<<1|1];
+        }
+
+        for(int i = n-1; i>0; i--) {
+            for(int j = 1; j<2*n; j++)
+                a[i][j] = a[i<<1][j] + a[i<<1|1][j];
+        }
+    }
+
+    void update(int y, int x, ll v) {
+        y--;
+        x--;
+        a[y+n][x+n] = v;
+
+        for(int i = x+n; i>1; i>>=1)
+            a[y+n][i>>1] = a[y+n][i] + a[y+n][i^1];
+        
+        for(y = y+n; y>1; y>>=1) {
+            for(int i = x+n; i>=1; i>>=1)
+                a[y>>1][i] = a[y][i] + a[y^1][i];
+        }
+    }
+
+    ll get1d(int y, int x1, int x2) {
+        ll ret = 0;
+        for(x1 += n, x2 += n+1; x1<x2; x1>>=1, x2>>=1) {
+            if(x1&1)
+                ret += a[y][x1++];
+            if(x2&1)
+                ret += a[y][--x2];
+        }
+        return ret;
+    }
+
+    ll get(int y1, int x1, int y2, int x2) {
+        y1--;
+        x1--;
+        y2--;
+        x2--;
+
+        ll ret = 0;
+        for(y1 += n, y2 += n+1; y1<y2; y1>>=1, y2>>=1) {
+            if(y1&1)
+                ret += get1d(y1++, x1, x2);
+            if(y2&1)
+                ret += get1d(--y2, x1, x2);
+        }
+        return ret;
+    }
+};
+
+int N, M;
+
+int main() {
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL); cout.tie(NULL);
+    cin >> N >> M;
+
+    seg2d Tree(N);
+    vector<vector<ll>> a(2*N, vector<ll>(2*N));
+
+    for(int i = 0; i<N; i++) {
+        for(int j = 0; j<N; j++)
+            cin >> a[i][j];
+    }
+
+    Tree.init(a);
+
+    for(int i = 1; i<=M; i++) {
+        int w, y1, x1, y2, x2;
+        cin >> w >> y1 >> x1 >> y2;
+
+        if(w == 0)
+            Tree.update(y1, x1, y2);
+        else {
+            cin >> x2;
+            cout << Tree.get(y1, x1, y2, x2) << '\n';
+        }
+    }
+ 
+    return 0;
+}

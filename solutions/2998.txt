@@ -1,0 +1,45 @@
+#include <iostream>
+
+using namespace std;
+
+string bs;
+
+string b2o(string bs) {
+	string s = "";
+	
+	int num = 0;
+	for(int i = 0; i<bs.size(); i++) {
+		if(i == 0 && bs[i] == '1')
+			num += 4;
+		else if(i == 1 && bs[i] == '1')
+			num += 2;
+		else if(i == 2 && bs[i] == '1')
+			num += 1;
+	}
+	s += char(num + '0');
+	return s;
+}
+
+string solve() {
+	int n = bs.size();
+	string os = "";
+
+	for(int i = 0; i < 3 - n % 3; i++) {
+		if(n % 3 == 0)	break;
+		bs = "0" + bs;
+	}
+	
+	n = bs.size();
+	for(int i = 0; i<n; i++)
+		if(i % 3 == 2)
+			os += b2o(bs.substr(i-2, 3));
+	return os;
+}
+
+int main() {
+	cin >> bs;
+	
+	cout << solve() << endl;
+	
+	return 0;
+}

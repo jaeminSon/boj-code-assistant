@@ -1,0 +1,21 @@
+#include <iostream>
+
+using namespace std;
+
+
+int main() {
+	string s;
+	getline(cin, s);
+	
+	int cnt = 0;
+	for(int i = 1; i<s.size(); i++) {
+		if(i < s.size()-1 && s[i] == ' ')
+			cnt++;
+	}
+	
+	if(s[0] == ' ' && s.size() == 1)
+		cout << 0 << endl;
+	else cout << cnt+1 << endl;
+	
+	return 0;
+}

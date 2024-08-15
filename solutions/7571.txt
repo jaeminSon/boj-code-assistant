@@ -1,0 +1,29 @@
+#include <iostream>
+#include <algorithm>
+
+using namespace std;
+
+int n, m;
+int x[100001], y[100001];
+
+int main() {
+	cin >> n >> m;
+	
+	for(int i = 0; i<m; i++)
+		cin >> x[i] >> y[i];
+	
+	sort(x, x+m);
+	sort(y, y+m);
+	
+	int mx, my, retx = 0, rety = 0;
+	mx = x[m/2];
+	my = y[m/2];
+	
+	for(int i = 0; i<m; i++) {
+		retx += abs(x[i] - mx);
+		rety += abs(y[i] - my);
+	}
+	cout << retx + rety << endl;
+	
+	return 0;
+}

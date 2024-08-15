@@ -1,0 +1,101 @@
+#include <iostream>
+#include <vector>
+#include <fstream>
+
+using namespace std;
+
+const int S = 1e5, INF = 987654321;
+int N, M;
+int d[S+5], anc[S+5][22], locost[S+5][22], hicost[S+5][22];
+bool visited[S+5];
+vector<pair<int, int> > Tree[S+5];
+
+void dfs(int here, int depth) {
+	visited[here] = true;
+	d[here] = depth;
+	
+	for(int i = 0; i<Tree[here].size(); i++) {
+		int next = Tree[here][i].first;
+		if(visited[next] == true)	continue;
+		
+		anc[next][0] = here;
+		locost[next][0] = hicost[next][0] = Tree[here][i].second;
+		dfs(next, depth+1);
+	}
+}
+
+void btup() {
+	for(int i = 1; i<=21; i++) {
+		for(int j = 1; j<=N; j++) {
+			anc[j][i] = anc[anc[j][i-1]][i-1];
+			locost[j][i] = min(locost[anc[j][i-1]][i-1], locost[j][i-1]);
+			hicost[j][i] = max(hicost[anc[j][i-1]][i-1], hicost[j][i-1]);
+		}
+	}
+}
+
+void lca(int a, int b) {
+	int lo = INF, hi = -INF;
+	
+	if(d[b] < d[a])
+		swap(a, b);
+
+	for(int i = 21; i>=0; i--) {
+		if(d[a] <= d[anc[b][i]]) {
+			lo = min(lo, locost[b][i]);
+			hi = max(hi, hicost[b][i]);
+			b = anc[b][i];
+		}
+	}
+	if(a == b) {
+		printf("%d %d\n", lo, hi);
+		return;
+	}
+	
+	for(int i = 21; i>=0; i--) {
+		if(anc[a][i] != anc[b][i]) {
+			lo = min(lo, locost[a][i]);
+			hi = max(hi, hicost[a][i]);
+			lo = min(lo, locost[b][i]);
+			hi = max(hi, hicost[b][i]);
+			a = anc[a][i];
+			b = anc[b][i];
+		}
+	}
+	lo = min(lo, locost[a][0]);
+	hi = max(hi, hicost[a][0]);
+	lo = min(lo, locost[b][0]);
+	hi = max(hi, hicost[b][0]);
+	
+	printf("%d %d\n", lo, hi);
+}
+
+int main() {
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL);
+	//fstream inf("prob.txt");
+	//inf >> N;
+	cin >> N;
+	
+	for(int i = 1; i<N; i++) {
+		int a, b, c;
+		//inf >> a >> b >> c;
+		cin >> a >> b >> c;
+		Tree[a].push_back(make_pair(b, c));
+		Tree[b].push_back(make_pair(a, c));
+	}
+	dfs(1, 1);
+	btup();
+	
+	//inf >> M;
+	cin >> M;
+	for(int i = 1; i<=M; i++) {
+		int a, b;
+		//inf >> a >> b;
+		cin >> a >> b;
+		
+		lca(a, b);
+	}
+	
+	return 0;
+}

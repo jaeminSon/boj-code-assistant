@@ -1,0 +1,83 @@
+#include <iostream>
+#include <vector>
+#include <cstring>
+#include <fstream>
+
+using namespace std;
+
+int T, N;
+
+struct Trie {
+    Trie* children[10];
+    bool terminal;
+
+    Trie() {
+        memset(children, 0, sizeof(children));
+        terminal = false;
+    }
+
+    void insert(char* ch) {
+        if (*ch == NULL) {
+            terminal = true;
+            return;
+        }
+        int next = *ch - '0';
+        if (children[next] == NULL)
+            children[next] = new Trie();
+        children[next]->insert(ch + 1);
+    }
+
+    Trie* find(char* ch) {
+        if (*ch == NULL)
+            return this;
+
+        int next = *ch - '0';
+        if (children[next] == NULL)
+            return NULL;
+        return children[next]->find(ch + 1);
+    }
+};
+
+int main(void) {
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL); cout.tie(NULL);
+    //fstream inf("prob.txt");
+    //inf >> T;
+    cin >> T;
+
+    for (int i = 0; i < T; i++) {
+        //inf >> N;
+        cin >> N;
+
+        vector<string> str;
+        Trie* t = new Trie();
+        for (int j = 0; j < N; j++) {
+            string s;
+            //inf >> s;
+            cin >> s;
+
+            str.push_back(s);
+            t->insert(&s[0]);
+        }
+
+        bool check = false;
+        for (int j = 0; j < N; j++) {
+            Trie* p = t->find(&str[j][0]);
+
+            for (int k = 0; k < 10; k++) {
+                if (p->children[k] != NULL) {
+                    check = true;
+                    break;
+                }
+            }
+            if (check == true)
+                break;
+        }
+        if (check == true)
+            printf("NO\n");
+        else
+            printf("YES\n");
+    }
+
+    return 0;
+}

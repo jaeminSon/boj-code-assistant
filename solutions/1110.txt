@@ -1,0 +1,25 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+
+using namespace std;
+
+int main() {
+	int s, base;
+	cin >> s;
+	base = s;
+	
+	int a, b, c;
+	int cnt = 0;
+	while(base != s || cnt == 0) {
+		a = s/10;
+		b = s%10;
+		a = (a+b)%10;
+		
+		s = (s%10)*10 + a;
+		cnt++;
+	}
+	cout << cnt << endl;
+	
+	return 0;
+}

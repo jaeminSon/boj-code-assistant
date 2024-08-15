@@ -1,0 +1,107 @@
+#include <iostream>
+#include <fstream>
+
+using namespace std;
+
+typedef long long ll;
+
+struct Node {
+    Node* l, * r;
+    ll v;
+    Node() {
+        l = r = NULL;
+        v = 0;
+    }
+};
+
+const int S = 1e5;
+int N, M;
+int a[S + 5];
+Node* root[20 * S + 5];
+
+void init(Node* b, int s, int e) {
+    if (s == e) {
+        b->v = a[s];
+        return;
+    }
+    
+    int mid = (s + e) / 2;
+    b->l = new Node();
+    b->r = new Node();
+    init(b->l, s, mid);
+    init(b->r, mid + 1, e);
+    b->v = b->l->v + b->r->v;
+}
+
+void update(Node* p, Node* b, int s, int e, int n, int x) {
+    if (s == e) {
+        b->v = x;
+        return;
+    }
+
+    int mid = (s + e) / 2;
+    if (n <= mid) {
+        b->l = new Node();
+        b->r = p->r;
+
+        update(p->l, b->l, s, mid, n, x);
+    }
+    else {
+        b->r = new Node();
+        b->l = p->l;
+        update(p->r, b->r, mid + 1, e, n, x);
+    }
+
+    ll lft = b->l != NULL ? b->l->v : 0;
+    ll rgt = b->r != NULL ? b->r->v : 0;
+    b->v = lft + rgt;
+}
+
+ll get(Node* b, int s, int e, int l, int r) {
+    if (b == NULL)
+        return 0;
+    if (r < s || e < l)
+        return 0;
+
+    if (l <= s && e <= r)
+        return b->v;
+
+    int mid = (s + e) / 2;
+    return get(b->l, s, mid, l, r) + get(b->r, mid + 1, e, l, r);
+}
+
+int main(void) {
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL); cout.tie(NULL);
+    //fstream inf("prob.txt");
+    //inf >> N;
+    cin >> N;
+
+    for (int i = 1; i <= N; i++) {
+        //inf >> a[i];
+        cin >> a[i];
+    }
+    //inf >> M;
+    cin >> M;
+
+    root[0] = new Node();
+    init(root[0], 1, N);
+    for (int k = 1, a, b, c, d, i = 0; i < M; i++) {
+        //inf >> a >> b >> c;
+        cin >> a >> b >> c;
+
+        if (a == 1) {
+            root[k] = new Node();
+            update(root[k - 1], root[k], 1, N, b, c);
+            k++;
+        }
+        else {
+            //inf >> d;
+            cin >> d;
+
+            printf("%lld\n", get(root[b], 1, N, c, d));
+        }
+    }
+
+    return 0;
+}

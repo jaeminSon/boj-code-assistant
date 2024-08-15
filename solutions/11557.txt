@@ -1,0 +1,35 @@
+#include <iostream>
+#include <fstream>
+
+using namespace std;
+
+int T, N, L;
+string s;
+
+int main() {
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL); cout.tie(NULL);
+	//fstream inf("prob.txt");
+	//inf >> T;
+	cin >> T;
+
+	for (int i = 0; i < T; i++) {
+		//inf >> N;
+		cin >> N;
+
+		string ret;
+		int ml = -1;
+		for (int j = 0; j < N; j++) {
+			//inf >> s >> L;
+			cin >> s >> L;
+
+			if (ml < L) {
+				ret = s;
+				ml = L;
+			}
+		}
+		cout << ret << endl;
+	}
+
+	return 0;
+}

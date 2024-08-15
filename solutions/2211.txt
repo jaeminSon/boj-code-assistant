@@ -1,0 +1,63 @@
+#include <iostream>
+#include <vector>
+#include <queue>
+#include <fstream>
+
+using namespace std;
+
+const int S = 1e4, INF = 987654321;
+int N, M;
+int p[S+5], d[S+5];
+vector<pair<int,int>> adj[S+5];
+
+void dijkstra() {
+	for(int i = 1; i<=N; i++)
+		d[i] = INF;
+	
+	priority_queue<int, vector<int>, greater<int>> pq;
+	pq.push(1);
+	d[1] = 0;
+	
+	while(!pq.empty()) {
+		int here = pq.top();
+		pq.pop();
+		
+		for(int i = 0; i<adj[here].size(); i++) {
+			int there = adj[here][i].second, cost = adj[here][i].first;
+			
+			if(d[there] > d[here]+cost) {
+				p[there] = here;
+				d[there] = d[here]+cost;
+				pq.push(there);
+			}
+		}
+	}
+}
+
+void solve() {
+	dijkstra();
+	
+	for(int i = 2; i<=N; i++)
+		printf("%d %d\n", i, p[i]);
+}
+
+int main() {
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL); cout.tie(NULL);
+	//fstream inf("prob.txt");
+	//inf >> N >> M;
+	cin >> N >> M;
+	
+	for(int a,b,c,i = 0; i<M; i++) {
+		//inf >> a >> b >> c;
+		cin >> a >> b >> c;
+		
+		adj[a].push_back({c,b});
+		adj[b].push_back({c,a});
+	}
+	
+	printf("%d\n", N-1);
+	solve();
+	
+	return 0;
+}

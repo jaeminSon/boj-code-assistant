@@ -1,0 +1,71 @@
+#include <iostream>
+#include <vector>
+#include <fstream>
+
+using namespace std;
+
+const int INF = 50;
+int N;
+vector<int> adj[27];
+
+void pre(int here) {
+    if (here == INF)
+        return;
+
+    printf("%c", here + 'A');
+    pre(adj[here][0]);
+    pre(adj[here][1]);
+}
+
+void in(int here) {
+    if (here == INF)
+        return;
+
+    in(adj[here][0]);
+    printf("%c", here + 'A');
+    in(adj[here][1]);
+}
+
+void post(int here) {
+    if (here == INF)
+        return;
+
+    post(adj[here][0]);
+    post(adj[here][1]);
+    printf("%c", here + 'A');
+}
+
+int main(void) {
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL); cout.tie(NULL);
+    //fstream inf("prob.txt");
+    //inf >> N;
+    cin >> N;
+
+    for (int i = 0; i < N; i++) {
+        char a, b, c;
+        //inf >> a >> b >> c;
+        cin >> a >> b >> c;
+
+        a -= 'A';
+        if (b == '.')
+            b = 50;
+        else
+            b -= 'A';
+
+        if (c == '.')
+            c = 50;
+        else
+            c -= 'A';
+
+        adj[a].push_back(b);
+        adj[a].push_back(c);
+    }
+    pre(0);
+    printf("\n");
+    in(0);
+    printf("\n");
+    post(0);
+
+    return 0;
+}

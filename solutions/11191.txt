@@ -1,0 +1,36 @@
+#include <iostream>
+#include <set>
+#include <algorithm>
+#include <fstream>
+
+using namespace std;
+
+typedef long long ll;
+
+int N;
+set<ll, greater<ll>> st;
+
+int main() {
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL); cout.tie(NULL);
+    //fstream inf("prob.txt");
+    //inf >> N;
+    cin >> N;
+
+    ll x;
+    for (int i = 0; i < N; i++) {
+        //inf >> x;
+        cin >> x;
+
+        for (set<ll, greater<ll>>::iterator it = st.begin(); it != st.end(); it++)
+            x = min(x, (*it) ^ x);
+        if (x > 0)
+            st.insert(x);
+    }
+    ll ret = 0;
+    for (set<ll, greater<ll>>::iterator it = st.begin(); it != st.end(); it++)
+        ret = max(ret, (*it) ^ ret);
+    printf("%lld", ret);
+
+	return 0;
+}

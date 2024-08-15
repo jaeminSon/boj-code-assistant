@@ -1,0 +1,76 @@
+#include <iostream>
+#include <algorithm>
+#include <fstream>
+
+using namespace std;
+
+const int INF = 987654321;
+int N, M;
+int adj[101][101], dist[101][101];
+int mv[4][2] = { {1, 0}, {0,1}, {-1, 0}, {0, -1} };
+bool visited[101][101];
+
+int dijkstra() {
+    for (int i = 1; i <= N; i++) {
+        for (int j = 1; j <= M; j++)
+            dist[i][j] = INF;
+    }
+    dist[1][1] = 0;
+
+    while (true) {
+        int cy= -1, cx = -1, cd = INF;
+
+        for (int i = 1; i <= N; i++) {
+            for (int j = 1; j <= M; j++) {
+                if (visited[i][j] == false && dist[i][j] < cd) {
+                    cy = i;
+                    cx = j;
+                    cd = dist[i][j];
+                }
+            }
+        }
+
+        if (cy == -1)
+            break;
+
+        visited[cy][cx] = true;
+
+        for (int type = 0; type < 4; type++) {
+            int ny = cy + mv[type][0];
+            int nx = cx + mv[type][1];
+
+            if (ny < 1 || N < ny || nx < 1 || M < nx || visited[ny][nx] == true)
+                continue;
+
+            if (adj[ny][nx] == 0)
+                dist[ny][nx] = min(dist[ny][nx], cd);
+            else
+                dist[ny][nx] = min(dist[ny][nx], cd + 1);
+            
+        }
+    }
+
+    return dist[N][M];
+}
+
+int main(void) {
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL); cout.tie(NULL);
+    //fstream inf("prob.txt");
+    //inf >> M >> N;
+    cin >> M >> N;
+
+    for (int i = 1; i <= N; i++) {
+        for (int j = 1; j <= M; j++) {
+            char ch;
+            //inf >> ch;
+            cin >> ch;
+
+            if (ch == '1')
+                adj[i][j] = 1;
+        }
+    }
+    printf("%d", dijkstra());
+
+    return 0;
+}

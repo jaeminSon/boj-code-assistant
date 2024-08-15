@@ -1,0 +1,72 @@
+#include <iostream>
+#include <algorithm>
+#include <climits>
+#include <fstream>
+
+using namespace std;
+
+typedef long long ll;
+
+const int S = 3000;
+const ll INF = LLONG_MAX >> 4;
+int N, M, L;
+int up[S + 5], dw[S + 5];
+ll DP[S + 5][S + 5][2];
+
+ll dist(int x1, int x2) {
+    x1 = up[x1];
+    x2 = dw[x2];
+    if (x2 < x1)
+        swap(x1, x2);
+    return ((ll)x2 - x1) * ((ll)x2 - x1) + (ll)L * L;
+}
+
+ll solve() {
+    for (int i = 1; i <= N; i++) {
+        for (int j = 1; j <= M; j++) {
+            DP[i][j][0] = INF;
+            DP[i][j][1] = INF;
+        }
+    }
+    DP[1][1][0] = DP[1][1][1] = 0;
+
+    ll tot = (ll)N + M - 1, ps;
+    for (int i = 1; i <= N; i++) {
+        for (int j = 1; j <= M; j++) {
+            ps = (ll)i + j - 1;
+
+            DP[i + 1][j][1] = min(DP[i + 1][j][1],
+                DP[i][j][1] + dist(i, j) * tot);
+            DP[i + 1][j][1] = min(DP[i + 1][j][1],
+                DP[i][j][0] + dist(i, j) * ps * (tot - ps + 1));
+
+            DP[i][j + 1][0] = min(DP[i][j + 1][0],
+                DP[i][j][0] + dist(i, j) * tot);
+            DP[i][j + 1][0] = min(DP[i][j + 1][0],
+                DP[i][j][1] + dist(i, j) * ps * (tot - ps + 1));
+        }
+    }
+
+    return min(DP[N][M][0], DP[N][M][1]) + dist(N, M) * tot;
+}
+
+int main(void) {
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL); cout.tie(NULL);
+    //fstream inf("prob.txt");
+    //inf >> N >> M >> L;
+    cin >> N >> M >> L;
+
+    for (int i = 1; i <= N; i++) {
+        //inf >> up[i];
+        cin >> up[i];
+    }
+    for (int i = 1; i <= M; i++) {
+        //inf >> dw[i];
+        cin >> dw[i];
+    }
+
+    printf("%lld", solve());
+
+    return 0;
+}

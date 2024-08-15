@@ -1,0 +1,57 @@
+#include <iostream>
+#include <queue>
+#include <algorithm>
+#include <fstream>
+
+using namespace std;
+
+typedef pair<int, int> pii;
+
+const int S = 1500;
+int a, b, c;
+bool visited[S + 5][S + 5];
+
+bool bfs() {
+    int sum = a + b + c;
+    queue<pii> q;
+    q.push({ a,b });
+
+    while (!q.empty()) {
+        int s1 = q.front().first;
+        int s2 = q.front().second;
+        q.pop();
+
+        if (s1 > s2)
+            swap(s1, s2);
+
+        if (visited[s1][s2] == true)
+            continue;
+
+        visited[s1][s2] = true;
+        if (s1 == s2 && s2 == sum - s1 - s2)
+            return 1;
+
+        int p[3] = { s1, s2, sum - s1 - s2 };
+        sort(p, p + 3);
+
+        if (visited[p[1] - p[0]][p[0] + p[0]] == false)
+            q.push({ p[1] - p[0], p[0] + p[0] });
+        if (visited[p[2] - p[1]][p[1] + p[1]] == false)
+            q.push({ p[2] - p[1], p[1] + p[1] });
+        if (visited[p[2] - p[0]][p[0] + p[0]] == false)
+            q.push({ p[2] - p[0], p[0] + p[0] });
+    }
+    return false;
+}
+
+int main(void) {
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL); cout.tie(NULL);
+    //fstream inf("prob.txt");
+    //inf >> a >> b >> c;
+    cin >> a >> b >> c;
+
+    printf("%d", bfs());
+
+    return 0;
+}

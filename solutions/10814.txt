@@ -1,0 +1,36 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <fstream>
+
+using namespace std;
+
+int N;
+vector<pair<int, string> > A;
+
+bool cmp(const pair<int, string> &a, const pair<int, string> &b) {
+	if(a.first < b.first)
+		return true;
+	return false;
+}
+
+int main() {
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL); cout.tie(NULL);
+	//fstream inf("prob.txt");
+	//inf >> N;
+	cin >> N;
+	
+	for(int i = 0; i<N; i++) {
+		int a;
+		string b;
+		//inf >> a >> b;
+		cin >> a >> b;
+		A.push_back({a, b});
+	}
+	stable_sort(A.begin(), A.end(), cmp);
+	for(int i = 0; i<N; i++)
+		cout << A[i].first << " " << A[i].second << "\n";
+	
+	return 0;
+}

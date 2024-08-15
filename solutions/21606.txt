@@ -1,0 +1,67 @@
+#include <iostream>
+#include <vector>
+
+using namespace std;
+
+typedef long long ll;
+
+const int S = 2e5;
+int N;
+string s;
+vector<int> adj[S+5];
+bool t[S+5], visited[S+5];
+ll ret;
+
+ll dfs(int here) {
+    visited[here] = true;
+    ll w = 0, sum = 0;
+
+    for(int i = 0; i<adj[here].size(); i++) {
+        int there = adj[here][i];
+
+        if(visited[there] == true)
+            continue;
+        w = dfs(there);
+        sum += w;
+        
+        if(t[here] == true)
+            ret += w*(w+1);
+    }
+
+    if(t[here] == true)
+        return 1;
+    return sum;
+}
+
+ll solve() {
+    int r = 0;
+    for(int i = 0; i<N; i++) {
+        if(s[i] == '1') {
+            t[i+1] = true;
+            r = i+1;
+        }
+    }
+
+    if(r == 0)
+        return 0;
+    dfs(r);
+    return ret;
+}
+
+int main() {
+    ios_base::sync_with_stdio(false);
+	cin.tie(NULL); cout.tie(NULL);
+    cin >> N;
+    cin >> s;
+
+    for(int i = 1; i<=N-1; i++) {
+        int u, v;
+        cin >> u >> v;
+
+        adj[u].push_back(v);
+        adj[v].push_back(u);
+    }
+    cout << solve() << '\n';
+
+    return 0;
+}

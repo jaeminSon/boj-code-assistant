@@ -1,0 +1,46 @@
+#include <iostream>
+#include <cstring>
+
+using namespace std;
+
+const int INF = 987654321;
+int h1, w1, h2, w2;
+int cache[51][51][51][51];
+
+int solve(int h1, int w1, int h2, int w2) {
+	if(h2 == 0 && w2 == 0 && h1 == w1)	return 1;
+	if(h2 == 0 && w2 == 0 && h1 == 1)	return w1;
+	if(h2 == 0 && w2 == 0 && w1 == 1)	return h1;
+	
+	int& ret = cache[h1][w1][h2][w2];
+	if(ret != -1)	return ret;
+	ret = INF;
+	
+	for(int i = 1; i<w1; i++) {
+		if(i < w1 - w2)
+			ret = min(ret, solve(h1, i, 0, 0) + solve(h1, w1-i, h2, w2));
+		else if(i == w1 - w2)
+			ret = min(ret, solve(h1, i, 0, 0) + solve(h1-h2, w2, 0, 0));
+		else
+			ret = min(ret, solve(h1, i, h2, i-(w1-w2)) + solve(h1-h2, w1-i, 0, 0));
+	}
+	
+	for(int i = 1; i<h1; i++) {
+		if(i < h2)
+			ret = min(ret, solve(i, w1-w2, 0, 0) + solve(h1-i, w1, h2-i, w2));
+		else if(i == h2)
+			ret = min(ret, solve(i, w1-w2, 0, 0) + solve(h1-i, w1, 0, 0));
+		else
+			ret = min(ret, solve(i, w1, h2, w2) + solve(h1-i, w1, 0, 0));
+	}
+	return ret;
+}
+
+int main() {
+	cin >> h1 >> w1 >> h2 >> w2;
+
+	memset(cache, -1, sizeof(cache));
+	cout << solve(h1, w1, h2, w2) << endl;
+	
+	return 0;
+}

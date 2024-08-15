@@ -1,0 +1,31 @@
+#include <iostream>
+
+using namespace std;
+
+const int INF = 987654321;
+string a, b;
+int cache[51];
+
+int solve() {
+	int n = a.size(), m = b.size();
+	int ret = INF;
+	
+	for(int i = 0; i<=m-n; i++) {
+		int cand = 0;
+		for(int j = 0; j<n; j++) {
+			if(a[j] != b[i+j])
+				cand++;
+		}
+		ret = min(ret, cand);
+	}
+	
+	return ret;
+}
+
+int main() {
+	cin >> a >> b;
+	
+	cout << solve() << endl;
+	
+	return 0;
+}

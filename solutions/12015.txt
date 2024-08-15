@@ -1,0 +1,44 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <fstream>
+
+using namespace std;
+
+const int S = 1e6;
+int N;
+int a[S + 5];
+
+int solve() {
+    vector<int> p;
+    p.push_back(a[1]);
+    int ret = 1;
+
+    for (int i = 2; i <= N; i++) {
+        if (a[i] > p.back()) {
+            p.push_back(a[i]);
+            ret = max(ret, (int)p.size());
+        }
+        else {
+            int idx = lower_bound(p.begin(), p.end(), a[i]) - p.begin();
+            p[idx] = a[i];
+        }
+    }
+    return ret;
+}
+
+int main(void) {
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL); cout.tie(NULL);
+    //fstream inf("prob.txt");
+    //inf >> N;
+    cin >> N;
+
+    for (int i = 1; i <= N; i++) {
+        //inf >> a[i];
+        cin >> a[i];
+    }
+    printf("%d", solve());
+
+    return 0;
+}

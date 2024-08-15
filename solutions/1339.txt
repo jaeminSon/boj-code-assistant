@@ -1,0 +1,62 @@
+#include <iostream>
+#include <map>
+#include <algorithm>
+#include <cstring>
+
+using namespace std;
+
+typedef long long ll;
+
+int N;
+ll ret;
+int idx, char2idx[15];
+string s[15];
+map<char,int> mp;
+
+void dfs(int n, int b) {
+    if(n == 10) {
+        ll sum = 0;
+        for(int i = 1; i<=N; i++) {
+            ll num = 0;
+            for(int j = 0; j<s[i].size(); j++) {
+                num *= 10;
+                num += char2idx[mp[s[i][j]]];
+            }
+            sum += num;
+        }
+        ret = max(ret, sum);
+        return;
+    }
+    
+    int p = 1;
+    for(int i = 0; i<10; i++) {
+        if(p&b) {
+            p = p << 1;
+            continue;
+        }
+        char2idx[n] = i;
+        dfs(n+1, b|p);
+        p = p << 1;
+    }
+}
+
+ll solve() {
+    for(int i = 1; i<=N; i++) {
+        for(int j = 0; j<s[i].size(); j++) {
+            if(mp.count(s[i][j]) == 0)
+                mp.insert({s[i][j], idx++});
+        }
+    }
+    dfs(0, 0);
+    return ret;
+}
+
+int main() {
+    cin >> N;
+
+    for(int i = 1; i<=N; i++)
+        cin >> s[i];
+    cout << solve() << '\n';
+
+    return 0;
+}

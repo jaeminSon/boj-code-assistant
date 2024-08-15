@@ -1,0 +1,91 @@
+#include <iostream>
+#include <vector>
+#include <fstream>
+
+using namespace std;
+
+typedef pair<int, int> pii;
+
+const int S = 40000;
+int N, M;
+int d[S + 5], dist[S + 5], anc[S + 5][18];
+vector<pii> adj[S + 5];
+bool visited[S + 5];
+
+void dfs(int here, int depth, int dt) {
+    visited[here] = true;
+    d[here] = depth;
+    dist[here] = dt;
+
+    for (int i = 0; i < adj[here].size(); i++) {
+        int there = adj[here][i].first;
+        int cost = adj[here][i].second;
+
+        if (visited[there] == true)
+            continue;
+
+        anc[there][0] = here;
+        dfs(there, depth + 1, dt + cost);
+    }
+}
+
+void btup() {
+    for (int i = 1; i < 18; i++) {
+        for (int j = 1; j <= N; j++)
+            anc[j][i] = anc[anc[j][i - 1]][i - 1];
+    }
+}
+
+int lca(int a, int b) {
+    if (d[a] > d[b])
+        swap(a, b);
+
+    for (int i = 17; i >= 0; i--) {
+        if (d[a] <= d[anc[b][i]])
+            b = anc[b][i];
+    }
+    if (a == b)
+        return a;
+
+    for (int i = 17; i >= 0; i--) {
+        if (anc[a][i] != anc[b][i]) {
+            a = anc[a][i];
+            b = anc[b][i];
+        }
+    }
+    return anc[a][0];
+}
+
+int solve(int a, int b) {
+    int c = lca(a, b);
+    return dist[a] + dist[b] - dist[c] * 2;
+}
+
+int main(void) {
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL); cout.tie(NULL);
+    //fstream inf("prob.txt");
+    //inf >> N;
+    cin >> N;
+
+    for (int a,b,w,i = 0; i < N - 1; i++) {
+        //inf >> a >> b >> w;
+        cin >> a >> b >> w;
+
+        adj[a].push_back({ b,w });
+        adj[b].push_back({ a,w });
+    }
+    dfs(1, 0, 0);
+    btup();
+
+    //inf >> M;
+    cin >> M;
+    for (int a,b,i = 0; i < M;i++) {
+        //inf >> a >> b;
+        cin >> a >> b;
+
+        printf("%d\n", solve(a, b));
+    }
+    
+    return 0;
+}

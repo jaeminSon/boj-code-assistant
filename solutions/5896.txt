@@ -1,0 +1,94 @@
+#include <iostream>
+#include <queue>
+#include <algorithm>
+
+using namespace std;
+
+typedef long long ll;
+typedef pair<ll,ll> pll;
+
+const ll INF = 1e15;
+const int S = 5e4;
+int N, K;
+ll M, p[S+5], c[S+5], cp[S+5];
+bool visited[S+5];
+
+int solve() {
+    vector<pll> a, b;
+    a.push_back({-INF,-INF});
+    b.push_back({-INF,-INF});
+    
+    for(int i = 1; i<=N; i++)
+        a.push_back({c[i],i});
+    sort(a.begin(), a.end());
+
+    for(int i = 1; i<=N; i++)
+        b.push_back({p[i],i});
+    sort(b.begin(), b.end());
+
+    ll sum = 0;
+    priority_queue<pll, vector<pll>, greater<pll>> pq;
+    for(int i = 1; i<=K; i++) {
+        if(sum+a[i].first > M)
+            return i-1;
+        
+        sum += a[i].first;
+        ll idx = a[i].second;
+        pq.push({p[idx]-c[idx], idx});
+
+        visited[idx] = true;
+    }
+
+    int ret = K, apt = K+1, bpt = 1;
+    while(true) {
+        int idx1 = b[bpt].second;
+        while(visited[idx1] == true) {
+            bpt++;
+            idx1 = b[bpt].second;
+        }
+        int idx2 = a[apt].second;
+        while(visited[idx2] == true) {
+            apt++;
+            idx2 = a[apt].second;
+        }
+
+        if(apt > N && bpt > N)
+            break;
+        
+        ll c1 = sum + b[bpt].first;
+
+        ll dif = pq.top().first;
+        ll c2 = sum + dif + a[apt].first;
+
+        if (c1 < c2) {
+            visited[idx1] = true;
+            sum = c1;
+        }
+        else {
+            sum = c2;
+            pq.pop();
+
+            pq.push({p[idx2] - c[idx2], idx2});
+
+            visited[idx2] = true;
+        }
+
+        if(sum > M)
+            return ret;
+        ret++;
+    }
+    return ret;
+}
+
+int main() {
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL); cout.tie(NULL);
+    cin >> N >> K >> M;
+
+    for(int i = 1; i<=N; i++)
+        cin >> p[i] >> c[i];
+
+    cout << solve() << '\n';
+    
+    return 0;
+}

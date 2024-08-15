@@ -1,0 +1,28 @@
+#include <iostream>
+#include <string.h>
+
+using namespace std;
+
+int combi[1001][1001];
+
+int bino(int n, int k) {
+	if(n == k || k == 0)	return 1;
+	
+	int& ret = combi[n][k];
+	if(ret != -1)	return ret;
+	
+	ret = bino(n-1, k) + bino(n-1, k-1);
+	ret %= 10007;
+	
+	return	ret;
+}
+
+int main() {
+	int n, k;
+	cin >> n >> k;
+	memset(combi, -1, sizeof(combi));
+	
+	cout << bino(n, k) << endl;
+	
+	return 0;
+}

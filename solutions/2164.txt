@@ -1,0 +1,30 @@
+#include <iostream>
+#include <queue>
+#include <fstream>
+
+using namespace std;
+
+int N;
+
+int main() {
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL); cout.tie(NULL);
+	//fstream inf("prob.txt");
+	//inf >> N;
+	cin >> N;
+	
+	queue<int> q;
+	for(int i = 1; i<=N; i++)
+		q.push(i);
+	
+	int t;
+	while(q.size() > 1) {
+		q.pop();
+		t = q.front();
+		q.pop();
+		q.push(t);
+	}
+	printf("%d", q.front());
+	
+	return 0;
+}

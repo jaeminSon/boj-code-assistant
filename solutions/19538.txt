@@ -1,0 +1,88 @@
+#include <iostream>
+#include <vector>
+#include <queue>
+#include <cstring>
+#include <fstream>
+
+using namespace std;
+
+const int S = 2e5;
+int N, M;
+vector<int> adj[S + 5];
+queue<pair<int, int>> q;
+int discovered[S + 5];
+bool visited[S + 5];
+
+int check(int here) {
+	int sum = 0;
+	for (int i = 0; i < adj[here].size(); i++) {
+		int there = adj[here][i];
+		if (discovered[there] != -1)
+			sum++;
+	}
+	return sum;
+}
+
+void bfs() {
+	while (!q.empty()) {
+		int here = q.front().first;
+		int t = q.front().second;
+		q.pop();
+
+		if (visited[here] == true)
+			continue;
+		visited[here] = true;
+
+		if (discovered[here] == -1)
+			discovered[here] = t;
+		else
+			discovered[here] = min(discovered[here], t);
+
+		for (int i = 0; i < adj[here].size(); i++) {
+			int there = adj[here][i];
+
+			if (visited[there] == true)
+				continue;
+
+			int sum = check(there);
+			if(sum * 2 >= adj[there].size())
+				q.push({ there, t + 1 });
+		}
+	}
+}
+
+int main(void) {
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL); cout.tie(NULL);
+	//fstream inf("prob.txt");
+	//inf >> N;
+	cin >> N;
+
+	for (int a, i = 1; i <= N; i++) {
+		while (true) {
+			//inf >> a;
+			cin >> a;
+
+			if (a == 0)
+				break;
+
+			adj[i].push_back(a);
+		}
+	}
+
+	//inf >> M;
+	cin >> M;
+
+	for (int i = 0; i <= N; i++)
+		discovered[i] = -1;
+	for (int s,i = 0; i < M; i++) {
+		//inf >> s;
+		cin >> s;
+		q.push({ s,0 });
+	}
+	bfs();
+	for (int i = 1; i <= N; i++)
+		printf("%d ", discovered[i]);
+
+	return 0;
+}

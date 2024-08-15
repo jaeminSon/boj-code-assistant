@@ -1,0 +1,100 @@
+#include <iostream>
+#include <vector>
+#include <set>
+#include <algorithm>
+
+using namespace std;
+
+struct Point {
+	int x, y, idx;
+	
+	Point() {
+	}
+	Point(int x, int y, int idx): x(x), y(y), idx(idx) {
+	}
+	bool operator < (const Point &v) const {
+		if(y == v.y)
+			return x < v.x;
+		else
+			return y < v.y;
+	}
+};
+
+bool cmp(const Point &a, const Point &b) {
+	if(a.x == b.x)
+		return a.y < b.y;
+		
+	return a.x < b.x;
+}
+
+int n, r, d;
+vector<Point> p;
+vector<vector<int> > adj = vector<vector<int> >(100001, vector<int>());
+bool visited[100001];
+int dis[100001], ret = 0;
+
+int dist(Point a) {
+	return a.x + a.y;
+}
+
+void dfs(int start) {
+	visited[start] = true;
+	ret = max(ret, dis[start]);
+	
+	for(int i = 0; i<adj[start].size(); i++) {
+		if(visited[adj[start][i]] == true)	continue;
+		dfs(adj[start][i]);
+	}
+	return;
+}
+
+int solve() {
+	set<Point> candidate;
+	candidate.insert(p[0]);
+	
+	int start = 0;
+	for(int i = 1; i<n; i++) {
+		Point cur = p[i];
+		while(start < i) {
+			Point q = p[start];
+			int x = cur.x - q.x;
+			if(x > r + d) {
+				candidate.erase(q);
+				start += 1;
+			}
+			else
+				break;
+		}
+		
+		auto lower_point = Point(0, cur.y - (d + r + 1), -1);
+		auto upper_point = Point(10000000, cur.y + (d + r + 1), -1);
+		auto lower = candidate.lower_bound(lower_point);
+		auto upper = candidate.upper_bound(upper_point);
+		for(auto it = lower; it != upper; it++) {
+			adj[cur.idx].push_back((*it).idx);
+			adj[(*it).idx].push_back(cur.idx);
+		}
+		candidate.insert(cur);
+	}
+	
+	dfs(p[0].idx);
+	return ret + 2 * r;
+}
+
+int main() {
+	cin >> n >> r;
+	
+	for(int i = 0; i<n; i++) {
+		Point a;
+		cin >> a.x >> a.y;
+		a.idx = i;
+		dis[i] = a.x + a.y;
+		p.push_back(a);
+	}
+	cin >> d;
+	
+	sort(p.begin(), p.end(), cmp);
+	cout << solve() << endl;
+	
+	return 0;
+}

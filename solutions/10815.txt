@@ -1,0 +1,32 @@
+#include <iostream>
+#include <set>
+
+using namespace std;
+
+int n, m;
+set<int> a;
+
+int main() {
+	scanf("%d", &n);
+    
+    int aa;
+	for(int i = 0; i<n; i++) {
+		scanf("%d", &aa);
+		a.insert(aa);
+	}
+	
+    int ff;
+    set<int>::iterator it;
+	
+    scanf("%d", &m);
+    for(int i = 0; i<m; i++) {
+		scanf("%d", &ff);
+		if((it = a.find(ff)) != a.end())
+			printf("1 ");
+		else
+			printf("0 ");
+	}
+	
+	
+	return 0;
+}

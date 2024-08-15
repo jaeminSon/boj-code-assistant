@@ -1,0 +1,89 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <fstream>
+
+using namespace std;
+
+typedef long long ll;
+typedef pair<int, int> pii;
+typedef pair<int, pair<int, int>> pdi;
+
+const int S = 1e5, mod = 1e9;
+int N, M;
+int pt[S + 5], d[S + 5];
+ll psum[S + 5];
+vector<pdi> edge;
+
+bool cmp(const pdi& a, const pdi& b) {
+    return a.first > b.first;
+}
+
+int find(int a) {
+    if (a == pt[a])
+        return a;
+    return pt[a] = find(pt[a]);
+}
+
+void join(int a, int b) {
+    a = find(a);
+    b = find(b);
+
+    if (a == b)
+        return;
+
+    if (d[a] < d[b]) {
+        pt[a] = b;
+        d[b] += d[a];
+    }
+    else {
+        pt[b] = a;
+        d[a] += d[b];
+    }
+}
+
+
+ll solve() {
+    sort(edge.begin(), edge.end(), cmp);
+
+    psum[0] = edge[M - 1].first;
+    for (int i = 1; i < edge.size(); i++)
+        psum[i] = (psum[i - 1] + edge[M - i - 1].first) % mod;
+    
+    ll ret = 0;
+    for (int a,b,c,i = 0; i < edge.size(); i++) {
+        c = edge[i].first;
+        a = edge[i].second.first;
+        b = edge[i].second.second;
+
+        if (find(a) != find(b)) {
+            ret += ((ll)d[find(a)] * d[find(b)] % mod) * psum[M - i - 1] % mod;
+            ret %= mod;
+            join(a, b);
+        }
+    }
+    return ret;
+}
+
+int main(void) {
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL); cout.tie(NULL);
+    //fstream inf("prob.txt");
+    //inf >> N >> M;
+    cin >> N >> M;
+
+    for (int i = 1; i <= N; i++) {
+        pt[i] = i;
+        d[i] = 1;
+    }
+    
+    for (int x,y,w,i = 0; i < M; i++) {
+        //inf >> x >> y >> w;
+        cin >> x >> y >> w;
+
+        edge.push_back({ w, {x, y} });
+    }
+    printf("%lld", solve());
+
+    return 0;
+}

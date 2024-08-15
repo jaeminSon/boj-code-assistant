@@ -1,0 +1,26 @@
+#include <iostream>
+#include <fstream>
+
+using namespace std;
+
+int h, m;
+
+int main() {
+	ios_base :: sync_with_stdio(false);
+	cin.tie(NULL); cout.tie(NULL);
+	//fstream inf("prob.txt");
+	//inf >> h >> m;
+	cin >> h >> m;
+	
+	m -= 45;
+	if(m < 0) {
+		m += 60;
+		h--;
+	}
+	if(h < 0)
+		h += 24;
+	
+	cout << h << " " << m;
+	
+	return 0;
+}

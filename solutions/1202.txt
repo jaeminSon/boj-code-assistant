@@ -1,0 +1,47 @@
+#include <iostream>
+#include <vector>
+#include <set>
+#include <algorithm>
+
+using namespace std;
+
+typedef long long ll;
+typedef pair<int,int> pii;
+
+const int S = 3e5;
+int N, K;
+multiset<int> st;
+vector<pii> a;
+
+ll solve() {
+    sort(a.rbegin(), a.rend());
+    
+    ll ret = 0;
+    for(int i = 0; i<a.size(); i++) {
+        multiset<int>::iterator it = st.lower_bound(a[i].second);
+        if(it == st.end())
+            continue;
+        
+        st.erase(it);
+        ret += a[i].first;
+    }
+    return ret;
+}
+
+int main() {
+    cin >> N >> K;
+
+    for(int i = 0; i<N; i++) {
+        int m, v;
+        cin >> m >> v;
+        a.push_back({v,m});
+    }
+    for(int i = 0; i<K; i++) {
+        int c;
+        cin >> c;
+        st.insert(c);
+    }
+    cout << solve() << '\n';
+
+    return 0;
+}

@@ -1,0 +1,32 @@
+#include <iostream>
+
+using namespace std;
+
+string str, cyto;
+
+void solve() {
+	while(cyto.size() < str.size())
+		cyto += cyto;
+	
+	int n = str.size(), m = cyto.size();
+	
+	for(int i = 0; i<n; i++) {
+		if(str[i] == ' ') {
+			cout << str[i];
+			continue;
+		}
+			
+		char ch = str[i] - cyto[i] - 1;
+		if(ch < 0)	ch += 26;
+		cout << char(ch + 'a');
+	}
+}
+
+int main() {
+	getline(cin, str);
+	getline(cin, cyto);
+	
+	solve();
+		
+	return 0;
+}

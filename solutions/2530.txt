@@ -1,0 +1,32 @@
+#include <iostream>
+
+using namespace std;
+
+int a, b, c, s;
+
+int main() {
+	cin >> a >> b >> c;
+	cin >> s;
+	
+	c += s % 60;
+	if(c >= 60) {
+		c -= 60;
+		b++;
+	}
+	
+	s /= 60;
+	b += s % 60;
+	if(b >= 60) {
+		b -= 60;
+		a++;
+	}
+	
+	s /= 60;
+	a += s % 24;
+	if(a >= 24)
+		a -= 24;
+	
+	printf("%d %d %d", a, b, c);
+	
+	return 0;
+}

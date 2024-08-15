@@ -1,0 +1,150 @@
+#include <iostream>
+#include <queue>
+#include <fstream>
+
+using namespace std;
+
+typedef pair<int, pair<int, int>> ppi;
+
+struct unit {
+	int m, t, a, b;
+};
+
+const int INF = 987654321;
+int N, H, W, M, K;
+int bd[505][505], pos[505][505], h[15], dist[505][505];
+unit ut[250005];
+int mv[4][2] = {
+	{1, 0},
+	{0, 1},
+	{-1, 0},
+	{0, -1}
+};
+
+bool dijkstra(int u, int y, int x, int a, int b) {
+	priority_queue<ppi, vector<ppi>, less<ppi>> pq;
+	pq.push({ 0, { y,x } });
+	int t = ut[u].t;
+	int st = ut[u].m;
+
+	for (int i = max(1, y - st); i <= min(H, y + st); i++) {
+		for (int j = max(1, x - st); j <= min(W, x + st); j++)
+			dist[i][j] = INF;
+	}
+	dist[y][x] = 0;
+
+	while (!pq.empty()) {
+		int d = pq.top().first;
+		int cy = pq.top().second.first, cx = pq.top().second.second;
+		pq.pop();
+
+		if (dist[cy][cx] < d)
+			continue;
+		if (cy == a && cx == b)
+			return true;
+
+		bool check = false;
+		for (int type = 0; type < 4; type++) {
+			int ny = cy + mv[type][0];
+			int nx = cx + mv[type][1];
+
+			if (ny < 1 || H < ny || nx < 1 || W < nx)
+				continue;
+
+			if (pos[ny][nx] != 0 && t != ut[pos[ny][nx]].t) {
+				check = true;
+				break;
+			}
+		}
+		if (cy == y && cx == x)
+			check = false;
+		if (check == true)
+			continue;
+
+		for (int type = 0; type < 4; type++) {
+			int ny = cy + mv[type][0];
+			int nx = cx + mv[type][1];
+
+			if (ny < 1 || H < ny || nx < 1 || W < nx)
+				continue;
+			if (pos[ny][nx] != 0 && t != ut[pos[ny][nx]].t)
+				continue;
+
+			int k = bd[ny][nx];
+			if (d + h[k] < dist[ny][nx] && d + h[k] <= st) {
+				dist[ny][nx] = d + h[k];
+				pq.push({ d + h[k], { ny, nx } });
+			}
+		}
+	}
+
+	return false;
+}
+
+bool check(int u, int a, int b) {
+	if (pos[a][b] != 0)
+		return false;
+
+	if (h[bd[a][b]] == INF)
+		return false;
+
+	int y = ut[u].a, x = ut[u].b;
+	return dijkstra(u, y, x, a, b);
+}
+
+int main(void) {
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL); cout.tie(NULL);
+	//fstream inf("prob.txt");
+	//inf >> N >> H >> W;
+	cin >> N >> H >> W;
+
+	for (int i = 1; i <= H; i++) {
+		for (int j = 1; j <= W; j++) {
+			//inf >> bd[i][j];
+			cin >> bd[i][j];
+		}
+	}
+
+	for (int i = 1; i <= N; i++) {
+		//inf >> h[i];
+		cin >> h[i];
+
+		if (h[i] == -1)
+			h[i] = INF;
+	}
+
+	//inf >> M;
+	cin >> M;
+	for (int m, t, a, b, i = 1; i <= M; i++) {
+		//inf >> m >> t >> a >> b;
+		cin >> m >> t >> a >> b;
+
+		a++;
+		b++;
+		ut[i] = { m, t, a, b };
+		pos[a][b] = i;
+	}
+
+	//inf >> K;
+	cin >> K;
+	for (int u, a, b, i = 0; i < K; i++) {
+		//inf >> u >> a >> b;
+		cin >> u >> a >> b;
+
+		a++;
+		b++;
+		if (check(u, a, b) == true) {
+			int y = ut[u].a, x = ut[u].b;
+			ut[u].a = a;
+			ut[u].b = b;
+			pos[y][x] = 0;
+			pos[a][b] = u;
+		}
+	}
+
+	for (int i = 1; i <= M; i++)
+		printf("%d %d\n", ut[i].a - 1, ut[i].b - 1);
+
+	return 0;
+}

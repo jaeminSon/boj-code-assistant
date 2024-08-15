@@ -1,0 +1,167 @@
+#include <iostream>
+#include <vector>
+#include <fstream>
+
+using namespace std;
+
+const int S = 1e5;
+int N, M;
+int time, bccCount, discovered[S+5], finished[S+5], low[S+5], p[S+5];
+bool visited[S+5], bvisited[S+5];
+vector<int> adj[S+5], bcc[S+5], bccadj[S+5];
+
+void dfs(int here, int pp) {
+	low[here] = discovered[here] = ++time;
+	p[here] = pp;
+	
+	bool check = false;
+	for(int i = 0; i<adj[here].size(); i++) {
+		int there = adj[here][i];
+		
+		if(there == here)
+			continue;
+		if(there == p[here] && check == false) {
+			check = true;
+			continue;
+		}
+		if(discovered[there] == 0) {
+			dfs(there, here);
+			low[here] = min(low[here], low[there]);
+		}
+		else
+			low[here] = min(low[here], low[there]);
+	}
+	finished[here] = ++time;
+}
+
+void dfs2(int here, int c) {
+	bcc[c].push_back(here);
+	visited[here] = true;
+	
+	for(int i = 0; i<adj[here].size(); i++) {
+		int there = adj[here][i];
+		
+		if(visited[there] == true)
+			continue;
+			
+		if(discovered[here] < low[there]) {
+			bccCount++;
+			bccadj[c].push_back(bccCount);
+			bccadj[bccCount].push_back(c);
+			
+			dfs2(there, bccCount);
+		}
+		else {
+			
+			dfs2(there, c);
+		}
+	}
+}
+
+pair<int, int> dfs3(int here) {
+	vector<int> a;
+	vector<pair<int, int> > b;
+	pair<int, int> tn;
+	bvisited[here] = true;
+	
+	for(int i = 0; i<bccadj[here].size(); i++) {
+		int there = bccadj[here][i];
+		
+		if(bvisited[there] == true)
+			continue;
+		
+		tn = dfs3(there);
+		if(tn.second == 0)
+			a.push_back(tn.first);
+		else
+			b.push_back(tn);
+	}
+
+	if(a.size()+b.size() == 0)
+		return make_pair(here, 0);
+	
+	if(a.size() >= 3) {
+		int i = a.size()&1 ? 1:2;
+		
+		while(a.size()>i) {
+			printf("%d ", bcc[a.back()][0]);
+			a.pop_back();
+			printf("%d\n", bcc[a.back()][0]);
+			a.pop_back();
+		}
+	}
+	if(b.size() >= 2) {
+		while(b.size()>1) {
+			pair<int, int> bb = b.back();
+		
+			printf("%d ", bcc[b.back().first][0]);
+			b.pop_back();
+			printf("%d\n", bcc[b.back().first][0]);
+			bb.first = b.back().second;
+			b.pop_back();
+			
+			b.push_back(bb);
+		}
+	}
+	if(a.size()>=1 && b.size()==1) {
+		printf("%d ", bcc[a.back()][0]);
+		a.pop_back();
+		printf("%d\n", bcc[b.back().first][0]);
+		a.push_back(b.back().second);
+		b.pop_back();
+	}
+	
+	if(a.size() == 1)
+		return make_pair(a[0], 0);
+	else if(a.size() == 2)
+		return make_pair(a[0], a[1]);
+	else if(b.size() == 1)
+		return b.back();		
+	else {
+		//printf("check: \n");
+		return {-1, -1};
+	}
+}
+
+void solve() {
+	int cnt = 0;
+	for(int i = 1; i<=bccCount; i++) {
+		if(bccadj[i].size() == 1)
+			cnt++;
+	}
+	printf("%d\n", (cnt+1)/2);
+	if(cnt == 0)
+		return;
+	
+	pair<int, int> ret = dfs3(1);
+	if(ret.second == 0)
+		printf("%d %d\n", bcc[ret.first][0], bcc[1][0]);
+	else {
+		if(bccadj[1].size() == 1)
+			printf("%d %d\n", bcc[1][0], bcc[ret.first][0]);
+		
+		printf("%d %d\n", bcc[ret.first][0], bcc[ret.second][0]);
+	}
+}
+
+int main() {
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL); cout.tie(NULL);
+	//fstream inf("prob.txt");
+	//inf >> N >> M;
+	cin >> N >> M;
+	
+	for(int a, b, i = 0; i<M; i++) {
+		//inf >> a >> b;
+		cin >> a >> b;
+		
+		adj[a].push_back(b);
+		adj[b].push_back(a);
+	}
+	
+	dfs(1, 0);
+	dfs2(1, ++bccCount);
+	solve();
+
+	return 0;
+}

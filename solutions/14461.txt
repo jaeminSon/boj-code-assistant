@@ -1,0 +1,79 @@
+#include <iostream>
+#include <vector>
+#include <queue>
+
+using namespace std;
+
+typedef long long ll;
+
+struct p {
+    ll d;
+    int t, y, x;
+};
+
+struct cmp {
+    bool operator()(const p& a, const p& b) {
+        return a.d > b.d;
+    }
+};
+
+const ll INF = 1e15;
+const int S = 100;
+int N, T;
+int adj[S+5][S+5];
+ll dist[S+5][S+5][4];
+int mv[4][2] = {
+    {1,0}, {0,1}, {-1,0}, {0,-1}
+};
+
+ll solve() {
+    for(int i = 1; i<=N; i++) {
+        for(int j = 1; j<=N; j++) {
+            dist[i][j][1] = INF;
+            dist[i][j][2] = INF;
+            dist[i][j][3] = INF;
+        }
+    }
+    priority_queue<p, vector<p>, cmp> pq;
+    pq.push({0, 0, 1, 1});
+    dist[1][1][0] = 0;
+
+    while(!pq.empty()) {
+        ll d = pq.top().d;
+        int t = pq.top().t;
+        int y = pq.top().y;
+        int x = pq.top().x;
+        int nt = (t == 0) ? 1 : t%3+1;
+        pq.pop();
+
+        for(int type = 0; type<4; type++) {
+            int ny = y + mv[type][0];
+            int nx = x + mv[type][1];
+
+            if(ny < 1 || ny > N || nx < 1 || nx > N)
+                continue;
+
+            int e = (t == 2) ? adj[ny][nx] : 0;            
+            if(dist[ny][nx][nt] <= d + T + e)
+                continue;
+                
+            dist[ny][nx][nt] = d + T + e;
+            pq.push({dist[ny][nx][nt], nt, ny, nx});
+        }
+    }
+    return min(dist[N][N][1], min(dist[N][N][2], dist[N][N][3]));
+}
+
+int main() {
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL); cout.tie(NULL);
+    cin >> N >> T;
+
+    for(int i = 1; i<=N; i++) {
+        for(int j = 1; j<=N; j++)
+            cin >> adj[i][j];
+    }
+    cout << solve() << '\n';
+
+    return 0;
+}

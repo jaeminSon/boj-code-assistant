@@ -1,0 +1,35 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+
+using namespace std;
+
+int n;
+vector<string> words;
+
+void solve(void) {
+	for(int i = 0; i<n; i++) {
+		string s = words[i];
+		reverse(s.begin(), s.end());
+		for(int j = 0; j<n; j++) {
+			if(words[j] == s) {
+				cout << s.size() << " " << s[s.size() / 2] << endl;
+				return;
+			}
+		}
+	}
+}
+
+int main() {
+	cin >> n;
+	
+	for(int i = 0; i<n; i++) {
+		string s;
+		cin >> s;
+		words.push_back(s);
+	}
+	
+	solve();
+	
+	return 0;
+}

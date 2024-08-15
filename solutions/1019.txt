@@ -1,0 +1,55 @@
+#include <iostream>
+#include <fstream>
+
+using namespace std;
+
+typedef long long ll;
+
+ll N;
+ll a[10];
+
+void calc(ll n, ll p) {
+    while (n > 0) {
+        a[n % 10] += p;
+        n /= 10;
+    }
+}
+
+void solve() {
+    ll A = 1, B = N;
+    ll p = 1;
+
+    while (A <= B) {
+        while (A % 10 != 0 && A <= B) {
+            calc(A, p);
+            A++;
+        }
+        if (A > B)
+            break;
+        while (B % 10 != 9 && A <= B) {
+            calc(B, p);
+            B--;
+        }
+
+        A /= 10;
+        B /= 10;
+
+        for(int i = 0; i < 10; i++)
+            a[i] += (B - A + 1) * p;
+        p *= 10;
+    }
+    for (int i = 0; i < 10; i++)
+        printf("%d ", a[i]);
+}
+
+int main(void) {
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL); cout.tie(NULL);
+    //fstream inf("prob.txt");
+    //inf >> N;
+    cin >> N;
+
+    solve();
+
+    return 0;
+}

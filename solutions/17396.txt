@@ -1,0 +1,76 @@
+#include <iostream>
+#include <vector>
+#include <queue>
+#include <fstream>
+
+using namespace std;
+
+typedef long long ll;
+typedef pair<ll, ll> pll;
+
+const ll INF = 1e12;
+const int S = 1e5;
+int N, M;
+ll d[S + 5];
+vector<pll> adj[S + 5];
+bool visited[S + 5];
+
+ll solve() {
+    for (int i = 0; i < N; i++)
+        d[i] = INF;
+    priority_queue<pll, vector<pll>, greater<pll>> pq;
+    pq.push({ 0, 0 });
+
+    while (!pq.empty()) {
+        ll here = pq.top().second;
+        ll cost = pq.top().first;
+        pq.pop();
+
+        if (here == N - 1)
+            return cost;
+
+        if (visited[here] == true)
+            continue;
+        visited[here] = true;
+        d[here] = cost;
+
+        for (int i = 0; i < adj[here].size(); i++) {
+            ll there = adj[here][i].first;
+            ll w = adj[here][i].second;
+
+            if (w + cost >= d[there])
+                continue;
+            if (there != N - 1 && visited[there] == true)
+                continue;
+            pq.push({ w + cost, there });
+        }
+    }
+    if (d[N - 1] == INF)
+        return -1;
+    return d[N - 1];
+}
+
+int main(void) {
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL); cout.tie(NULL);
+    //fstream inf("prob.txt");
+    //inf >> N >> M;
+    cin >> N >> M;
+
+    for (int i = 0; i < N; i++) {
+        //inf >> visited[i];
+        cin >> visited[i];
+    }
+    
+    ll u, v, w;
+    for (int i = 0; i < M; i++) {
+        //inf >> u >> v >> w;
+        cin >> u >> v >> w;
+
+        adj[u].push_back({ v, w });
+        adj[v].push_back({ u, w });
+    }
+    printf("%lld", solve());
+
+    return 0;
+}

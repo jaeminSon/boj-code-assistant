@@ -1,0 +1,45 @@
+#include <iostream>
+
+using namespace std;
+
+typedef long long ll;
+
+int N, K;
+
+bool check(ll mid) {
+    ll cnt = 0;
+    for(int i = 1; i<=N; i++) {
+        if(mid/i <= N)
+            cnt += mid/i;
+        else
+            cnt += N;
+    }
+    
+    if(cnt >= K)
+        return true;
+    return false;
+}
+
+ll solve() {
+    ll lo = 1, hi = (ll)N*N, mid;
+
+    while(lo <= hi) {
+        mid = (lo+hi)/2;
+
+        if(check(mid) == true)
+            hi = mid-1;
+        else
+            lo = mid+1;
+    }
+    return lo;
+}
+
+int main() {
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL); cout.tie(NULL);
+    cin >> N >> K;
+    
+    cout << solve() << '\n';
+ 
+    return 0;
+}

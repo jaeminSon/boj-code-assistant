@@ -1,0 +1,67 @@
+#include <iostream>
+
+using namespace std;
+
+typedef long long ll;
+
+const int mod = 1e9+7;
+ll N;
+
+struct matrix {
+    ll a11, a12, a21, a22;
+
+    matrix operator*(matrix p) {
+        ll b11 = (a11*p.a11 % mod) + (a12*p.a21 % mod);
+        ll b12 = (a11*p.a12 % mod) + (a12*p.a22 % mod);
+        ll b21 = (a21*p.a11 % mod) + (a22*p.a21 % mod);
+        ll b22 = (a12*p.a21 % mod) + (a22*p.a22 % mod);
+
+        if(b11 < 0)
+            b11 += mod;
+        if(b12 < 0)
+            b12 += mod;
+        if(b21 < 0)
+            b21 += mod;
+        if(b22 < 0)
+            b22 += mod;
+
+        b11 %= mod;
+        b12 %= mod;
+        b21 %= mod;
+        b22 %= mod;
+
+        return {b11, b12, b21, b22};
+    }
+};
+
+matrix solve(ll n) {
+    if(n == 1)
+        return {4, -1, 1, 0};
+    
+    if(n % 2 == 0) {
+        matrix ret = solve(n/2);
+        return ret * ret;
+    }
+    else {
+        matrix p = {4, -1, 1, 0};
+        matrix ret = solve(n/2);
+        return ret * ret * p;
+    }
+}
+
+int main() {
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL); cout.tie(NULL);
+    cin >> N;
+
+    if(N % 2 == 1)
+        cout << 0 << '\n';
+    else if(N == 2)
+        cout << 3 << '\n';
+    else {
+        matrix p = solve(N/2-1);
+        cout << ((p.a11*3 % mod) + p.a12) % mod << '\n';
+    }
+
+    return 0;
+}

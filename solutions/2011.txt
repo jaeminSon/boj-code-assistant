@@ -1,0 +1,38 @@
+#include <iostream>
+#include <string.h>
+
+using namespace std;
+
+const int mod = 1000000;
+string s;
+int n;
+int cache[5001];
+
+int solve(int index) {
+	if(index == n)	return 1;
+	//if(index > n)	return 0;
+	
+	
+	int& ret = cache[index];
+	if(ret != -1)	return ret;
+	
+	if(s[index] == '0')	return ret = 0;
+	
+	ret = solve(index + 1);
+	
+	if(index + 2 <= n && (s[index] == '1' || (s[index] == '2' && s[index+1] <= '6')))
+		ret += solve(index + 2);
+	
+	return ret %= mod;
+}
+
+
+int main() {
+	cin >> s;
+	memset(cache, -1, sizeof(cache));
+	n = s.size();
+	
+	cout << solve(0) << endl;
+	
+	return 0;
+}

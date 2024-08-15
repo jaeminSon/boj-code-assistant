@@ -1,0 +1,29 @@
+#include <iostream>
+#include <string.h>
+
+using namespace std;
+
+const int mod = 10007;
+int cache[1001];
+int n;
+
+int solve(int n) {
+	if(n == 0)	return 1;
+	if(n < 0)	return 0;
+	
+	int& ret = cache[n];
+	if(ret != -1)	return ret;
+	
+	ret = solve(n-1) + (solve(n-2) * 2) % mod;
+	
+	return ret % mod;
+}
+
+
+int main() {
+	cin >> n;
+	memset(cache, -1, sizeof(cache));
+	cout << solve(n) << endl;
+	
+	return 0;
+}

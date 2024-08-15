@@ -1,0 +1,105 @@
+#include <iostream>
+#include <vector>
+#include <queue>
+
+using namespace std;
+
+typedef long long ll;
+typedef pair<ll,ll> pll;
+
+const ll INF = 1e15;
+const int S = 1e4;
+int N, M, T;
+int c[S+5];
+ll d[S+5], dp[S+5];
+pll p[S+5];
+vector<pll> adj[S+5], tree[S+5];
+bool visited[S+5];
+
+void dfs(int here) {
+    visited[here] = true;
+    dp[here] = c[here];
+
+    for(int i = 0; i<tree[here].size(); i++) {
+        int there = tree[here][i].first;
+        int cost = tree[here][i].second;
+
+        if(visited[there] == true)
+            continue;
+        
+        dfs(there);
+        dp[here] += dp[there];
+    }
+}
+
+ll solve() {
+    for(int i = 1; i<=N; i++)
+        d[i] = INF;
+    
+    priority_queue<pll, vector<pll>, greater<pll>> pq;
+    pq.push({0,1});
+    d[1] = 0;
+
+    while(!pq.empty()) {
+        ll here = pq.top().second;
+        ll dist = pq.top().first;
+        pq.pop();
+
+        for(int i = 0; i<adj[here].size(); i++) {
+            ll there = adj[here][i].first;
+            ll cost = adj[here][i].second;
+
+            if(d[there] <= dist + cost)
+                continue;
+            
+            p[there] = {here,cost};
+            d[there] = dist + cost;
+            pq.push({d[there], there});
+        }
+    }
+
+    p[1] = {1,0};
+    for(int i = 1; i<=N; i++) {
+        ll here = i;
+        for(int j = 0; j<adj[here].size(); j++) {
+            ll there = adj[here][j].first;
+            ll cost = adj[here][j].second;
+
+            if(d[there] == d[here]+cost && p[there].first > here)
+                p[there] = {here, cost};
+        }
+    }
+
+    for(int i = 2; i<=N; i++) {
+        ll u = i, v = p[i].first, cost = p[i].second;
+
+        tree[u].push_back({v,cost});
+        tree[v].push_back({u,cost});
+    }
+    dfs(1);
+
+    ll ret = 0;
+    for(int i = 2; i<=N; i++)
+        ret = max(ret, dp[i]*d[i] - dp[i]*T);
+
+    return ret;
+}
+
+int main() {
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL); cout.tie(NULL);
+    cin >> N >> M >> T;
+
+    for(int i = 1; i<=N; i++)
+        cin >> c[i];
+    for(int i = 1; i<=M; i++) {
+        ll u, v, t;
+        cin >> u >> v >> t;
+
+        adj[u].push_back({v,t});
+        adj[v].push_back({u,t});
+    }
+    cout << solve() << '\n';
+ 
+    return 0;
+}

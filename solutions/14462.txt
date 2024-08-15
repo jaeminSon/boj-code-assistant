@@ -1,0 +1,40 @@
+#include <iostream>
+#include <cmath>
+
+using namespace std;
+
+const int S = 1000;
+int N;
+int a[S+5], b[S+5], dp[S+5][S+5];
+
+int solve() {
+    for(int i = 1; i<=N; i++) {
+        for(int j = 1; j<=N; j++) {
+            dp[i][j] = max(dp[i-1][j], dp[i][j-1]);
+            dp[i][j] = max(dp[i][j], dp[i-1][j-1]);
+            if(abs(a[i]-b[j]) <= 4)
+                dp[i][j] = max(dp[i][j], dp[i-1][j-1]+1);
+        }
+    }
+    
+    int ret = 0;
+    for(int i = 1; i<=N; i++) {
+        for(int j = 1; j<=N; j++)
+            ret = max(ret, dp[i][j]);
+    }
+    return ret;
+}
+
+int main() {
+    ios_base :: sync_with_stdio(false);
+	cin.tie(NULL); cout.tie(NULL);
+    cin >> N;
+
+    for(int i = 1; i<=N; i++)
+        cin >> a[i];
+    for(int i = 1; i<=N; i++)
+        cin >> b[i];
+    cout << solve() << '\n';
+
+    return 0;
+}

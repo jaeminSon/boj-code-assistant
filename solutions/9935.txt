@@ -1,0 +1,46 @@
+#include <iostream>
+#include <vector>
+
+using namespace std;
+
+string s, boom;
+
+void solve() {
+	vector<char> st;
+	int n = s.size(), m = boom.size();
+	
+	for(int i = 0; i<n; i++) {
+		st.push_back(s[i]);
+	
+		if(st.back() == boom[m-1]) {
+			if(st.size() < m)	continue;
+			
+			bool check = true;
+			for(int j = 0; j<m; j++) {
+				if(boom[j] != st[st.size() - m + j]) {
+					check = false;
+					break;
+				}
+			}
+			
+			if(check == true) {
+				for(int j = 0; j<m; j++)
+					st.pop_back();
+			}
+		}
+	}
+	if(st.empty())
+		cout << "FRULA" << endl;
+	else {
+		for(int i = 0; i<st.size(); i++)
+			cout << st[i];
+	}
+}
+
+int main() {
+	cin >> s >> boom;
+	
+	solve();
+
+	return 0;
+}

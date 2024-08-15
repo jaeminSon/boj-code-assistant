@@ -1,0 +1,25 @@
+#include <iostream>
+#include <fstream>
+
+using namespace std;
+
+int year;
+
+int main() {
+	ios_base :: sync_with_stdio(false);
+	cin.tie(NULL); cout.tie(NULL);
+	//fstream inf("prob.txt");
+	//inf >> year;
+	cin >> year;
+	
+	bool ret = false;
+	if(year % 4 == 0)	
+		ret = !ret;
+	if(year % 100 == 0)
+		ret = !ret;
+	if(year % 400 == 0)
+		ret = !ret;
+	cout << ret;
+		
+	return 0;
+}

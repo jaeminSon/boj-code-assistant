@@ -1,0 +1,67 @@
+#include <iostream>
+#include <fstream>
+
+using namespace std;
+
+typedef long long ll;
+
+const int S = 65536;
+int N, k;
+int A[250005], Tree[S + 5];
+
+void update(int i, int val) {
+    i++;
+    while (i <= S) {
+        Tree[i] += val;
+        i += (i & -i);
+    }
+}
+
+int get(int i) {
+    int ret = 0;
+
+    i++;
+    while (i > 0) {
+        ret += Tree[i];
+        i -= (i & -i);
+    }
+    return ret;
+}
+
+int main(void) {
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL); cout.tie(NULL);
+    //fstream inf("prob.txt");
+    //inf >> N >> k;
+    cin >> N >> k;
+
+    for (int i = 1; i <= k - 1; i++) {
+        //inf >> A[i];
+        cin >> A[i];
+
+        update(A[i], 1);
+    }
+
+    ll ret = 0;
+    for (int i = k; i <= N; i++) {
+        //inf >> A[i];
+        cin >> A[i];
+        update(A[i], 1);
+
+        int lo = 0, hi = S, mid;
+        while (lo < hi) {
+            mid = (lo + hi) / 2;
+            
+            int cnt = get(mid);
+            if (cnt < (k + 1) / 2)
+                lo = mid + 1;
+            else
+                hi = mid;
+        }
+        ret += (ll)lo;
+        update(A[i - k + 1], -1);
+    }
+    printf("%lld", ret);
+
+    return 0;
+}

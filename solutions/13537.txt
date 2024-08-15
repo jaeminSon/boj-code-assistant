@@ -1,0 +1,69 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <fstream>
+
+using namespace std;
+
+const int S = 1e5;
+int N, M;
+vector<int> Tree[4*S+5];
+
+void update(int b, int n, int s, int e, int val) {
+	if(n < s || e < n)
+		return;
+	
+	Tree[b].push_back(val);
+	
+	if(s != e) {
+		int mid = (s+e)/2;
+		update(b*2, n, s, mid, val);
+		update(b*2+1, n, mid+1, e, val);
+	}
+}
+
+int get(int b, int s, int e, int l, int r, int k) {
+	if(r < s || e < l)
+		return 0;
+	
+	if(l <= s && e <= r)
+		return Tree[b].end() - upper_bound(Tree[b].begin(), Tree[b].end(), k);
+	
+	int mid = (s+e)/2;
+	return get(b*2, s, mid, l, r, k)+get(b*2+1, mid+1, e, l, r, k);
+}
+
+void init(int b, int s, int e) {
+	sort(Tree[b].begin(), Tree[b].end());
+	
+	if(s != e) {
+		int mid = (s+e)/2;
+		init(b*2, s, mid);
+		init(b*2+1, mid+1, e);
+	}
+}
+
+int main() {
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL); cout.tie(NULL);
+	//fstream inf("prob.txt");
+	//inf >> N;
+	cin >> N;
+	
+	for(int val,i = 1; i<=N; i++) {
+		//inf >> val;
+		cin >> val;
+		update(1, i, 1, N, val);
+	}
+	init(1, 1, N);
+	
+	//inf >> M;
+	cin >> M;
+	for(int a,b,k,i = 0; i<M; i++) {
+		//inf >> a >> b >> k;
+		cin >> a >> b >> k;
+		printf("%d\n", get(1, 1, N, a, b, k));
+	}
+	
+	return 0;
+}

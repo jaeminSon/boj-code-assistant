@@ -1,0 +1,55 @@
+#include <iostream>
+#include <queue>
+#include <vector>
+
+using namespace std;
+
+int n, m, cnt = -1;
+vector<int> adj[501];
+bool visit[501];
+
+void bfs() {
+	int depth = 0;
+	queue<int> q;
+	q.push(1);
+	
+	while(true) {
+		queue<int> p;
+		
+		while(!q.empty()) {
+			int here = q.front();
+			q.pop();
+			
+			if(visit[here] == true)	continue;
+			visit[here] = true;
+			cnt++;
+			
+			for(int i = 0; i<adj[here].size(); i++) {
+				if(visit[adj[here][i]] == true)	continue;
+		
+				p.push(adj[here][i]);
+			}
+		}
+		if(depth == 2)	break;
+		depth++;
+		
+		if(p.empty())	break;
+		q = p;
+	}
+}
+
+int main() {
+	cin >> n >> m;
+	
+	for(int i = 0; i<m; i++) {
+		int a, b;
+		cin >> a >> b;
+		adj[a].push_back(b);
+		adj[b].push_back(a);
+	}
+	
+	bfs();
+	cout << cnt << endl;
+	
+	return 0;
+}

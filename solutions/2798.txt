@@ -1,0 +1,37 @@
+#include <iostream>
+#include <fstream>
+
+using namespace std;
+
+int N, M;
+int A[101];
+
+int solve() {
+	int ret = 0;
+	for(int i = 3; i<=N; i++) {
+		for(int j = 2; j<i; j++) {
+			for(int k = 1; k<j; k++) {
+				if(M < A[i]+A[j]+A[k])	continue;
+				ret = max(ret, A[i]+A[j]+A[k]);
+			}
+		}
+	}
+	return ret;
+}
+
+int main() {
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL); cout.tie(NULL);
+	//fstream inf("prob.txt");
+	//inf >> N >> M;
+	cin >> N >> M;
+	
+	for(int i = 1; i<=N; i++) {
+		//inf >> A[i];
+		cin >> A[i];
+	}
+		
+	printf("%d", solve());
+	
+	return 0;
+}

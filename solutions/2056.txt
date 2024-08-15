@@ -1,0 +1,75 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <fstream>
+
+using namespace std;
+
+const int S = 1e4;
+int N;
+int d[S + 5], ct[S + 5];
+vector<int> adj[S + 5], tp;
+bool visited[S + 5];
+
+void dfs(int here) {
+    visited[here] = true;
+
+    for (int i = 0; i < adj[here].size(); i++) {
+        int there = adj[here][i];
+
+        if (visited[there] == true)
+            continue;
+
+        dfs(there);
+    }
+    tp.push_back(here);
+}
+
+int dfsAll() {
+    for (int i = 1; i <= N; i++) {
+        if (visited[i] == true)
+            continue;
+        dfs(i);
+    }
+
+    for (int i = 0; i < tp.size(); i++) {
+        int here = tp[i];
+
+        for (int j = 0; j < adj[here].size(); j++) {
+            int there = adj[here][j];
+            ct[here] = max(ct[here], ct[there] + d[here]);
+        }
+    }
+
+    int ret = 0;
+    for (int i = 1; i <= N; i++)
+        ret = max(ret, ct[i]);
+
+    return ret;
+}
+
+int main(void) {
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL); cout.tie(NULL);
+    //fstream inf("prob.txt");
+    //inf >> N;
+    cin >> N;
+    
+    for (int c, i = 1; i <= N; i++) {
+        //inf >> d[i] >> c;
+        cin >> d[i] >> c;
+
+        ct[i] = d[i];
+        
+        for (int x,j = 0; j < c; j++) {
+            //inf >> x;
+            cin >> x;
+
+            adj[x].push_back(i);
+        }
+    }
+
+    printf("%d", dfsAll());
+
+    return 0;
+}

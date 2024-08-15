@@ -1,0 +1,29 @@
+#include <iostream>
+
+using namespace std;
+
+int a[10], b[10];
+
+int main() {
+	for(int i = 0; i<10; i++)
+		cin >> a[i];
+	for(int i = 0; i<10; i++)
+		cin >> b[i];
+		
+	int ret = 0;
+	for(int i = 0; i<10; i++) {
+		if(a[i] < b[i])
+			ret++;
+		else if(a[i] > b[i])
+			ret--;
+	}
+	
+	if(ret == 0)
+		cout << "D" << endl;
+	else if(ret > 0)
+		cout << "B" << endl;
+	else
+		cout << "A" << endl;
+	
+	return 0;
+}

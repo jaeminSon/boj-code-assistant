@@ -1,0 +1,50 @@
+#include <iostream>
+#include <cstring>
+#include <vector>
+
+using namespace std;
+
+int n, m, b[1001];
+bool visited[1001];
+vector<int> p[1001];
+
+bool dfs(int s) {
+	if(visited[s] == true)	return 0;
+	visited[s] = true;
+	
+	for(int i = 0; i<p[s].size(); i++) {
+		int there = p[s][i];
+		
+		if(!b[there] || dfs(b[there])) {
+			b[there] = s;
+			return 1;
+		}
+	}
+	return 0;
+}
+
+int main() {
+	cin >> n >> m;
+	
+	for(int i = 1; i<=n; i++) {
+		int k;
+		cin >> k;
+		
+		for(int j = 0; j<k; j++) {
+			int a;
+			cin >> a;
+			p[i].push_back(a);
+		}
+	}
+	
+	int ret = 0;
+	for(int i = 1; i<=n; i++) {
+		memset(visited, false, sizeof(visited));
+		if(dfs(i) == true)	++ret;
+	}
+	
+	printf("%d\n", ret);
+	
+	
+	return 0;
+}

@@ -1,0 +1,58 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <string.h>
+
+using namespace std;
+
+int n, m, cnt;
+vector<int> com[10001];
+bool visit[10001];
+vector<pair<int, int> > sol;
+
+void dfs(int start) {
+	visit[start] = true;
+	cnt++;
+	
+	for(int i = 0; i<com[start].size(); i++) {
+		if(visit[com[start][i]])	continue;
+		
+		dfs(com[start][i]);
+	}
+	return;
+}
+
+void dfsAll() {
+	for(int i = 1; i<=n; i++) {
+		for(int j = 1; j<=n; j++)
+			visit[j] = false;
+			
+		cnt = 0;
+		dfs(i);
+		sol.push_back(make_pair(-cnt, i));
+	}
+}
+
+
+int main() {
+	cin >> n >> m;
+	
+	for(int i = 0; i<m; i++) {
+		int a, b;
+		cin >> a >> b;
+		
+		com[b].push_back(a);
+	}
+	
+	dfsAll();
+	sort(sol.begin(), sol.end());
+	
+	for(int i = 0; i<sol.size(); i++) {
+		if(sol[0].first == sol[i].first)
+			cout << sol[i].second << " ";
+		else
+			break;
+	}
+	
+	return 0;
+}

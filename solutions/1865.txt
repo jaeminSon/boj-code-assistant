@@ -1,0 +1,76 @@
+#include <iostream>
+#include <vector>
+#include <queue>
+#include <algorithm>
+#include <fstream>
+
+using namespace std;
+
+typedef pair<int, int> pii;
+
+const int INF = 1e9;
+int T, N, M, W;
+int dist[501];
+vector<pii> adj[501];
+
+bool relaxation(int u, int v, int w) {
+    if (dist[v] > dist[u] + w) {
+        dist[v] = dist[u] + w;
+        return true;
+    }
+    return false;
+}
+
+bool solve() {
+    for (int i = 1; i <= N; i++)
+        dist[i] = INF;
+    dist[1] = 0;
+
+    for (int i = 1; i <= N; i++) {
+        for (int j = 1; j <= N; j++) {
+            for (int k = 0; k < adj[j].size(); k++) {
+                if (i != N)
+                    relaxation(j, adj[j][k].first, adj[j][k].second);
+                else if (relaxation(j, adj[j][k].first, adj[j][k].second) == true)
+                    return false;
+            }
+        }
+    }
+    return true;
+}
+
+int main(void) {
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL); cout.tie(NULL);
+    //fstream inf("prob.txt");
+    //inf >> T;
+    cin >> T;
+
+    for (int i = 0; i < T; i++) {
+        //inf >> N >> M >> W;
+        cin >> N >> M >> W;
+
+        for (int j = 1; j <= N; j++)
+            adj[j].clear();
+
+        for (int s,e,t,j = 0; j < M; j++) {
+            //inf >> s >> e >> t;
+            cin >> s >> e >> t;
+
+            adj[s].push_back({ e,t });
+            adj[e].push_back({ s,t });
+        }
+        for (int s, e, t, j = 0; j < W; j++) {
+            //inf >> s >> e >> t;
+            cin >> s >> e >> t;
+
+            adj[s].push_back({ e, -t });
+        }
+        if (solve() == false)
+            printf("YES\n");
+        else
+            printf("NO\n");
+    }
+
+    return 0;
+}

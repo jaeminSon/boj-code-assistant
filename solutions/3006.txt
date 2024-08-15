@@ -1,0 +1,60 @@
+#include <iostream>
+#include <fstream>
+
+using namespace std;
+
+const int S = 1e5;
+int N;
+int A[S+5], Tree[S+5];
+
+void update(int i, int x) {
+	while(i<=N) {
+		Tree[i] += x;
+		i += (i&-i);
+	}
+}
+
+int get(int i) {
+	int ret = 0;
+	
+	while(i>0) {
+		ret += Tree[i];
+		i &= (i-1);
+	}
+	return ret;
+}
+
+int main() {
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL); cout.tie(NULL);
+	//fstream inf("prob.txt");
+	//inf >> N;
+	cin >> N;
+	
+	for(int j, i = 1; i<=N; i++) {
+		Tree[i] += 1;
+		j = i+(i&-i);
+		if(j<=N)
+			Tree[j] += Tree[i];
+	}
+	
+	for(int i = 1; i<=N; i++) {
+		int x;
+		//inf >> x;
+		cin >> x;
+		A[x] = i;
+	}
+	
+	for(int i = 1; i<=N; i++) {
+		if(i&1) {
+			printf("%d\n", get(A[(i+1)/2]-1));
+			update(A[(i+1)/2], -1);
+		}
+		else {
+			printf("%d\n", get(N)-get(A[N-(i-1)/2]));
+			update(A[N-(i-1)/2], -1);
+		}
+	}
+
+	return 0;
+}

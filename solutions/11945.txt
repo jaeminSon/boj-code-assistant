@@ -1,0 +1,31 @@
+#include <iostream>
+#include <fstream>
+
+using namespace std;
+
+int N, M;
+string sh[15];
+
+void solve() {
+	for(int i = 0; i<N; i++) {
+		for(int j = M-1; j>=0; j--)
+			printf("%c", sh[i][j]);
+		printf("\n");
+	}
+}
+
+int main() {
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL); cout.tie(NULL);
+	//fstream inf("prob.txt");
+	//inf >> N >> M;
+	cin >> N >> M;
+	
+	for(int i = 0; i<N; i++) {
+		//inf >> sh[i];
+		cin >> sh[i];
+	}
+	solve();
+	
+	return 0;
+}

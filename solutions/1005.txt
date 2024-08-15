@@ -1,0 +1,73 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <cstring>
+#include <fstream>
+
+using namespace std;
+
+const int S = 1000;
+int T, N, K, W;
+int a[S + 5], ct[S + 5];
+vector<int> adj[S + 5], tp;
+bool visited[S + 5];
+
+void dfs(int here) {
+    visited[here] = true; 
+
+    for (int i = 0; i < adj[here].size(); i++) {
+        int there = adj[here][i];
+        if (visited[there] == true)
+            continue;
+        dfs(there);
+    }
+    tp.push_back(here);
+}
+
+int solve() {
+    for (int i = 0; i < tp.size(); i++) {
+        int here = tp[i];
+
+        for (int j = 0; j < adj[here].size(); j++) {
+            int there = adj[here][j];
+            ct[here] = max(ct[here], ct[there] + a[here]);
+        }
+    }
+    return ct[W];
+}
+
+int main(void) {
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL); cout.tie(NULL);
+    //fstream inf("prob.txt");
+    //inf >> T;
+    cin >> T;
+
+    for (int i = 0; i < T; i++) {
+        //inf >> N >> K;
+        cin >> N >> K;
+
+        memset(visited, 0, sizeof(visited));
+        for (int j = 1; j <= N; j++) {
+            //inf >> a[j];
+            cin >> a[j];
+
+            ct[j] = a[j];
+            adj[j].clear();
+        }
+
+        for (int x, y, j = 0; j < K; j++) {
+            //inf >> x >> y;
+            cin >> x >> y;
+
+            adj[y].push_back(x);
+        }
+        //inf >> W;
+        cin >> W;
+
+        dfs(W);
+        printf("%d\n", solve());
+    }
+
+    return 0;
+}

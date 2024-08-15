@@ -1,0 +1,57 @@
+#include <iostream>
+#include <algorithm>
+
+using namespace std;
+
+typedef long long ll;
+
+const int S = 1000, mod = 1e9+9;
+int N, M, K;
+int a[S+5], b[S+5];
+ll dp[S+5][S+5][15], psum[S+5][S+5][15];
+
+ll solve() {
+    sort(a, a+N);
+    sort(b, b+M);
+
+    for(int k = 1; k<=K; k++) {
+        for(int i = 1; i<=N; i++) {
+            for(int j = 1; j<=M; j++) {
+                if(a[i] > b[j]) {
+                    if(k == 1)
+                        dp[i][j][k] = 1;
+                    else
+                        dp[i][j][k] = psum[i-1][j-1][k-1];
+                }
+            }
+        }
+
+        for(int i = 1; i<=N; i++) {
+            for(int j = 1; j<=M; j++) {
+                psum[i][j][k] = (psum[i-1][j][k] + psum[i][j-1][k]) % mod;
+                psum[i][j][k] -= psum[i-1][j-1][k];
+                if(psum[i][j][k] < 0)
+                    psum[i][j][k] += mod;
+                psum[i][j][k] += dp[i][j][k];
+                psum[i][j][k] %= mod;
+            }
+        }
+    }
+
+    return psum[N][M][K];
+}
+
+int main() {
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL); cout.tie(NULL);
+    cin >> N >> M >> K;
+
+    for(int i = 1; i<=N; i++)
+        cin >> a[i];
+    for(int i = 1; i<=M; i++)
+        cin >> b[i];
+    
+    cout << solve() << '\n';
+
+    return 0;
+}

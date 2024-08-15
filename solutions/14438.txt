@@ -1,0 +1,64 @@
+#include <iostream>
+#include <algorithm>
+#include <fstream>
+
+using namespace std;
+
+const int S = 1e5, INF = 2e9;
+int N, M;
+int Tree[4 * S + 5];
+
+void update(int b, int s, int e, int n, int x) {
+    if (n < s || e < n)
+        return;
+
+    if (s == e) {
+        Tree[b] = x;
+        return;
+    }
+
+    int mid = (s + e) / 2;
+    update(b * 2, s, mid, n, x);
+    update(b * 2 + 1, mid + 1, e, n, x);
+    Tree[b] = min(Tree[b * 2], Tree[b * 2 + 1]);
+}
+
+int get(int b, int s, int e, int l, int r) {
+    if (r < s || e < l)
+        return INF;
+
+    if (l <= s && e <= r)
+        return Tree[b];
+
+    int mid = (s + e) / 2;
+    return min(get(b * 2, s, mid, l, r), get(b * 2 + 1, mid + 1, e, l, r));
+}
+
+int main(void) {
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL); cout.tie(NULL);
+    //fstream inf("prob.txt");
+    //inf >> N;
+    cin >> N;
+
+    for (int x, i = 1; i <= N; i++) {
+        //inf >> x;
+        cin >> x;
+
+        update(1, 1, N, i, x);
+    }
+    //inf >> M;
+    cin >> M;
+
+    for (int a,b,c,i = 0; i < M; i++) {
+        //inf >> a >> b >> c;
+        cin >> a >> b >> c;
+
+        if (a == 1)
+            update(1, 1, N, b, c);
+        else
+            printf("%d\n", get(1, 1, N, b, c));
+    }
+
+    return 0;
+}

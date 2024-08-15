@@ -1,0 +1,24 @@
+#include <iostream>
+
+using namespace std;
+
+string s;
+
+int solve() {
+	int n = s.size();
+	bool check = true;
+	
+	for(int i = 0; i<n/2; i++) {
+		if(s[i] != s[n-1-i])
+			check = false;
+	}
+	return check;
+}
+
+int main() {
+    cin >> s;
+	
+	cout << solve() << endl;
+		
+	return 0;
+}

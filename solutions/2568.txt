@@ -1,0 +1,87 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <fstream>
+
+using namespace std;
+
+typedef pair<int, int> pii;
+
+const int S = 5e5;
+int N, M;
+int dp[S + 5], a[S + 5];
+pii Tree[4 * S + 5];
+vector<pii> p;
+bool visited[S + 5];
+
+void update(int b, int s, int e, int n) {
+    if (n < s || e < n)
+        return;
+
+    if (s == e) {
+        Tree[b] = { dp[n], n };
+        return;
+    }
+
+    int mid = (s + e) / 2;
+    update(b * 2, s, mid, n);
+    update(b * 2 + 1, mid + 1, e, n);
+    Tree[b] = max(Tree[b * 2], Tree[b * 2 + 1]);
+}
+
+pii get(int b, int s, int e, int l, int r) {
+    if (r < s || e < l)
+        return { 0, 0 };
+
+    if (l <= s && e <= r)
+        return Tree[b];
+
+    int mid = (s + e) / 2;
+    return max(get(b * 2, s, mid, l, r), get(b * 2 + 1, mid + 1, e, l, r));
+}
+
+void solve() {
+    sort(p.begin(), p.end());
+    for (int i = 0; i < N; i++) {
+        int idx = p[i].second;
+        pii c = get(1, 1, M, 1, idx - 1);
+        dp[idx] = c.first + 1;
+        a[idx] = c.second;
+        
+        update(1, 1, M, idx);
+    }
+
+    pii ret = { 0,0 };
+    for (int i = 1; i <= M; i++)
+        ret = max(ret, { dp[i], i });
+    printf("%d\n", N - ret.first);
+
+    int idx = ret.second;
+    while (idx != 0) {
+        visited[idx] = true;
+        idx = a[idx];
+    }
+    for (int i = 1; i <= M; i++) {
+        if (visited[i] == true || dp[i] == 0)
+            continue;
+        printf("%d\n", i);
+    }
+}
+
+int main(void) {
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL); cout.tie(NULL);
+    //fstream inf("prob.txt");
+    //inf >> N;
+    cin >> N;
+
+    for (int a,b,i = 0; i < N; i++) {
+        //inf >> a >> b;
+        cin >> a >> b;
+        M = max(M, a);
+        p.push_back({ b,a });
+    }
+    solve();
+
+    return 0;
+}

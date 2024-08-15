@@ -1,0 +1,77 @@
+#include <iostream>
+#include <vector>
+#include <queue>
+#include <cstring>
+
+using namespace std;
+
+typedef pair<int,int> pii;
+
+const int S = 1e5, INF = 1e9;
+int T, N, D, C;
+int dist[S+5];
+vector<pii> adj[S+5];
+bool visited[S+5];
+
+void solve() {
+    memset(visited, 0, sizeof(visited));
+    for(int i = 1; i<=N; i++)
+        dist[i] = INF;
+    
+    priority_queue<pii, vector<pii>, greater<pii>> pq;
+    pq.push({0,C});
+    dist[C] = 0;
+
+    while(!pq.empty()) {
+        int u = pq.top().second;
+        int d = pq.top().first;
+        pq.pop();
+
+        if(visited[u] == true)
+            continue;
+        visited[u] = true;
+
+        for(int i = 0; i<adj[u].size(); i++) {
+            int v = adj[u][i].second;
+            int c = adj[u][i].first;
+
+            if(visited[v] == true)
+                continue;
+            if(dist[v] <= dist[u]+c)
+                continue;
+            dist[v] = dist[u]+c;
+            pq.push({dist[v],v});
+        }
+    }
+
+    int t = 0, cnt = 0;
+    for(int i = 1; i<=N; i++) {
+        if(dist[i] == INF)
+            continue;
+        t = max(t, dist[i]);
+        cnt++;
+    }
+    cout << cnt << " " << t << '\n';
+}
+
+int main() {
+    cin >> T;
+
+    for(int i = 1; i<=T; i++) {
+        cin >> N >> D >> C;
+
+        for(int j = 1; j<=N; j++)
+            adj[j].clear();
+        
+        for(int j = 1; j<=D; j++) {
+            int a, b, s;
+            cin >> a >> b >> s;
+
+            adj[b].push_back({s,a});
+        }
+
+        solve();
+    }
+
+    return 0;
+}

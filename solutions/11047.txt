@@ -1,0 +1,31 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+
+using namespace std;
+
+int n, k;
+
+int main() {
+	cin >> n >> k;
+	
+	vector<int> coin(n);
+	for(int i = 0; i<n; i++)	cin >> coin[i];
+
+	sort(coin.begin(), coin.end());
+	
+	int ret = 0, cnt = 0, idx = n-1;
+	while(ret != k) {
+		if(ret > k) {
+			ret -= coin[idx--];
+			cnt--;
+		}
+		
+		ret += coin[idx];
+		cnt++;
+	}
+	
+	cout << cnt << endl;
+
+	return 0;
+}

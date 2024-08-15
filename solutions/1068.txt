@@ -1,0 +1,58 @@
+#include <iostream>
+#include <vector>
+#include <fstream>
+
+using namespace std;
+
+int N, ret;
+vector<int> Tree[51];
+bool visited[51];
+
+void dfs(int here) {
+	visited[here] = true;
+
+	bool leaf = true;
+	for(int i = 0; i<Tree[here].size(); i++) {
+		int next = Tree[here][i];
+		
+		if(visited[next] == false) {
+			dfs(next);
+			leaf = false;
+		}
+	}
+	if(leaf == true)
+		ret++;
+}
+
+int main() {
+	ios_base :: sync_with_stdio(false);
+	cin.tie(NULL); cout.tie(NULL);
+	//fstream inf("prob.txt");
+	//inf >> N;
+	cin >> N;
+	
+	int start;
+	for(int i = 0; i<N; i++) {
+		int a;
+		//inf >> a;
+		cin >> a;
+		if(a == -1) {
+			start = i;
+			continue;
+		}
+		
+		Tree[a].push_back(i);
+	}
+	int rm;
+	//inf >> rm;
+	cin >> rm;
+	
+	if(start == rm)
+		printf("0");
+	else {
+		visited[rm] = true;
+		dfs(start);
+		printf("%d", ret);
+	}
+	return 0;
+}

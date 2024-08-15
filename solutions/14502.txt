@@ -1,0 +1,93 @@
+#include <iostream>
+#include <queue>
+
+using namespace std;
+
+int n, m;
+int map[10][10], cmap[10][10];
+bool visit[10][10], cvisit[10][10];
+int ret;
+
+int mov[4][2] = {
+{1, 0}, {0, 1}, {-1, 0}, {0, -1}
+};
+
+void bfs(int y, int x) {
+	queue<pair<int, int> > q;
+	q.push(make_pair(y, x));
+	
+	while(!q.empty()) {
+		int y = q.front().first;
+		int x = q.front().second;
+		q.pop();
+		
+		if(cvisit[y][x] == true)	continue;
+		
+		cvisit[y][x] = true;
+		cmap[y][x] = 2;
+		
+		for(int type = 0; type < 4; type++) {
+			int dy = y + mov[type][0];
+			int dx = x + mov[type][1];
+			
+			if(dy < 0 || n <= dy || dx < 0 || m <= dx)	continue;
+			if(cvisit[dy][dx] == true || cmap[dy][dx] != 0)	continue;
+			
+			q.push(make_pair(dy, dx));
+		}
+	}
+}
+
+void virus() {
+	for(int i = 0; i<n; i++) {
+		for(int j = 0; j<m; j++) {
+			cmap[i][j] = map[i][j];
+			cvisit[i][j] = visit[i][j];
+		}
+	}
+	
+	for(int i = 0; i<n; i++) {
+		for(int j = 0; j<m; j++)
+			if(cvisit[i][j] == false && cmap[i][j] == 2)	bfs(i, j);
+	}
+	
+	int cnt = 0;
+	for(int i = 0; i<n; i++) {
+		for(int j = 0; j<m; j++)
+			if(cmap[i][j] == 0)	cnt++;
+	}
+	
+	ret = max(ret, cnt);
+}
+
+void recurWall(int cnt) {
+	if(cnt == 3) {
+		virus();
+		return;
+	}
+	else {
+		for(int i = 0; i<n; i++) {
+			for(int j = 0; j<m; j++) {
+				if(map[i][j] == 0) {
+					map[i][j] = 1;
+					recurWall(cnt + 1);
+					map[i][j] = 0;
+				}
+			}
+		}
+	}
+}
+
+int main() {
+    cin >> n >> m;
+	
+	for(int i = 0; i<n; i++) {
+		for(int j = 0; j<m; j++)
+			cin >> map[i][j];
+	}
+	
+	recurWall(0);
+	cout << ret << endl;
+	
+	return 0;
+}

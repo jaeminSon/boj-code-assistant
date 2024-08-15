@@ -1,0 +1,41 @@
+#include <iostream>
+
+using namespace std;
+
+typedef long long ll;
+
+const int S = 2000, mod = 1e9+7;
+int N, L;
+ll dp[S+5][S+5];
+
+ll solve() {
+    for(int i = 1; i<=N; i++)
+        dp[i][1] = 1;
+
+    for(int j = 1; j<L; j++) {
+        for(int i = 1; i<=N; i++) {
+            int n = i;
+            while(n <= N) {
+                dp[n][j+1] += dp[i][j];
+                dp[n][j+1] %= mod;
+                n += i;
+            }
+        }
+    }
+    ll ret = 0;
+    for(int i = 1; i<=N; i++) {
+        ret += dp[i][L];
+        ret %= mod;
+    }
+    return ret;
+}
+
+int main() {
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL); cout.tie(NULL);
+    cin >> N >> L;
+
+    cout << solve() << '\n';
+
+    return 0;
+}

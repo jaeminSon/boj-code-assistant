@@ -1,0 +1,51 @@
+#include <iostream>
+#include <vector>
+#include <fstream>
+
+using namespace std;
+
+int N;
+vector<int> adj[500001];
+bool visited[500001];
+int cnt;
+
+void dfs(int here, int d) {
+    visited[here] = true;
+
+    if (here != 1 && adj[here].size() == 1) {
+        cnt += d;
+        return;
+    }
+
+    for (int i = 0; i < adj[here].size(); i++) {
+        int there = adj[here][i];
+
+        if (visited[there] == true)
+            continue;
+
+        dfs(there, d + 1);
+    }
+}
+
+int main(void) {
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL); cout.tie(NULL);
+    //fstream inf("prob.txt");
+    //inf >> N;
+    cin >> N;
+
+    for (int a, b, i = 0; i < N - 1; i++) {
+        //inf >> a >> b;
+        cin >> a >> b;
+
+        adj[a].push_back(b);
+        adj[b].push_back(a);
+    }
+    dfs(1, 0);
+    if (cnt & 1)
+        printf("Yes");
+    else
+        printf("No");
+
+    return 0;
+}

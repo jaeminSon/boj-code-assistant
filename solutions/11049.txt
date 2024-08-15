@@ -1,0 +1,51 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <fstream>
+
+using namespace std;
+
+typedef long long ll;
+typedef pair<int, int> pii;
+
+const ll INF = 1e10;
+int N;
+ll dp[501][501];
+vector<pii> p;
+
+ll solve() {
+    for (int i = 0; i < N; i++) {
+        for (int j = 0; j < N; j++) {
+            if (i == j)
+                dp[i][j] = 0;
+            else
+                dp[i][j] = INF;
+        }
+    }
+    for (int k = 0; k < N; k++) {
+        for (int i = 0; i + k < N; i++) {
+            for (int j = i; j + 1 <= i + k; j++)
+                dp[i][i + k] = min(dp[i][i + k], dp[i][j] + dp[j + 1][i + k] + (ll)p[i].first * p[j].second * p[i + k].second);
+        }
+    }
+
+    return dp[0][N - 1];
+}
+
+int main(void) {
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL); cout.tie(NULL);
+    //fstream inf("prob.txt");
+    //inf >> N;
+    cin >> N;
+
+    for (int a,b,i = 0; i < N; i++) {
+        //inf >> a >> b;
+        cin >> a >> b;
+
+        p.push_back({ a,b });
+    }
+    printf("%lld", solve());
+
+    return 0;
+}

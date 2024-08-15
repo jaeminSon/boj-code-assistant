@@ -1,0 +1,48 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+
+using namespace std;
+
+class P {
+public:
+	int c, s, idx;
+	
+	P(int c, int s, int idx):c(c), s(s), idx(idx){}
+};
+
+bool compare(P a, P b) {
+	return a.s < b.s;
+}
+
+int n;
+
+int main() {
+	cin >> n;
+	
+	vector<P> a;
+	for(int i = 0; i<n; i++) {
+		int c, s;
+		cin >> c >> s;
+		
+		a.push_back(P(c, s, i));
+	}
+	sort(a.begin(), a.end(), compare);
+	
+	int ret[200001], scol[200001] = {0, };
+	int sum = 0;
+	for(int i = 0, j = 0; i<n; i++) {
+		
+		for(; a[j].s < a[i].s; j++) {
+			sum += a[j].s;
+			scol[a[j].c] += a[j].s;
+		}
+		
+		ret[a[i].idx] = sum - scol[a[i].c];
+	}
+	
+	for(int i = 0; i<n; i++)
+		printf("%d\n", ret[i]);
+			
+	return 0;
+}

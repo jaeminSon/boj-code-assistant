@@ -1,0 +1,51 @@
+#include <iostream>
+#include <set>
+#include <algorithm>
+
+using namespace std;
+
+const int S = 2000;
+int N;
+int a[S+5];
+set<int> st;
+bool v[S+5];
+
+int solve() {
+    sort(a+1, a+N+1);
+
+    int ret = 0;
+    for(int i = 1; i<=N; i++) {
+        int lo = 1, hi = N;
+        
+        while(lo < hi) {
+            if(lo != i && hi != i) {
+                if(a[lo]+a[hi] == a[i]) {
+                    ret++;
+                    break;
+                }
+                else if(a[lo]+a[hi] > a[i])
+                    hi--;
+                else
+                    lo++;
+            }
+            else if(lo == i)
+                lo++;
+            else
+                hi--;
+        }
+    }
+
+    return ret;
+}
+
+int main() {
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL); cout.tie(NULL);
+    cin >> N;
+ 
+    for(int i = 1; i<=N; i++)
+        cin >> a[i];
+    cout << solve() << '\n';
+ 
+    return 0;
+}

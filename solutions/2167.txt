@@ -1,0 +1,49 @@
+#include <iostream>
+#include <string.h>
+
+using namespace std;
+
+int n, m, k, x1, y1, x2, y2;
+unsigned int array[301][301];
+
+void prev() {
+	for(int i = 1; i<n; i++)
+		array[i][0] += array[i-1][0];
+	for(int i = 1; i<m; i++)
+		array[0][i] += array[0][i-1];
+	
+	
+	for(int i = 1; i<n; i++) {
+		for(int j = 1; j<m; j++) {
+			array[i][j] += array[i][j-1] + array[i-1][j] - array[i-1][j-1];
+		}
+	}
+}
+
+int solve(int y1, int x1, int y2, int x2) {
+	int ret = array[y2][x2];
+	
+	if(y1 > 0)	ret -= array[y1-1][x2];
+	if(x1 > 0)	ret -= array[y2][x1-1];
+	if(y1 > 0 && x1 > 0)	ret += array[y1-1][x1-1];
+	
+	return ret;
+}
+
+int main() {
+	cin >> n >> m;
+	
+	for(int i = 0; i<n; i++)
+		for(int j = 0; j<m; j++)
+			cin >> array[i][j];
+	
+	prev();
+	
+	cin >> k;
+	for(int i = 0; i<k; i++) {
+		cin >> y1 >> x1 >> y2 >> x2;
+		cout << solve(y1-1, x1-1, y2-1, x2-1) << endl;
+	}
+	
+	return 0;
+}

@@ -1,0 +1,70 @@
+#include <iostream>
+#include <algorithm>
+#include <fstream>
+
+using namespace std;
+
+typedef pair<int, int> pii;
+
+const int S = 1e5, INF = 2e9;
+int N;
+int a[S + 5];
+pii Tree[4 * S + 5];
+
+void init(int b, int s, int e) {
+    if (s == e) {
+        Tree[b] = { a[s], s };
+        return;
+    }
+
+    int mid = (s + e) / 2;
+    init(b * 2, s, mid);
+    init(b * 2 + 1, mid + 1, e);
+    Tree[b] = min(Tree[b * 2], Tree[b * 2 + 1]);
+}
+
+pii get(int b, int s, int e, int l, int r) {
+    if (r < s || e < l)
+        return { INF, 0 };
+
+    if (l <= s && e <= r)
+        return Tree[b];
+
+    int mid = (s + e) / 2;
+    return min(get(b * 2, s, mid, l, r), get(b * 2 + 1, mid + 1, e, l, r));
+}
+
+int query(int l, int r) {
+    if (r < l)
+        return 0;
+    if (l == r)
+        return a[l];
+
+    int mid = get(1, 1, N, l, r).second;
+
+    int ret = a[mid] * (r - l + 1);
+    ret = max(ret, query(l, mid - 1));
+    ret = max(ret, query(mid + 1, r));
+    return ret;
+}
+
+int solve() {
+    init(1, 1, N);
+    return query(1, N);
+}
+
+int main(void) {
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL); cout.tie(NULL);
+    //fstream inf("prob.txt");
+    //inf >> N;
+    cin >> N;
+
+    for (int i = 1; i <= N; i++) {
+        //inf >> a[i];
+        cin >> a[i];
+    }
+    printf("%d", solve());
+
+    return 0;
+}

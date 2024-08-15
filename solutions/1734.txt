@@ -1,0 +1,161 @@
+#include <iostream>
+#include <vector>
+#include <fstream>
+
+using namespace std;
+
+const int S = 1e5;
+int N, E, Q;
+int time, discovered[S+5], finished[S+5], low[S+5], p[S+5], d[S+5], anc[S+5][22], cv[S+5];
+vector<int> adj[S+5];
+
+void btup() {
+	for(int i = 1; i<22; i++) {
+		for(int j = 1; j<=N; j++)
+			anc[j][i] = anc[anc[j][i-1]][i-1];
+	}
+}
+
+int lca(int a, int b) {
+	if(d[b] < d[a])
+		swap(a, b);
+	
+	for(int i = 21; i>=0; i--) {
+		if(d[a] <= d[anc[b][i]])
+			b = anc[b][i];
+	}
+	if(a == b)	return a;
+	
+	for(int i = 21; i>=0; i--) {
+		if(anc[a][i] != anc[b][i]) {
+			a = anc[a][i];
+			b = anc[b][i];
+		}
+	}
+	return anc[a][0];
+}
+
+int findChild(int c, int a) {
+	if(d[a] < d[c])
+		swap(c, a);
+	
+	for(int i = 21; i>=0; i--) {
+		if(d[c]+1 <= d[anc[a][i]])
+			a = anc[a][i];
+	}
+	
+	return a;
+}
+
+bool isChild(int a, int b) {
+	return discovered[a] <= discovered[b] && finished[b] <= finished[a];
+}
+
+void dfs(int here, int pp, int dep, bool isRoot) {
+	low[here] = discovered[here] = ++time;
+	p[here] = pp;
+	d[here] = dep;
+	int children = 0;
+	
+	for(int i = 0; i<adj[here].size(); i++) {
+		int there = adj[here][i];
+		
+		if(p[here] == there)
+			continue;
+		
+		if(discovered[there] == 0) {
+			children++;
+			
+			dfs(there, here, dep+1, false);
+			low[here] = min(low[here], low[there]);
+			anc[there][0] = here;
+			
+			if(!isRoot && discovered[here] <= low[there])
+				cv[here] = true;
+		}
+		else {
+			low[here] = min(low[here], discovered[there]);
+		}
+	}
+	if(isRoot && children>=2)
+		cv[here] = true;
+	
+	finished[here] = ++time;
+}
+
+int main() {
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL); cout.tie(NULL);
+	//fstream inf("prob.txt");
+	//inf >> N >> E;
+	cin >> N >> E;
+	
+	for(int a, b, i = 0; i<E; i++) {
+		//inf >> a >> b;
+		cin >> a >> b;
+		adj[a].push_back(b);
+		adj[b].push_back(a);
+	}
+	
+	dfs(1, 0, 0, true);
+	btup();
+	
+	//for(int i = 1; i<=N; i++) {
+	//	printf("i:%d\td:%d\tf:%d\t%d\tlw:%d\n", i, discovered[i], finished[i], cv[i], low[i]);
+	//}
+	
+	//inf >> Q;
+	cin >> Q;
+	for(int t, a, b, c, g1, g2, i = 0; i<Q; i++) {
+		//inf >> t;
+		cin >> t;
+		
+		if(t == 1) {
+			//inf >> a >> b >> g1 >> g2;
+			cin >> a >> b >> g1 >> g2;
+			
+			if(isChild(g1,g2) == false)
+				swap(g1,g2);
+			
+			if(low[g2] <= discovered[g1])
+				printf("yes\n");
+			else {
+				if(isChild(g2,a) == isChild(g2,b))
+					printf("yes\n");
+				else
+					printf("no\n");
+			}
+		}
+		else {
+			//inf >> a >> b >> c;
+			cin >> a >> b >> c;
+			
+			if(cv[c] == false)
+				printf("yes\n");
+			else {
+				if(isChild(c,a) == false && isChild(c,b) == false)
+					printf("yes\n");
+				else if(isChild(c,a) == true && isChild(c,b) == true) {
+					int ca = findChild(c,a), cb = findChild(c,b);
+					
+					if(ca==cb || (low[ca]<discovered[c] && low[cb]<discovered[c]))
+						printf("yes\n");
+					else
+						printf("no\n");
+				}
+				else {
+					if(isChild(c,b) == true)
+						swap(a,b);
+					
+					a = findChild(c,a);
+					if(low[a] < discovered[c])
+						printf("yes\n");
+					else
+						printf("no\n");
+				}
+			}
+		}
+	}
+	
+	return 0;
+}

@@ -1,0 +1,80 @@
+#include <iostream>
+#include <vector>
+
+using namespace std;
+
+struct P {
+    int x, c, d;
+};
+
+const int S = 2e5;
+int N, Q;
+int pt[S+5], d[S+5], p[S+5];
+vector<P> q;
+vector<string> ret;
+
+int find(int a) {
+    if(a == pt[a])
+        return a;
+    
+    return pt[a] = find(pt[a]);
+}
+
+void join(int a, int b) {
+    a = find(a);
+    b = find(b);
+
+    if(a == b)
+        return;
+    
+    if(d[a] < d[b])
+        pt[a] = b;
+    else if(d[a] > d[b])
+        pt[b] = a;
+    else {
+        pt[a] = b;
+        d[b]++;
+    }
+}
+
+int main() {
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL); cout.tie(NULL);
+    cin >> N >> Q;
+
+    for(int i = 1; i<N; i++)
+        cin >> p[i+1];
+    for(int i = 1; i<=N-1+Q; i++) {
+        int x, c, d;
+        cin >> x;
+
+        if(x == 0) {
+            cin >> c;
+            q.push_back({x,c,0});
+        }
+        else {
+            cin >> c >> d;
+            q.push_back({x,c,d});
+        }
+    }
+
+    for(int i = 1; i<=N; i++)
+        pt[i] = i;
+    for(int i = q.size()-1; i>=0; i--) {
+        if(q[i].x == 0) {
+            int c = q[i].c;
+            join(c, p[c]);
+        }
+        else {
+            int c = q[i].c, d = q[i].d;
+            if(find(c) == find(d))
+                ret.push_back("YES");
+            else
+                ret.push_back("NO");          
+        }
+    }
+    for(int i = ret.size()-1; i>=0; i--)
+        cout << ret[i] << '\n';
+ 
+    return 0;
+}

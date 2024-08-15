@@ -1,0 +1,104 @@
+#include <iostream>
+#include <vector>
+#include <queue>
+#include <climits>
+#include <fstream>
+
+using namespace std;
+
+typedef long long ll;
+
+const ll INF = LLONG_MAX;
+const int S = 1e5;
+int N, M, D, E;
+int h[S+5];
+ll d1[S+5], dn[S+5];
+vector<pair<ll,int>> adj[S+5];
+
+void dijkstra() {
+	for(int i = 1; i<=N; i++) {
+		d1[i] = INF;
+		dn[i] = INF;
+	}
+
+	d1[1] = 0;
+	dn[N] = 0;
+	priority_queue<pair<ll,int>, vector<pair<ll,int>>, greater<pair<ll,int>>> pq;
+	pq.push({0,1});
+	
+	while(!pq.empty()) {
+		int here = pq.top().second;
+		ll cost = pq.top().first;
+		pq.pop();
+		
+		if(d1[here] < cost)
+			continue;
+		
+		for(int i = 0; i<adj[here].size(); i++) {
+			int there = adj[here][i].second;
+			ll cost = adj[here][i].first;
+			
+			if(d1[there] > d1[here]+cost && h[there] > h[here]) {
+				d1[there] = d1[here]+cost;
+				pq.push({d1[there],there});
+			}
+		}
+	}
+	
+	pq = priority_queue<pair<ll,int>, vector<pair<ll,int>>, greater<pair<ll,int>>>();
+	pq.push({0,N});
+	
+	while(!pq.empty()) {
+		int here = pq.top().second;
+		ll cost = pq.top().first;
+		pq.pop();
+		
+		if(dn[here] < cost)
+			continue;
+		
+		for(int i = 0; i<adj[here].size(); i++) {
+			int there = adj[here][i].second;
+			ll cost = adj[here][i].first;
+			
+			if(dn[there] > dn[here]+cost && h[there] > h[here]) {
+				dn[there] = dn[here]+cost;
+				pq.push({dn[there],there});
+			}
+		}
+	}
+	
+	ll ret = -INF;
+	for(int i = 2; i<N; i++) {
+		if(d1[i] == INF || dn[i] == INF)
+			continue;
+		ret = max(ret, (ll)h[i]*E-(d1[i]+dn[i])*D);
+	}
+	if(ret == -INF)
+		printf("Impossible");
+	else
+		printf("%lld", ret);
+}
+
+int main() {
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL); cout.tie(NULL);
+	//fstream inf("prob.txt");
+	//inf >> N >> M >> D >> E;
+	cin >> N >> M >> D >> E;
+	
+	for(int i = 1; i<=N; i++) {
+		//inf >> h[i];
+		cin >> h[i];
+	}
+	for(int a,b,i=0; i<M; i++) {
+		ll n;
+		//inf >> a >> b >> n;
+		cin >> a >> b >> n;
+		
+		adj[a].push_back({n,b});
+		adj[b].push_back({n,a});
+	}
+	dijkstra();
+	
+	return 0;
+}

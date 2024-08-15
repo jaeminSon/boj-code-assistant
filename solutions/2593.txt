@@ -1,0 +1,133 @@
+#include <iostream>
+#include <vector>
+#include <queue>
+#include <cstring>
+#include <fstream>
+
+using namespace std;
+
+typedef pair<int,int> pii;
+
+const int S = 100, INF = 1e9;
+int N, M, A, B;
+int dist[S+5], p[S+5];
+bool start[S+5], dest[S+5];
+vector<int> adj[S+5];
+pii a[S+5];
+
+bool check(int u, int v) {
+    int x1 = a[u].first, y1 = a[u].second, x2 = a[v].first, y2 = a[v].second;
+    if(x1 == x2)
+        return true;
+
+    int n = 0;
+    while(x1 + y1 * n <= N) {
+        if(-x2 + x1 + y1 * n >= 0 && (-x2 + x1 + y1 * n) % y2 == 0)
+            return true;
+        n++;
+    }
+
+    n = 0;
+    swap(x1, x2);
+    swap(y1, y2);
+    while(x1 + y1 * n <= N) {
+        if(-x2 + x1 + y1 * n >= 0 && (-x2 + x1 + y1 * n) % y2 == 0)
+            return true;
+        n++;
+    }
+    return false;
+}
+
+void bfs() {
+    for(int i = 1; i<=M; i++) {
+        for(int j = 1; j<=M; j++) {
+            if(i != j && check(i, j) == true) {
+                adj[i].push_back(j);
+                adj[j].push_back(i);
+            }
+        }
+    }
+    
+    queue<pii> q;
+    for(int i = 1; i<=M; i++) {
+        int x = a[i].first, y = a[i].second;
+        
+        while(x <= N) {
+            if(x == A)
+                start[i] = true;
+            if(x == B)
+                dest[i] = true;
+            x += y;
+        }
+    }
+
+    for(int i = 1; i<=M; i++) {
+        if(start[i] == true) {
+            dist[i] = 0;
+            q.push({i, 0});
+        }
+        else
+            dist[i] = INF;
+    }
+
+    while(!q.empty()) {
+        int here = q.front().first, cost = q.front().second;
+        q.pop();
+
+        for(int i = 0; i<adj[here].size(); i++) {
+            int there = adj[here][i];
+
+            if(dist[there] <= cost + 1)
+                continue;
+            dist[there] = cost + 1;
+            p[there] = here;
+            q.push({there, dist[there]});
+        }
+    }
+
+    int idx = -1, mini = INF;
+    for(int i = 1; i<=M; i++) {
+        if(dist[i] < mini && dest[i] == true) {
+            idx = i;
+            mini = dist[i];
+        }
+    }
+    if(idx == -1) {
+        cout << -1 << '\n';
+        return;
+    }
+
+    vector<int> ret;
+    while(true) {
+        ret.push_back(idx);
+
+        if(start[idx] == true)
+            break;
+        idx = p[idx];
+    }
+
+    cout << ret.size() << '\n';
+    for(int i = ret.size()-1; i>=0; i--)
+        cout << ret[i] << '\n';
+}
+
+int main() {
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL); cout.tie(NULL);
+    //fstream inf("prob.txt");
+    //inf >> N >> M;
+    cin >> N >> M;
+    
+    for(int x,y,i = 1; i<=M; i++) {
+        //inf >> x >> y;
+        cin >> x >> y;
+
+        a[i] = {x, y};
+    }
+    //inf >> A >> B;
+    cin >> A >> B;
+    
+    bfs();
+
+    return 0;
+}

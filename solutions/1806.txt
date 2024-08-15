@@ -1,0 +1,41 @@
+#include <iostream>
+#include <algorithm>
+#include <fstream>
+
+using namespace std;
+
+const int MX = 1e5, INF = 1e9;
+int N, S;
+int a[MX + 5];
+
+int solve() {
+    int ret = INF;
+
+    int st = 0, sum = 0;
+    for (int i = 0; i < N; i++) {
+        sum += a[i];
+
+        while (sum >= S) {
+            ret = min(ret, i - st + 1);
+            sum -= a[st++];
+
+        }
+    }
+    return ret = (ret == INF ? 0 : ret);
+}
+
+int main(void) {
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL); cout.tie(NULL);
+    //fstream inf("prob.txt");
+    //inf >> N >> S;
+    cin >> N >> S;
+
+    for (int i = 0; i < N; i++) {
+        //inf >> a[i];
+        cin >> a[i];
+    }
+    printf("%d", solve());
+
+    return 0;
+}

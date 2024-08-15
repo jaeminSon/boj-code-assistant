@@ -1,0 +1,50 @@
+#include <iostream>
+#include <fstream>
+
+using namespace std;
+
+int N;
+int h[100001];
+
+bool check(int odd, int even) {
+	int lo = odd, hi = even, mid;
+	if (lo == hi)
+		return true;
+
+	while (lo <= hi) {
+		mid = (lo + hi) / 2;
+
+		if (mid - odd == 2 * (even - mid))
+			return true;
+		else if ((mid - odd) < (even - mid) * 2)
+			lo = mid + 1;
+		else
+			hi = mid - 1;
+	}
+
+	return false;
+}
+
+int main(void) {
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL); cout.tie(NULL);
+	//fstream inf("prob.txt");
+	//inf >> N;
+	cin >> N;
+
+	int odd = 0, even = 0;
+	for (int i = 1; i <= N; i++) {
+		//inf >> h[i];
+		cin >> h[i];
+
+		odd += h[i] % 2;
+		even += h[i] / 2;
+	}
+
+	if (check(odd, even) == true)
+		printf("YES");
+	else
+		printf("NO");
+
+	return 0;
+}

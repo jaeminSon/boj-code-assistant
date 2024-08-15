@@ -1,0 +1,47 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <fstream>
+
+using namespace std;
+
+typedef pair<int, int> pii;
+
+int N;
+int dp[101];
+vector<pii> p;
+
+int solve() {
+    sort(p.begin(), p.end());
+    for (int i = 0; i < N; i++)
+        dp[i] = 1;
+
+    for (int i = 0; i < N; i++) {
+        for (int j = 0; j < i; j++) {
+            if (p[j].second < p[i].second)
+                dp[i] = max(dp[i], dp[j] + 1);
+        }
+    }
+    int ret = 0;
+    for (int i = 0; i < N; i++)
+        ret = max(ret, dp[i]);
+    return N - ret;
+}
+
+int main(void) {
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL); cout.tie(NULL);
+    //fstream inf("prob.txt");
+    //inf >> N;
+    cin >> N;
+
+    for (int a,b,i = 0; i < N; i++) {
+        //inf >> a >> b;
+        cin >> a >> b;
+
+        p.push_back({ a,b });
+    }
+    printf("%d", solve());
+
+    return 0;
+}

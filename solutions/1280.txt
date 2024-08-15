@@ -1,0 +1,96 @@
+#include <iostream>
+
+using namespace std;
+
+typedef long long ll;
+
+const int S = 2e5+5, mod = 1e9+7;
+int N;
+ll Tree[4*S+5], ct[4*S+5];
+
+void cupdate(int b, int s, int e, int n, int x) {
+    if(n < s || e < n)
+        return;
+    
+    if(s == e) {
+        ct[b] += 1;
+        return;
+    }
+
+    int mid = (s+e)/2;
+    cupdate(b*2, s, mid, n, x);
+    cupdate(b*2+1, mid+1, e, n, x);
+    ct[b] = ct[b*2]+ct[b*2+1];
+}
+
+ll cget(int b, int s, int e, int l, int r) {
+    if(r < s || e < l)
+        return 0;
+    if(l <= s && e <= r)
+        return ct[b];
+
+    int mid = (s+e)/2;
+    return cget(b*2, s, mid, l, r) + cget(b*2+1, mid+1, e, l, r);
+}
+
+void update(int b, int s, int e, int n, int x) {
+    if(n < s || e < n)
+        return;
+    
+    if(s == e) {
+        Tree[b] += x;
+        Tree[b] %= mod;
+        return;
+    }
+
+    int mid = (s+e)/2;
+    update(b*2, s, mid, n, x);
+    update(b*2+1, mid+1, e, n, x);
+    Tree[b] = Tree[b*2]+Tree[b*2+1];
+    Tree[b] %= mod;
+}
+
+ll get(int b, int s, int e, int l, int r) {
+    if(r < s || e < l)
+        return 0;
+    if(l <= s && e <= r)
+        return Tree[b];
+
+    int mid = (s+e)/2;
+    return (get(b*2, s, mid, l, r) + get(b*2+1, mid+1, e, l, r)) % mod;
+}
+
+int main() {
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL); cout.tie(NULL);
+    cin >> N;
+
+    ll ret = 1;
+    for(int i = 1; i<=N; i++) {
+        int x;
+        cin >> x;
+
+        x++;
+        update(1, 1, S, x, x);
+        cupdate(1, 1, S, x, x);
+        ll lf = get(1, 1, S, 1, x-1);
+        ll rt = get(1, 1, S, x+1, S);
+        ll c1 = cget(1, 1, S, 1, x-1);
+        ll c2 = cget(1, 1, S, x+1, S);
+
+        ll a = (c1*x % mod) - lf;
+        if(a < 0)
+            a += mod;
+        ll b = rt - (c2*x % mod);
+        if(b < 0)
+            b += mod;
+
+        if(i == 1)
+            continue;
+        ret = ret * ((a+b)%mod);
+        ret %= mod;
+    }
+    cout << ret << '\n';
+ 
+    return 0;
+}

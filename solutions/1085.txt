@@ -1,0 +1,16 @@
+#include <iostream>
+
+using namespace std;
+
+int x, y, w, h;
+
+int main() {
+	cin >> x >> y >> w >> h;
+	
+	int ret = min(x, y);
+	ret = min(ret, w-x);
+	ret = min(ret, h-y);
+	cout << ret << endl;
+	
+	return 0;
+}

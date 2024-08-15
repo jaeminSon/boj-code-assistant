@@ -1,0 +1,62 @@
+#include <iostream>
+#include <queue>
+#include <fstream>
+
+using namespace std;
+
+typedef long long ll;
+typedef pair<int, int> pii;
+
+const int S = 1000, INF = 2e9;
+int N;
+int c[S + 5][S + 5];
+bool visited[S + 5];
+
+ll solve() {
+    priority_queue<pii, vector<pii>, greater<pii>> pq;
+    pq.push({ 0, 1 });
+
+    ll ret = 0;
+    for (int i = 1; i <= N; i++) {
+        int here, cost = INF;
+
+        while (!pq.empty()) {
+            here = pq.top().second;
+            cost = pq.top().first;
+            pq.pop();
+
+            if (visited[here] == false) {
+                visited[here] = true;
+                break;
+            }
+        }
+        if (cost == INF)
+            return INF;
+
+        ret += (ll)cost;
+        for (int i = 1; i <= N; i++) {
+            if (visited[i] == true)
+                continue;
+            pq.push({ c[here][i], i });
+        }
+    }
+    return ret;
+}
+
+int main(void) {
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL); cout.tie(NULL);
+    //fstream inf("prob.txt");
+    //inf >> N;
+    cin >> N;
+
+    for (int i = 1; i <= N; i++) {
+        for (int j = 1; j <= N; j++) {
+            //inf >> c[i][j];
+            cin >> c[i][j];
+        }
+    }
+    printf("%lld", solve());
+
+    return 0;
+}

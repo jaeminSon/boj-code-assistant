@@ -1,0 +1,32 @@
+#include <iostream>
+#include <string.h>
+
+using namespace std;
+
+const int NINF = -987654321;
+int n;
+int T[16], P[16], cache[16];
+
+int solve(int day) {
+	if(day == n)	return 0;
+	if(day > n)	return NINF;
+	
+	int& ret = cache[day];
+	if(ret != -1)	return ret;
+	
+	ret = max(solve(day + T[day]) + P[day], solve(day + 1));
+	return ret;
+}
+
+int main() {
+	cin >> n;
+	memset(cache, -1, sizeof(cache));
+	
+	for(int i = 0; i<n; i++)
+		cin >> T[i] >> P[i];
+	
+	
+	cout << solve(0) << endl;
+	
+	return 0;
+}

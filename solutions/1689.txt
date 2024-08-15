@@ -1,0 +1,48 @@
+#include <iostream>
+#include <vector>
+#include <queue>
+#include <algorithm>
+
+using namespace std;
+
+typedef long long ll;
+typedef pair<ll,ll> pll;
+
+int N;
+vector<pll> p;
+
+ll solve() {
+    sort(p.begin(), p.end());
+
+    ll ret = 0;
+    priority_queue<pll, vector<pll>, greater<pll>> pq;
+    
+    for(int i = 0; i<p.size(); i++) {
+        ll s, e;
+        s = p[i].first;
+        e = p[i].second;
+
+        if(!pq.empty() && pq.top().first <= s)
+            pq.pop();
+        
+        pq.push({e,i});
+        ret = max(ret, (ll)pq.size());
+    }
+    return ret;
+}
+
+int main() {
+    ios_base::sync_with_stdio(false);
+	cin.tie(NULL); cout.tie(NULL);
+    cin >> N;
+
+    for(int i = 1; i<=N; i++) {
+        ll s, e;
+        cin >> s >> e;
+
+        p.push_back({s,e});
+    }
+    cout << solve() << '\n';
+
+    return 0;
+}

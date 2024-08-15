@@ -1,0 +1,73 @@
+#include <iostream>
+#include <map>
+
+using namespace std;
+
+typedef long long ll;
+
+const int S = 1e5;
+int T, F;
+int idx, pt[2*S+5], d[2*S+5];
+map<string,int> mp;
+
+int find(int a) {
+    if(a == pt[a])
+        return a;
+    return pt[a] = find(pt[a]);
+}
+
+void join(int a, int b) {
+    a = find(a);
+    b = find(b);
+
+    if(a == b)
+        return;
+    
+    if(d[a] < d[b]) {
+        d[a] += d[b];
+        pt[b] = a;
+    }
+    else {
+        d[b] += d[a];
+        pt[a] = b;
+    }
+}
+
+int main() {
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL); cout.tie(NULL);
+    cin >> T;
+ 
+    for(int i = 0; i<T; i++) {
+        cin >> F;
+
+        for(int j = 1; j<=2*F; j++) {
+            pt[j] = j;
+            d[j] = 1;
+        }
+        idx = 1;
+        mp.clear();
+
+        for(int j = 1; j<=F; j++) {
+            string u, v;
+            cin >> u >> v;
+
+            int x = idx;
+            if(mp.count(u) == 0)
+                mp.insert({u,idx++});
+            else
+                x = (*mp.find(u)).second;
+            
+            int y = idx;
+            if(mp.count(v) == 0)
+                mp.insert({v,idx++});
+            else
+                y = (*mp.find(v)).second;
+            
+            join(x,y);
+            cout << d[find(x)] << '\n';
+        }
+    }
+ 
+    return 0;
+}

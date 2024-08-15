@@ -1,0 +1,22 @@
+#include <iostream>
+
+using namespace std;
+
+int day;
+
+int main() {
+	cin >> day;
+	
+	int cnt = 0;
+	for(int i = 0; i<5; i++) {
+		int a;
+		cin >> a;
+		
+		if(a % 10 == day)
+			cnt++;
+	}
+	
+	cout << cnt << endl;
+	
+	return 0;
+}

@@ -1,0 +1,80 @@
+#include <iostream>
+#include <fstream>
+#include <vector>
+#include <algorithm>
+#include <string.h>
+
+using namespace std;
+
+vector<int> enemy[3001];
+bool visit[3001];
+int base[3001][3];
+int t, n, cnt, ret;
+
+void dfs(int start) {
+	visit[start] = true;
+
+	for(int i = 0; i<enemy[start].size(); i++) {
+		if(visit[enemy[start][i]])	continue;
+		
+		dfs(enemy[start][i]);
+	}
+	
+	return;
+}
+
+void dfsAll() {
+	for(int i = 0; i<n; i++) {
+		if(visit[i])	continue;
+		
+		ret++;
+		dfs(i);
+	}
+}
+
+bool isConnected(int a, int b) {
+	int x1 = base[a][0], x2 = base[b][0];
+	int y1 = base[a][1], y2 = base[b][1];
+	int r1 = base[a][2], r2 = base[b][2];
+	
+	int dist = (x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2);
+	int r = (r1 + r2) * (r1 + r2);
+	
+	return dist <= r;
+}
+
+int main() {
+	cin >> t;
+	
+	for(int i = 0; i<t; i++) {
+		cin >> n;
+		for(int j = 0; j<n; j++) {
+			int x, y, r;
+			cin >> x >> y >> r;
+			
+			base[j][0] = x;
+			base[j][1] = y;
+			base[j][2] = r;
+			
+			for(int k = 0; k<j; k++) {
+				if(isConnected(j, k)) {
+					enemy[j].push_back(k);
+					enemy[k].push_back(j);
+				}
+			}
+		}
+		
+		dfsAll();
+		cout << ret << endl;
+		
+		for(int j = 0; j<n; j++) {
+			visit[j] = false;
+			enemy[j].clear();
+			for(int k = 0; k<3; k++)
+				base[j][k] = 0;
+		}
+		ret = 0;
+	}
+	
+	return 0;
+}

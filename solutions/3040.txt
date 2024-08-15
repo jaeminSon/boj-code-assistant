@@ -1,0 +1,43 @@
+#include <iostream>
+#include <vector>
+
+using namespace std;
+
+vector<int> A;
+int id, jd;
+
+void solve() {
+	int sum = 0;
+	for(int i = 0; i<9; i++)	sum += A[i];
+	
+	for(int i = 0; i<9; i++) {
+		sum -= A[i];
+		for(int j = 0; j<9; j++) {
+			if(i == j)	continue;
+			sum -= A[j];
+			if(sum == 100) {
+				id = i;
+				jd = j;
+				return;
+			}
+			sum += A[j];
+		}
+		sum += A[i];
+	}
+}
+
+int main() {
+	for(int i = 0; i<9; i++) {
+		int a;
+		cin >> a;
+		A.push_back(a);
+	}
+	
+	solve();
+	for(int i = 0; i<9; i++) {
+		if(i == id || i == jd)	continue;
+		cout << A[i] << endl;
+	}
+
+	return 0;
+}

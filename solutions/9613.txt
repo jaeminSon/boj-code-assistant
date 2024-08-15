@@ -1,0 +1,47 @@
+#include <iostream>
+#include <vector>
+#include <fstream>
+
+using namespace std;
+
+typedef long long ll;
+
+int T, N;
+
+int gcd(int p, int q) {
+    if (p > q)
+        swap(p, q);
+    if (p == 0)
+        return q;
+
+    return gcd(p, q - p);
+}
+
+int main(void) {
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL); cout.tie(NULL);
+    //fstream inf("prob.txt");
+    //inf >> T;
+    cin >> T;
+
+    for (int i = 0; i < T; i++) {
+        //inf >> N;
+        cin >> N;
+
+        vector<int> a;
+        for (int x, j = 0; j < N; j++) {
+            //inf >> x;
+            cin >> x;
+            a.push_back(x);
+        }
+
+        ll ret = 0;
+        for (int j = 0; j < a.size(); j++) {
+            for (int k = j + 1; k < a.size(); k++)
+                ret += gcd(a[j], a[k]);
+        }
+        printf("%lld\n", ret);
+    }
+
+    return 0;
+}

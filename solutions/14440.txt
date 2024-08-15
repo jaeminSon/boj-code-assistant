@@ -1,0 +1,82 @@
+#include <iostream>
+
+using namespace std;
+
+const int S = 2, mod = 100;
+int x, y, a0, a1, N;
+int b[S+5][S+5];
+
+struct matrix {
+    int m[S+5][S+5];
+
+    matrix() {
+        for(int i = 1; i<=2; i++) {
+            for(int j = 1; j<=2; j++)
+                m[i][j] = 0;
+        }
+    }
+
+    matrix(int b[][S+5]) {
+        for(int i = 1; i<=2; i++) {
+            for(int j = 1; j<=2; j++)
+                m[i][j] = b[i][j];
+        }
+    }
+
+    matrix operator*(const matrix& a) {
+        matrix c;
+        for(int i = 1; i<=2; i++) {
+            for(int j = 1; j<=2; j++) {
+                for(int k = 1; k<=2; k++) {
+                    c.m[i][j] += m[i][k] * a.m[k][j] % mod;
+                    c.m[i][j] %= mod;
+                }
+            }
+        }
+        return c;
+    }
+};
+
+matrix solve(int n) {
+    if(n == 1) {
+        matrix ba(b);
+        return ba;
+    }
+
+    if(n % 2 == 0) {
+        matrix ret = solve(n/2);
+        return ret * ret;
+    }
+    else {
+        matrix ret = solve(n/2);
+        matrix ba(b);
+        return ret * ret * ba;
+    }
+}
+
+int main() {
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL); cout.tie(NULL);
+    cin >> x >> y >> a0 >> a1 >> N;    
+
+    if(N == 1) {
+        int ret = a1 % mod;
+        if(ret < 10)
+            cout << 0 << ret << '\n';
+        else
+            cout << ret << '\n';
+        return 0;
+    }
+
+    b[1][1] = x;
+    b[1][2] = y;
+    b[2][1] = 1;
+    matrix A = solve(N-1);
+    int ret = (A.m[1][1] * a1 % mod + A.m[1][2] * a0 % mod) % mod;
+    if(ret < 10)
+        cout << 0 << ret << '\n';
+    else
+        cout << ret << '\n';
+
+    return 0;
+}

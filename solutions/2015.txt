@@ -1,0 +1,41 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+
+using namespace std;
+
+typedef long long ll;
+typedef pair<ll,int> pli;
+
+const int S = 2e5;
+ll N, K;
+ll a[S+5], psum[S+5];
+vector<pli> p;
+
+ll solve() {
+    for(int i = 1; i<=N; i++)
+        psum[i] = psum[i-1] + a[i];
+    
+    for(int i = 0; i<N; i++)
+        p.push_back({psum[N]-psum[i],i+1});
+    sort(p.begin(), p.end());
+
+    ll sum = 0, ret = 0;
+    for(int i = N; i>=1; i--) {
+        ret += upper_bound(p.begin(), p.end(), make_pair(K+sum,i)) - lower_bound(p.begin(), p.end(), make_pair(K+sum,0));
+        sum += a[i];
+    }
+    return ret;
+}
+
+int main() {
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL); cout.tie(NULL);
+    cin >> N >> K;
+
+    for(int i = 1; i<=N; i++)
+        cin >> a[i];
+    cout << solve() << '\n';
+
+    return 0;
+}

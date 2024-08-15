@@ -1,0 +1,43 @@
+#include <iostream>
+#include <sstream>
+#include <vector>
+#include <algorithm>
+#include <string>
+
+using namespace std;
+
+int n;
+int era[1001];
+
+void solve() {
+	for(int i = 1; i<=n; i++) {
+		string sub;
+		stringstream s;
+		s << i;
+		
+		sub = s.str();
+		
+		bool check = true;
+		for(int j = 1; j<sub.size(); j++) {
+			if(sub[1]-sub[0] != sub[j] - sub[j-1]) {
+				check = false;
+				break;
+			}
+		}
+		
+		if(check == true)	era[i] = 1;
+	}
+}
+
+int main() {
+	cin >> n;
+	solve();
+	
+	int cnt = 0;
+	for(int i = 1; i<=n; i++)
+		if(era[i] == 1)	cnt++;
+		
+	cout << cnt << endl;
+	
+	return 0;
+}

@@ -1,0 +1,65 @@
+#include <iostream>
+#include <queue>
+
+using namespace std;
+
+struct P {
+	int x, y, w;
+};
+
+const int INF = 987654321;
+int n, m, k;
+int dist[1001][1001][11];
+char a[1001][1001];
+int mov[4][2] = {{0, 1}, {1, 0}, {-1, 0}, {0, -1}};
+
+int bfs() {
+	queue<P> q;
+	q.push({0, 0, 0});
+	dist[0][0][0] = 1;
+	
+	while(!q.empty()) {
+		int x = q.front().x;
+		int y = q.front().y;
+		int w = q.front().w;
+		q.pop();
+
+		for(int type = 0; type < 4; type++) {
+			int dx = x + mov[type][0];
+			int dy = y + mov[type][1];
+			
+			if(dx < 0 || m <= dx || dy < 0 || n <= dy)	continue;
+			if(dist[dy][dx][w])	continue;
+			
+			if(a[dy][dx] == '0') {
+				dist[dy][dx][w] = dist[y][x][w] + 1;
+				q.push({dx, dy, w});
+			}
+			if(a[dy][dx] == '1' && dist[dy][dx][w+1] == 0 && w < k) {
+				dist[dy][dx][w + 1] = dist[y][x][w] + 1;
+				q.push({dx, dy, w + 1});
+			}
+		}
+	}
+	int ret = INF;
+	for(int i = 0; i<=k; i++) {
+		if(dist[n-1][m-1][i] == 0)	continue;
+		
+		ret = min(ret, dist[n-1][m-1][i]);
+	}
+		
+	if(ret == INF)
+		return -1;
+	return ret;
+}
+
+int main() {
+	cin >> n >> m >> k;
+	
+	for(int i = 0; i<n; i++)
+		cin >> a[i];
+		
+	printf("%d", bfs());
+		
+	return 0;
+}

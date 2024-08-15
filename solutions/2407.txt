@@ -1,0 +1,76 @@
+#include <iostream>
+#include <vector>
+#include <fstream>
+
+using namespace std;
+
+int N, M;
+vector<int> DP[101][101];
+
+vector<int> add(const vector<int> &a, const vector<int> &b) {
+	int n = a.size();
+	int m = b.size();
+	int sz = min(n, m), lz = max(n, m);
+	
+	vector<int> ret(lz), c(lz+1);
+	for(int i = 0; i<sz; i++) {
+		ret[i] = a[i] + b[i] + c[i];
+		
+		if(ret[i] >= 10) {
+			ret[i] -= 10;
+			c[i+1] = 1;
+		}
+	}
+	for(int i = sz; i<lz; i++) {
+		if(lz == n)
+			ret[i] = a[i] + c[i];
+		else
+			ret[i] = b[i] + c[i];
+			
+		if(ret[i] >= 10) {
+			ret[i] -= 10;
+			c[i+1] = 1;
+		}
+	}
+	
+	if(c[lz] == 1) {
+		ret.resize(lz+1);
+		ret[lz] += c[lz];
+	}
+	
+	return ret;
+}
+
+vector<int> solve() {
+	for(int i = 1; i<=N; i++) {
+		DP[i][0].push_back(1);
+		DP[i][i].push_back(1);
+		
+		if(i >= 10) {
+			int n = i;
+			while(n > 0) {
+				DP[i][1].push_back(n%10);
+				n /= 10;
+			}
+		}
+	}
+	for(int i = 2; i<=N; i++) {
+		for(int j = 1; j<=min(i, M); j++)
+			DP[i][j] = add(DP[i-1][j-1], DP[i-1][j]);
+	}
+	return DP[N][M];
+}
+
+int main() {
+	ios_base :: sync_with_stdio(false);
+	cin.tie(NULL); cout.tie(NULL);
+	//fstream inf("prob.txt");
+	//inf >> N >> M;
+	cin >> N >> M;
+	
+	vector<int> ret = solve();
+	for(int i = ret.size()-1; i>=0; i--)
+		printf("%d", ret[i]);
+	
+	return 0;
+}

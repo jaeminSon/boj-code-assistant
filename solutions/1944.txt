@@ -1,0 +1,147 @@
+#include <iostream>
+#include <vector>
+#include <queue>
+#include <algorithm>
+#include <cstring>
+#include <fstream>
+
+using namespace std;
+
+typedef pair<int, int> pii;
+typedef pair<int, pair<int, int>> pdi;
+
+const int S = 2500;
+int N, M;
+int idx = 1, dist[S + 5][S + 5], node[S + 5][S + 5], pt[S + 5], d[S + 5];
+char bd[51][51];
+vector<int> adj[S + 5];
+bool visited[51][51];
+int mv[4][2] = {
+    {0, 1},
+    {1, 0},
+    {0, -1},
+    {-1, 0}
+};
+
+int find(int a) {
+    if (a == pt[a])
+        return a;
+    return pt[a] = find(pt[a]);
+}
+
+void join(int a, int b) {
+    a = find(a);
+    b = find(b);
+    
+    if (a == b)
+        return;
+
+    if (d[b] < d[a])
+        pt[b] = a;
+    else if (d[a] < d[b])
+        pt[a] = b;
+    else {
+        pt[b] = a;
+        d[a]++;
+    }
+}
+
+int mst() {
+    vector<pdi> edge;
+    for (int i = 1; i < idx; i++) {
+        for (int j = i + 1; j < idx; j++)
+            edge.push_back({ dist[i][j], {i,j} });
+    }
+    sort(edge.begin(), edge.end());
+
+    int ret = 0;
+    for (int a, b, c, i = 0; i < edge.size(); i++) {
+        c = edge[i].first;
+        a = edge[i].second.first;
+        b = edge[i].second.second;
+
+        if (find(a) != find(b)) {
+            ret += c;
+            join(a, b);
+        }
+    }
+    return ret;
+}
+
+
+void bfs(int y, int x) {
+    int cur = node[y][x];
+
+    queue<pdi> q;
+    q.push({ 0, { y,x } });
+
+    while (!q.empty()) {
+        int cy = q.front().second.first;
+        int cx = q.front().second.second;
+        int cost = q.front().first;
+        q.pop();
+
+        if (visited[cy][cx] == true)
+            continue;
+
+        visited[cy][cx] = true;
+        if (node[cy][cx] != 0 && !(y == cy && x == cx)) {
+            adj[cur].push_back(node[cy][cx]);
+            adj[node[cy][cx]].push_back(cur);
+
+            dist[node[cy][cx]][cur] = cost;
+            dist[cur][node[cy][cx]] = cost;
+        }
+
+        for (int type = 0; type < 4; type++) {
+            int ny = cy + mv[type][0];
+            int nx = cx + mv[type][1];
+
+            if (ny < 1 || ny > N || nx < 1 || nx > N)
+                continue;
+            if (visited[ny][nx] == true || bd[ny][nx] == '1')
+                continue;
+
+            q.push({ cost + 1, { ny,nx } });
+        }
+    }
+}
+
+int solve() {
+    for (int i = 1; i <= N; i++) {
+        for (int j = 1; j <= N; j++) {
+            if (bd[i][j] == 'S' || bd[i][j] == 'K') {
+                memset(visited, 0, sizeof(visited));
+                bfs(i, j);
+            }
+        }
+    }
+    for (int i = 1; i < idx; i++) {
+        if (adj[i].size() < idx - 2)
+            return -1;
+    }
+
+    return mst();
+}
+
+int main(void) {
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL); cout.tie(NULL);
+    //fstream inf("prob.txt");
+    //inf >> N >> M;
+    cin >> N >> M;
+    for (int i = 1; i <= N; i++) {
+        for (int j = 1; j <= N; j++) {
+            //inf >> bd[i][j];
+            cin >> bd[i][j];
+            
+            if (bd[i][j] == 'S' || bd[i][j] == 'K') {
+                pt[idx] = idx;
+                node[i][j] = idx++;
+            }
+        }
+    }
+    printf("%d", solve());
+
+    return 0;
+}

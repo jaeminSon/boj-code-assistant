@@ -1,0 +1,33 @@
+#include <iostream>
+#include <fstream>
+
+using namespace std;
+
+int T, H, W, N;
+
+int main() {
+	ios_base :: sync_with_stdio(false);
+	cin.tie(NULL); cout.tie(NULL);
+	//fstream inf("prob.txt");
+	//inf >> T;
+	cin >> T;
+	
+	for(int i = 0; i<T; i++) {
+		//inf >> H >> W >> N;
+		cin >> H >> W >> N;
+		
+		int h = N%H;
+		int w = N/H+1;
+		if(h == 0) {
+			h = H;
+			w--;
+		}
+		if(w < 10)
+			printf("%d0%d\n", h, w);
+		else
+			printf("%d%d\n", h, w);
+	}
+	
+	
+	return 0;
+}

@@ -1,0 +1,121 @@
+#include <iostream>
+#include <vector>
+#include <cmath>
+#include <cstring>
+
+using namespace std;
+
+struct p {
+    int u, v, w;
+};
+
+const int S = 500, INF = 1e6;
+int N;
+int h[S+5][S+5], inx[S+5][S+5], idx = 1, pt[S*S+5], d[S*S+5];
+int mv[4][2] = {{1,0}, {-1,0}, {0,1}, {0,-1}};
+vector<p> edge;
+
+int find(int a) {
+    if(pt[a] == a)
+        return a;
+    return pt[a] = find(pt[a]);
+}
+
+void join(int a, int b) {
+    a = find(a);
+    b = find(b);
+
+    if(a == b)
+        return;
+    
+    d[a] += d[b];
+    pt[b] = a;
+}
+
+void dfs(int y, int x) {
+    inx[y][x] = idx;
+    
+    for(int type = 0; type<4; type++) {
+        int ny = y + mv[type][0];
+        int nx = x + mv[type][1];
+
+        if(ny < 1 || ny > N || nx < 1 || nx > N)
+            continue;
+        if(inx[ny][nx] != 0)
+            continue;
+        if(h[y][x] != h[ny][nx])
+            continue;
+        dfs(ny,nx);
+    }
+}
+
+bool check(int k) {
+    memset(d, 0, sizeof(d));
+    for(int i = 1; i<idx; i++)
+        pt[i] = i;
+    for(int i = 1; i<=N; i++) {
+        for(int j = 1; j<=N; j++)
+            d[inx[i][j]]++;
+    }
+
+    for(int i = 0; i<edge.size(); i++) {
+        int u = edge[i].u, v = edge[i].v, w = edge[i].w;
+        if(w <= k)
+            join(u,v);
+    }
+
+    for(int i = 1; i<idx; i++) {
+        if(i == pt[i] && (N*N+1)/2 <= d[i])
+            return true;
+    }
+    return false;
+}
+
+int solve() {
+    for(int i = 1; i<=N; i++) {
+        for(int j = 1; j<=N; j++) {
+            if(inx[i][j] != 0)
+                continue;
+            dfs(i,j);
+            idx++;
+        }
+    }
+    for(int y = 1; y<=N; y++) {
+        for(int x = 1; x<=N; x++) {
+            for(int type = 0; type<4; type++) {
+                int ny = y + mv[type][0];
+                int nx = x + mv[type][1];
+
+                if(ny < 1 || ny > N || nx < 1 || nx > N)
+                    continue;
+
+                if(inx[ny][nx] != inx[y][x])
+                    edge.push_back({inx[ny][nx], inx[y][x], abs(h[ny][nx]-h[y][x])});
+            }
+        }
+    }
+    
+    int lo = 0, hi = INF, mid;
+    while(lo <= hi) {
+        mid = (lo+hi)/2;
+        if(check(mid) == true)
+            hi = mid-1;
+        else
+            lo = mid+1;
+    }
+    return lo;
+}
+
+int main() {
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL); cout.tie(NULL);
+    cin >> N;
+
+    for(int i = 1; i<=N; i++) {
+        for(int j = 1; j<=N; j++)
+            cin >> h[i][j];
+    }
+    cout << solve() << '\n';
+ 
+    return 0;
+}

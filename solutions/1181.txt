@@ -1,0 +1,44 @@
+#include <iostream>
+#include <set>
+#include <vector>
+#include <algorithm>
+#include <fstream>
+
+using namespace std;
+
+int N;
+set<string> dict;
+vector<string> sd;
+
+bool comp(string &a, string &b) {
+	if(a.size() == b.size()) {
+		for(int i = 0; i<a.size(); i++) {
+			if(a[i] == b[i])	continue;
+			return a[i] < b[i];
+		}
+	}
+	return a.size() < b.size();
+}
+
+int main() {
+	ios_base :: sync_with_stdio(false);
+	cin.tie(NULL); cout.tie(NULL);
+	//fstream inf("prob.txt");
+	//inf >> N;
+	cin >> N;
+	
+	for(int i = 1; i<=N; i++) {
+		string s;
+		//inf >> s;
+		cin >> s;
+		dict.insert(s);
+	}
+	for(set<string>::iterator it = dict.begin(); it!=dict.end(); it++)
+		sd.push_back(*it);
+		
+	sort(sd.begin(), sd.end(), comp);
+	for(int i = 0; i<sd.size(); i++)
+		cout << sd[i] << endl;
+	
+	return 0;
+}

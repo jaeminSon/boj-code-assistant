@@ -1,0 +1,58 @@
+#include <stdio.h>
+#include <Windows.h>
+#include <algorithm>
+#include <vector>
+#include <utility>
+#include <stack>
+
+using namespace std;
+
+vector <int> G[101];
+stack <int> a;
+int visit[101];
+int num;
+
+void dfs(int start)
+{
+	if (visit[start] == 0)
+	{
+		a.push(start);
+		num++;
+	}
+
+	visit[start] = 1;
+	
+	for (int i = 0; i < G[start].size(); i++)
+	{
+		if (visit[G[start][i]] == 0)
+		{
+			dfs(G[start][i]);
+		}
+	}	
+}
+
+int main()
+{
+	int cnum, pnum, head, tail;
+	int i;
+
+	scanf("%d", &cnum);
+
+	scanf("%d", &pnum);
+
+	for (i = 0; i < pnum;i++)
+	{
+		scanf("%d %d", &head, &tail);
+			
+		G[head].push_back(tail);
+		G[tail].push_back(head);
+	}
+	
+	dfs(1);
+
+	num--;
+	printf("%d", num);
+
+	system("pause");
+	return 0;
+}

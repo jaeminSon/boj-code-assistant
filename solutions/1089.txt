@@ -1,0 +1,63 @@
+#include <iostream>
+#include <vector>
+
+using namespace std;
+
+typedef long long ll;
+
+const int S = 1000;
+int N;
+string s[6] = {"###...#.###.###.#.#.###.###.###.###.###",
+                "#.#...#...#...#.#.#.#...#.....#.#.#.#.#",
+                "#.#...#.###.###.###.###.###...#.###.###",
+                "#.#...#.#.....#...#...#.#.#...#.#.#...#",
+                "###...#.###.###...#.###.###...#.###.###"};
+string t[6];
+
+double solve() {
+    vector<int> a[10];
+
+    for(int i = 0; i<4*N-1; i+=4) {
+
+        for(int j = 0; j<40; j+=4) {
+
+            bool b = true;
+            for(int k = 0; k<5; k++) {
+                for(int l = 0; l<3; l++) {
+                    if(t[k][i+l] == '#' && s[k][j+l] == '.')
+                        b = false;
+                }
+            }
+            if(b == true)
+                a[i/4].push_back(j/4);
+        }
+    }
+
+    double ret = 0;
+    for(int i = 0; i<N; i++) {
+        if(a[i].size() == 0)
+            return -1;
+        
+        double c = 0;
+        for(int j = 0; j<a[i].size(); j++)
+            c += a[i][j];
+        c /= 1.0*a[i].size();
+        
+        ret = ret * 10 + c;
+    }
+    return ret;
+}
+
+int main() {
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL); cout.tie(NULL);
+    cout << fixed;
+    cout.precision(10);
+    cin >> N;
+
+    for(int i = 0; i<5; i++)
+        cin >> t[i];
+    cout << solve() << '\n';
+ 
+    return 0;
+}

@@ -1,0 +1,58 @@
+#include <iostream>
+#include <vector>
+#include <fstream>
+
+using namespace std;
+
+typedef long long ll;
+
+const int S = 3e5;
+int N;
+ll dt, gt;
+vector<int> adj[S + 5];
+bool visited[S + 5];
+
+void dfs(int here) {
+	visited[here] = true;
+
+	if (adj[here].size() >= 3)
+		gt += (ll)adj[here].size() * (adj[here].size() - 1) * (adj[here].size() - 2) / 6;
+
+	for (int i = 0; i < adj[here].size(); i++) {
+		int there = adj[here][i];
+
+		if (visited[there] == true)
+			continue;
+
+		if (adj[here].size() >= 2 && adj[there].size() >= 2)
+			dt += ((ll)adj[here].size() - 1) * (adj[there].size() - 1);
+
+		dfs(there);
+	}
+}
+
+int main(void) {
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL); cout.tie(NULL);
+	//fstream inf("prob.txt");
+	//inf >> N;
+	cin >> N;
+
+	for (int u, v, i = 1; i < N; i++) {
+		//inf >> u >> v;
+		cin >> u >> v;
+
+		adj[u].push_back(v);
+		adj[v].push_back(u);
+	}
+	dfs(1);
+
+	if (dt > gt * 3)
+		printf("D");
+	else if (dt < gt * 3)
+		printf("G");
+	else
+		printf("DUDUDUNGA");
+
+	return 0;
+}

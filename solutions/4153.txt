@@ -1,0 +1,32 @@
+#include <iostream>
+#include <fstream>
+
+using namespace std;
+
+int a, b, c;
+
+int main() {
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL); cout.tie(NULL);
+	//fstream inf("prob.txt");
+	
+	while(true) {
+		//inf >> a >> b >> c;
+		cin >> a >> b >> c;
+		
+		if(a == 0 && b == 0 && c == 0)
+			break;
+		
+		if(c < b)
+			swap(b, c);
+		if(c < a)
+			swap(a, c);
+			
+		if(c*c == a*a+b*b)
+			printf("right\n");
+		else
+			printf("wrong\n");
+	}
+
+	return 0;
+}

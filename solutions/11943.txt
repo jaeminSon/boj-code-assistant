@@ -1,0 +1,18 @@
+#include <iostream>
+#include <fstream>
+
+using namespace std;
+
+int a, b, c, d;
+
+int main() {
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL); cout.tie(NULL);
+	//fstream inf("prob.txt");
+	//inf >> a >> b >> c >> d;
+	cin >> a >> b >> c >> d;
+	
+	printf("%d", min(a+d, b+c));
+	
+	return 0;
+}

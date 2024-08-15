@@ -1,0 +1,39 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <string.h>
+
+using namespace std;
+
+int n, k;
+vector<int> coin;
+int cache[10001];
+
+int solve(int k) {
+	cache[0] = 1;
+	
+	for(int i = 0; i<n; i++) {
+		for(int j = 1; j<=k; j++) {
+			if(j >= coin[i])
+				cache[j] += cache[j-coin[i]];
+		}
+	}
+	
+	return cache[k];
+}
+
+
+int main() {
+	cin >> n >> k;
+	memset(cache, 0, sizeof(cache));
+	
+	for(int i = 0; i<n; i++) {
+		int a;
+		cin >> a;
+		coin.push_back(a);
+	}
+	
+	cout << solve(k) << endl;
+	
+	return 0;
+}

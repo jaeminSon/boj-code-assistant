@@ -1,0 +1,65 @@
+#include <iostream>
+#include <algorithm>
+#include <fstream>
+
+using namespace std;
+
+typedef long long ll;
+
+const ll INF = 1e12;
+int N;
+int len, wid, hei;
+int a[21];
+
+ll solve(int l, int w, int h) {
+    if (l == 0 && w == 0 && h == 0)
+        return 0;
+
+    int m = min(l, min(w, h));
+    int s = -1;
+    for (int i = 20; i >= 0; i--) {
+        if (a[i] == 0)
+            continue;
+
+        if ((1 << i) <= m) {
+            s = i;
+            a[i]--;
+            break;
+        }
+    }
+    if (s == -1)
+        return INF;
+
+    int p = (1 << s);
+    ll ret = 1;
+    if (h - p > 0)
+        ret += solve(l, w, h - p);
+    if (l - p > 0)
+        ret += solve(l - p, p, p);
+    if (l - p > 0 && w - p > 0)
+        ret += solve(l - p, w - p, p);
+    if (w - p > 0)
+        ret += solve(p, w - p, p);
+    return ret;
+}
+
+int main(void) {
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL); cout.tie(NULL);
+    //fstream inf("prob.txt");
+    //inf >> len >> wid >> hei >> N;
+    cin >> len >> wid >> hei >> N;
+
+    for(int k, c, i = 0; i < N; i++) {
+        //inf >> k >> c;
+        cin >> k >> c;
+
+        a[k] = c;
+    }
+    ll ret = solve(len, wid, hei);
+    if (ret >= INF)
+        ret = -1;
+    printf("%lld", ret);
+
+    return 0;
+}

@@ -1,0 +1,79 @@
+#include <iostream>
+#include <vector>
+#include <set>
+#include <algorithm>
+
+using namespace std;
+
+typedef long long ll;
+typedef pair<int,int> pii;
+
+const int S = 5e4;
+int N;
+int a[S+5], b[S+5], Tree[8*S+5];
+vector<pii> p;
+set<int> st;
+
+void update(int b, int s, int e, int n, int x) {
+    if(n < s || e < n)
+        return;
+    if(s == e) {
+        Tree[b] += x;
+        return;
+    }
+    int mid = (s+e)/2;
+    update(b*2, s, mid, n, x);
+    update(b*2+1, mid+1, e, n, x);
+    Tree[b] = Tree[b*2]+Tree[b*2+1];
+}
+
+int get(int b, int s, int e, int l, int r) {
+    if(r < s || e < l)
+        return 0;
+    if(l <= s && e <= r)
+        return Tree[b];
+    
+    int mid = (s+e)/2;
+    return get(b*2, s, mid, l, r) + get(b*2+1, mid+1, e, l, r);
+}
+
+int solve() {
+    for(int i = 1; i<=N; i++)
+        p.push_back({a[i], b[i]});
+    sort(p.begin(), p.end());
+
+    ll ret = 0;
+    for(int i = 0; i<p.size(); i++) {
+        int s = p[i].first;
+        int e = p[i].second;
+
+        while(!st.empty() && (*st.begin()) <= s) {
+            update(1,1,2*N,(*st.begin()),-1);
+            st.erase(st.begin());
+        }
+
+        ret += get(1,1,2*N,s+1,e-1);
+        update(1,1,2*N,e,1);
+        st.insert(e);
+    }
+    return ret;
+}
+
+int main() {
+    ios_base :: sync_with_stdio(false);
+	cin.tie(NULL); cout.tie(NULL);
+    cin >> N;
+
+    for(int i = 1; i<=2*N; i++) {
+        int x;
+        cin >> x;
+        
+        if(a[x] == 0)
+            a[x] = i;
+        else
+            b[x] = i;
+    }
+    cout << solve() << '\n';
+
+    return 0;
+}

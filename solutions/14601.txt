@@ -1,0 +1,62 @@
+#include <iostream>
+
+using namespace std;
+
+const int S = 150;
+int K, x, y;
+int a[S+5][S+5];
+int idx = 1;
+
+bool check(int x, int y, int k) {
+    for(int i = x; i<x+k; i++) {
+        for(int j = y; j<y+k; j++) {
+            if(a[i][j] != 0)
+                return true;
+        }
+    }
+    return false;
+}
+
+void solve(int x, int y, int k) {
+    int mid_x = x + k/2 -1;
+    int mid_y = y + k/2 -1;
+
+    if(check(x, y, k/2) == false)
+        a[mid_x][mid_y] = idx;
+
+    if(check(x, mid_y+1, k/2) == false)
+        a[mid_x][mid_y+1] = idx;
+
+    if(check(mid_x+1, y, k/2) == false)
+        a[mid_x+1][mid_y] = idx;
+        
+    if(check(mid_x+1, mid_y+1, k/2) == false)
+        a[mid_x+1][mid_y+1] = idx;
+
+    idx++;
+
+    if(k == 2)
+        return;
+
+    solve(x, y, k/2);
+    solve(mid_x+1, y, k/2);
+    solve(x, mid_y+1, k/2);
+    solve(mid_x+1, mid_y+1, k/2);
+}
+
+int main() {
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL); cout.tie(NULL);
+    cin >> K >> x >> y;
+
+    a[x][y] = -1;
+    solve(1,1,(1<<K));
+
+    for(int i = (1<<K); i>=1; i--) {
+        for(int j = 1; j<=(1<<K); j++)
+            cout << a[j][i] << " ";
+        cout << '\n';
+    }
+ 
+    return 0;
+}

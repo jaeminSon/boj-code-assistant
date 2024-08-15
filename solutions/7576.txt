@@ -1,0 +1,94 @@
+#include <iostream>
+#include <fstream>
+#include <vector>
+#include <queue>
+#include <string.h>
+
+using namespace std;
+
+int w, h, total, day, full;
+int box[1001][1001];
+int mov[4][2] = {{1, 0}, {0, 1}, {-1, 0}, {0, -1}};
+
+bool isFull() {
+	int sum = 0;
+	for(int y = 0; y<h; y++) {
+		for(int x = 0; x<w; x++) {
+			if(box[y][x] == 1)
+				sum++;
+		}
+	}
+	return sum == total;
+}
+
+void bfs() {
+	bool visit[1001][1001];
+	memset(visit, 0, sizeof(visit));
+	
+	queue<pair<int, int> > q;
+	for(int y = 0; y<h; y++) {
+		for(int x = 0; x<w; x++) {
+			if(box[y][x] == 1)
+				q.push(make_pair(y, x));
+		}
+	}
+	
+	if(q.size() == w*h) {
+		full = 1;
+		return;
+	}
+	
+	while(true) {
+		queue<pair<int, int> > p;
+		
+		while(!q.empty()) {
+			int y = q.front().first;
+			int x = q.front().second;
+			q.pop();
+			
+			for(int i = 0; i<4; i++) {
+				int dy = y + mov[i][0];
+				int dx = x + mov[i][1];
+				
+				if(dx < 0 || w <= dx || dy < 0 || h <= dy)	continue;
+				if(visit[dy][dx] == true || box[dy][dx] != 0)	continue;
+				
+				visit[dy][dx] = true;
+				box[dy][dx] = 1;
+				p.push(make_pair(dy, dx));
+				
+			}
+		}
+		q = p;
+		if(q.empty())	return;
+		
+		day++;
+	}
+		
+	return;
+}
+
+int main() {
+	//ifstream inf("prob.txt");
+	
+	cin >> w >> h;
+	//inf >> w >> h;
+	
+	int cnt = 0;
+	for(int i = 0; i<h; i++) {
+		for(int j = 0; j<w; j++) {
+			cin >> box[i][j];
+			//inf >> box[i][j];
+			if(box[i][j] != -1)	total++;
+			if(box[i][j] == 1)	cnt++;
+		}
+	}
+	
+
+	bfs();
+	if(full)	cout << 0 << endl;
+	else if(!isFull())	cout << -1 << endl;
+	else	cout << day << endl;
+
+	return 0;
+}

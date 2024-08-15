@@ -1,0 +1,47 @@
+#include <iostream>
+#include <cstring>
+
+using namespace std;
+
+const int INF = 987654321;
+
+string s;
+int cache[2501];
+int palin[2501][2501];
+
+int isPalin(int start, int end) {
+	if(start >= end)	return true;
+	
+	int& ret = palin[start][end];
+	if(ret != -1)	return ret;
+	
+	if(s[start] != s[end])
+		return ret = false;
+	
+	return ret = isPalin(start + 1, end - 1);
+}
+
+int solve(int index) {
+	if(isPalin(0, index))	return 1;
+	
+	int& ret = cache[index];
+	if(ret != -1)	return ret;
+	
+	ret = INF;
+	for(int i = 0; i<index; i++) {
+		if(isPalin(i+1, index) == true)
+			ret = min(ret, solve(i) + 1);
+	}
+	return ret;
+}
+
+int main() {
+	cin >> s;
+	
+	memset(cache, -1, sizeof(cache));
+	memset(palin, -1, sizeof(palin));
+	
+	cout << solve(s.size() - 1) << endl;
+
+	return 0;
+}

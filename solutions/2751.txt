@@ -1,0 +1,64 @@
+#include <stdio.h>
+#include <windows.h>
+
+int partition(char arr[], int left, int right);
+void quick(char arr[], int left, int right);
+
+int partition(char arr[], int left, int right)
+{
+	int pivot = left;
+	int low = left + 1;
+	int high = right;
+	int temp;
+
+	while (low <= high)
+	{
+		while (arr[pivot] > arr[low])
+			low++;
+		while (arr[pivot] < arr[high])
+			high--;
+
+		if (low <= high)
+		{
+			temp = arr[low];
+			arr[low] = arr[high];
+			arr[high] = temp;
+		}
+	}
+
+	temp = arr[pivot];
+	arr[pivot] = arr[high];
+	arr[high] = temp;
+
+	return high;
+}
+
+void quick(char arr[], int left, int right)
+{
+	if (left <= right)
+	{
+		int pivot = partition(arr, left, right);
+		quick(arr, left, pivot - 1);
+		quick(arr, pivot + 1, right);
+	}
+}
+
+
+int main(void)
+{
+	char arr[1000000];
+	int n, i;
+
+	scanf("%d", &n);
+
+	for (i = 0; i < n; i++)
+		scanf("%d", &arr[i]);
+
+	quick(arr, 0, n-1);
+
+	for (i = 0; i < n; i++)
+		printf("%d\n", arr[i]);	
+	
+	system("pause");
+	return 0;
+}

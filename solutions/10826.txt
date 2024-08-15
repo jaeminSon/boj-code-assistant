@@ -1,0 +1,68 @@
+#include <iostream>
+#include <vector>
+#include <fstream>
+
+using namespace std;
+
+int n;
+
+void normalize(vector<int>& c) {
+	c.push_back(0);
+
+	for (int i = 0; i < c.size(); i++) {
+		if (c[i] >= 10) {
+			c[i + 1] += 1;
+			c[i] %= 10;
+		}
+	}
+	if (c.back() == 0)
+		c.pop_back();
+}
+
+vector<int> add(vector<int>& a, vector<int>& b) {
+	vector<int> c(b);
+	
+	for (int i = 0; i < c.size(); i++) {
+		if (i < a.size())
+			c[i] += a[i];
+	}
+	normalize(c);
+
+	return c;
+}
+
+void solve() {
+	vector<int> a, b, c;
+	a.push_back(0);
+	b.push_back(1);
+
+	if (n == 0) {
+		printf("0");
+		return;
+	}
+	else if (n == 1) {
+		printf("1");
+		return;
+	}
+
+	for (int i = 0; i <= n - 2; i++) {
+		c = add(a, b);
+		a = b;
+		b = c;
+
+	}
+	for (int i = 0; i < c.size(); i++)
+		printf("%d", c[c.size() - i - 1]);
+}
+
+int main(void) {
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL); cout.tie(NULL);
+	//fstream inf("prob.txt");
+	//inf >> n;
+	cin >> n;
+
+	solve();
+
+    return 0;
+}

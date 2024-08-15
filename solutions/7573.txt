@@ -1,0 +1,44 @@
+#include <iostream>
+#include <vector>
+
+using namespace std;
+
+int n, l, m;
+vector<pair<int, int> > fish;
+
+int solve() {
+	int ret = 0;
+	for(int i = 0; i<m; i++) {
+		for(int j = 0; j<m; j++) {
+			int y = min(fish[i].first, fish[j].first);
+			int x = min(fish[i].second, fish[j].second);
+			
+			for(int k = 1; k < l/2; k++) {
+				int dx = k;
+				int dy = l/2 - k;
+				
+				int cnt = 0;
+				for(int z = 0; z<m; z++) {
+					if(y <= fish[z].first && fish[z].first <= y + dy && x <= fish[z].second && fish[z].second <= x + dx)
+						cnt++;
+				}
+				ret = max(ret, cnt);
+			}
+		}
+	}
+	return ret;
+}
+
+int main() {
+	cin >> n >> l >> m;
+	
+	for(int i = 0; i<m; i++) {
+		int a, b;
+		cin >> a >> b;
+		fish.push_back(make_pair(a, b));
+	}
+	
+	cout << solve() << endl;
+	
+	return 0;
+}

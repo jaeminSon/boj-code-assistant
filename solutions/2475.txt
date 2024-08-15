@@ -1,0 +1,20 @@
+#include <iostream>
+#include <fstream>
+
+using namespace std;
+
+int main(void) {
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL); cout.tie(NULL);
+    //fstream inf("prob.txt");
+
+    int sum = 0;
+    for (int x, i = 0; i < 5; i++) {
+        //inf >> x;
+        cin >> x;
+        sum += x * x;
+    }
+    printf("%d", sum % 10);
+
+    return 0;
+}

@@ -1,0 +1,36 @@
+#include <iostream>
+#include <vector>
+#include <string.h>
+
+using namespace std;
+
+int n;
+vector<int> child;
+int cache[201];
+
+int solve(int index) {
+	int& ret = cache[index + 1];
+	if(ret != -1)	return ret;
+	
+	ret = 1;
+	for(int next = index+1; next<n; next++) {
+		if(index == -1 || child[index] < child[next])
+			ret = max(ret, solve(next) + 1);
+	}
+	return ret;
+}
+
+int main() {
+	cin >> n;
+	memset(cache, -1, sizeof(cache));
+	
+	for(int i = 0; i<n; i++) {
+		int a;
+		cin >> a;
+		child.push_back(a);
+	}
+	
+	cout << n - solve(-1) + 1 << endl;
+
+	return 0;
+}

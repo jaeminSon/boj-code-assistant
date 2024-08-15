@@ -1,0 +1,36 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <fstream>
+
+using namespace std;
+
+int N;
+vector<int> A;
+
+int solve() {
+	sort(A.begin(), A.end());
+	
+	int ret = 0;
+	for(int i = 0; i<N; i++)
+		ret = max(ret, A[N-i-1]-(N-i-1));
+		
+	return ret+N+1;
+}
+
+int main() {
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL); cout.tie(NULL);
+	//fstream inf("prob.txt");
+	//inf >> N;
+	cin >> N;
+	
+	for(int t,i = 0; i<N; i++) {
+		//inf >> t;
+		cin >> t;
+		A.push_back(t);
+	}
+	printf("%d", solve());
+	
+	return 0;
+}

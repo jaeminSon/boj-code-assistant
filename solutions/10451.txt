@@ -1,0 +1,53 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <string.h>
+
+using namespace std;
+
+int t, n, cnt;
+vector<int> permu[1001];
+bool visit[1001];
+
+void dfs(int start) {
+	visit[start] = true;
+	
+	for(int i = 0; i<permu[start].size(); i++) {
+		if(visit[permu[start][i]])	continue;
+		
+		dfs(permu[start][i]);
+	}
+	return;
+}
+
+void dfsAll() {
+	for(int i = 1; i<=n; i++) {
+		if(visit[i])	continue;
+		
+		cnt++;
+		dfs(i);
+	}
+}
+
+int main() {
+	cin >> t;
+	
+	for(int i = 0; i<t; i++) {
+		cin >> n;
+		
+		for(int j = 1; j<=n; j++) {
+			int a;
+			cin >> a;
+			permu[j].push_back(a);
+		}
+		
+		dfsAll();
+		cout << cnt << endl;
+		cnt = 0;
+		memset(visit, false, sizeof(visit));
+		for(int j = 1; j<=n; j++)
+			permu[j].clear();
+	}
+	
+	return 0;
+}

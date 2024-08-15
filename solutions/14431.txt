@@ -1,0 +1,97 @@
+#include <iostream>
+#include <vector>
+#include <queue>
+#include <cmath>
+
+using namespace std;
+
+typedef long long ll;
+typedef pair<ll,ll> pll;
+
+const ll INF = 1e15;
+const int S = 5000;
+int N, s1, e1, s2, e2;
+int era[S+5];
+ll d[S+5];
+pll p[S+5];
+vector<pll> adj[S+5];
+
+void init() {
+    for(int i = 2; i<=S; i++) {
+        if(era[i] == true)
+            continue;
+        
+        for(int j = i+i; j<=S; j+=i)
+            era[j] = true;
+    }
+}
+
+int dist(int x1, int y1, int x2, int y2) {
+    double d = 1.0*(x1-x2)*(x1-x2) + 1.0*(y1-y2)*(y1-y2);
+    d = sqrt(d);
+    return (int)d;
+}
+
+int solve() {
+    p[N+1] = {s1,e1};
+    p[N+2] = {s2,e2};
+    for(int i = 1; i<=N+2; i++) {
+        for(int j = i+1; j<=N+2; j++) {
+            int d = dist(p[i].first, p[i].second, p[j].first, p[j].second);
+
+            if(era[d] == false) {
+                adj[i].push_back({j,d});
+                adj[j].push_back({i,d});
+            }
+        }
+    }
+
+    for(int i = 1; i<=N+2; i++)
+        d[i] = INF;
+
+    priority_queue<pll, vector<pll>, greater<pll>> pq;
+    pq.push({0,N+1});
+    d[N+1] = 0;
+
+    while(!pq.empty()) {
+        ll here = pq.top().second;
+        ll cost = pq.top().first;
+        pq.pop();
+
+        if(d[here] < cost)
+            continue;
+
+        for(int i = 0; i<adj[here].size(); i++) {
+            ll there = adj[here][i].first;
+            ll dist = adj[here][i].second;
+
+            if(d[there] <= cost + dist)
+                continue;
+
+            d[there] = cost + dist;
+            pq.push({d[there], there});
+        }
+    }
+
+    if(d[N+2] == INF)
+        return -1;
+    return d[N+2];
+}
+
+int main() {
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL); cout.tie(NULL);
+    cin >> s1 >> e1 >> s2 >> e2;
+    cin >> N;
+
+    init();
+    for(int i = 1; i<=N; i++) {
+        int x, y;
+        cin >> x >> y;
+
+        p[i] = {x,y};
+    }
+    cout << solve() << '\n';
+ 
+    return 0;
+}

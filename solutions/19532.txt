@@ -1,0 +1,19 @@
+#include <iostream>
+#include <fstream>
+
+using namespace std;
+
+int a, b, c, d, e, f;
+
+int main(void) {
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL); cout.tie(NULL);
+	//fstream inf("prob.txt");
+	//inf >> a >> b >> c >> d >> e >> f;
+	cin >> a >> b >> c >> d >> e >> f;
+
+	int det = a * e - b * d;
+	printf("%d %d", (c * e - b * f) / det, (-c * d + a * f) / det);
+
+	return 0;
+}

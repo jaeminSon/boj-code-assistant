@@ -1,0 +1,19 @@
+#include <iostream>
+
+using namespace std;
+
+int w, h, p, q, t;
+
+int main() {
+	cin >> w >> h >> p >> q >> t;
+	
+	int x = (p + t) % (2 * w);
+	int y = (q + t) % (2 * h);
+	
+	if(x > w)	x = w - (x % w);
+	if(y > h)	y = h - (y % h);
+	
+	cout << x << " " << y << endl;
+
+	return 0;
+}

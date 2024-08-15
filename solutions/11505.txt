@@ -1,0 +1,64 @@
+#include <iostream>
+#include <cmath>
+#include <fstream>
+
+using namespace std;
+
+typedef long long LL;
+
+const int S = 1e6, mod = 1e9+7;
+int N, M, K;
+LL Tree[4*S+5], A[S+5];
+
+LL init(int bucket, int start, int end) {
+	if(start == end)	return Tree[bucket] = A[start];
+	
+	return Tree[bucket] = (init(bucket*2, start, (start+end)/2) 
+						* init(bucket*2+1, (start+end)/2+1, end)) % mod;
+}
+
+LL update(int bucket, int node, int start, int end, LL x) {
+	if(node < start || end < node)	return Tree[bucket];
+	
+	if(start == end)
+		return Tree[bucket] = x;
+		
+	return Tree[bucket] = (update(bucket*2, node, start, (start+end)/2, x) 
+						* update(bucket*2+1, node, (start+end)/2+1, end, x)) % mod;
+}
+
+LL get(int bucket, int start, int end, int left, int right) {
+	if(right < start || end < left)	return 1;
+	
+	if(left <= start && end <= right)	return Tree[bucket];
+	
+	return (get(bucket*2, start, (start+end)/2, left, right)
+			* get(bucket*2+1, (start+end)/2+1, end, left, right)) % mod;
+}
+
+int main() {
+	ios_base::sync_with_stdio(0);
+	cin.tie(0);
+	//fstream inf("prob.txt");
+	//inf >> N >> M >> K;
+	cin >> N >> M >> K;
+
+	for(int i = 1; i<=N; i++) {
+		//inf >> A[i];
+		cin >> A[i];
+	}
+	init(1, 1, N);
+	
+	for(int i = 1; i<=M+K; i++) {
+		int a, b;
+		LL c;
+		//inf >> a >> b >> c;
+		cin >> a >> b >> c;
+		if(a == 1)
+			update(1, b, 1, N, c % mod);
+		else
+			printf("%lld\n", get(1, 1, N, b, c));
+	}
+
+	return 0;
+}

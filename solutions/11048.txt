@@ -1,0 +1,39 @@
+#include <iostream>
+#include <string.h>
+
+using namespace std;
+
+int n, m;
+int map[1001][1001], cache[1001][1001];
+int mov[3][2] = { {1, 0}, {0, 1}, {1, 1} };
+
+int solve(int y, int x) {
+	if(y == n-1 && x == m-1)	return map[y][x];
+	
+	int& ret = cache[y][x];
+	if(ret != -1)	return ret;
+	
+	ret = 0;
+	for(int i = 0; i<3; i++) {
+		int dy = y + mov[i][1];
+		int dx = x + mov[i][0];
+		
+		if(n <= dy || m <= dx)	continue;
+		
+		ret = max(ret, solve(dy, dx) + map[y][x]);
+	}
+	return ret;
+}
+
+int main() {
+	cin >> n >> m;
+	memset(cache, -1, sizeof(cache));
+
+	for(int i = 0; i<n; i++) {
+		for(int j = 0; j<m; j++)
+			cin >> map[i][j];
+	}
+	cout << solve(0, 0) << endl;
+	
+	return 0;
+}

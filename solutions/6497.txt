@@ -1,0 +1,76 @@
+#include <iostream>
+#include <vector>
+#include <queue>
+#include <cstring>
+#include <climits>
+#include <fstream>
+
+using namespace std;
+
+typedef long long ll;
+
+const ll INF = LLONG_MAX;
+const int S = 2e5;
+int M, N;
+bool selected[S+5];
+vector<pair<int,int>> adj[S+5];
+
+ll prim() {
+	int ret = 0;
+	priority_queue<pair<int,int>, vector<pair<int,int>>, greater<pair<int,int>>> pq;
+	pq.push({0,1});
+	
+	for(int i = 0; i<M; i++) {
+		int here;
+		ll cost = INF;
+		
+		while(!pq.empty()) {
+			here = pq.top().second;
+			
+			if(selected[here] == false) {
+				cost = pq.top().first;
+				break;
+			}
+			pq.pop();
+		}
+		if(cost == INF)	return INF;
+		
+		ret += cost;
+		selected[here] = true;
+		for(int j = 0; j<adj[here].size(); j++)
+			pq.push(adj[here][j]);
+	}
+	return ret;
+}
+
+int main() {
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL); cout.tie(NULL);
+	//fstream inf("prob.txt");
+	
+	while(true) {
+		//inf >> M >> N;
+		cin >> M >> N;
+		
+		if(M == 0 && N == 0)
+			break;
+		
+		memset(selected, false, sizeof(selected));
+		for(int i = 0; i<M; i++)
+			adj[i].clear();
+
+		ll tt = 0;
+		for(int a,b,c,i = 0; i<N; i++) {
+			//inf >> a >> b >> c;
+			cin >> a >> b >> c;
+			
+			adj[a].push_back({c,b});
+			adj[b].push_back({c,a});
+			tt += c;
+		}
+		
+		printf("%lld\n", tt-prim());
+	}
+	
+	return 0;
+}

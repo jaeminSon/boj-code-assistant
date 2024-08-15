@@ -1,0 +1,49 @@
+#include <iostream>
+#include <fstream>
+
+using namespace std;
+
+typedef long long ll;
+
+int N;
+int a[101];
+ll dp[101][21];
+
+ll solve(int index, int n) {
+    if (index == N - 1) {
+        if (a[index] == n)
+            return 1;
+        return 0;
+    }
+
+    ll& ret = dp[index][n];
+    if (ret != -1)
+        return ret;
+
+    ret = 0;
+    if(n + a[index] >= 0 && n + a[index] < 21)
+        ret += solve(index + 1, n + a[index]);
+    if (n - a[index] >= 0 && n - a[index] < 21)
+        ret += solve(index + 1, n - a[index]);
+    return ret;
+}
+
+int main(void) {
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL); cout.tie(NULL);
+    //fstream inf("prob.txt");
+    //inf >> N;
+    cin >> N;
+
+    for (int i = 0; i < N; i++) {
+        //inf >> a[i];
+        cin >> a[i];
+    }
+    for (int i = 0; i < N; i++) {
+        for (int j = 0; j < 21; j++)
+            dp[i][j] = -1;
+    }
+    printf("%lld", solve(1, a[0]));
+
+    return 0;
+}

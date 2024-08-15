@@ -1,0 +1,61 @@
+#include <iostream>
+#include <vector>
+#include <queue>
+#include <algorithm>
+#include <fstream>
+
+using namespace std;
+
+typedef pair<int, int> pii;
+
+int N, D;
+vector<pii> p;
+
+bool cmp(const pii& a, const pii& b) {
+    if (a.second == b.second)
+        return a.first < b.first;
+    return a.second < b.second;
+}
+
+int solve() {
+    sort(p.begin(), p.end(), cmp);
+
+    priority_queue<pii, vector<pii>, greater<pii>> pq;
+
+    int ret = 0, cnt = 0;
+    for (int i = 0; i < N; i++) {
+        pq.push(p[i]);
+
+        while (!pq.empty()) {
+            if (p[i].second - pq.top().first <= D)
+                break;
+            pq.pop();
+        }
+        ret = max(ret, (int)pq.size());
+    }
+    return ret;
+}
+
+int main(void) {
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL); cout.tie(NULL);
+    //fstream inf("prob.txt");
+    //inf >> N;
+    cin >> N;
+
+    for (int lo, hi, i = 0; i < N; i++) {
+        //inf >> lo >> hi;
+        cin >> lo >> hi;
+
+        if (hi < lo)
+            swap(lo, hi);
+
+        p.push_back({ lo, hi });
+    }
+    //inf >> D;
+    cin >> D;
+
+    printf("%d", solve());
+    
+    return 0;
+}

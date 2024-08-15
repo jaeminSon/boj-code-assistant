@@ -1,0 +1,34 @@
+#include <iostream>
+#include <string.h>
+
+using namespace std;
+
+const int mod = 1000000000;
+int num, k;
+int cache[201][201];
+
+int solve(int n, int k) {
+	if(n == 0 && k == 0)	return 1;
+	if(n < 0 || k == 0)	return 0;
+	
+	int& ret = cache[n][k];
+	if(ret != -1)	return ret;
+	
+	ret = 0;
+	
+	for(int i = 0; i<=num; i++) {
+		ret += solve(n-i, k-1);
+		ret %= mod;
+	}
+	
+	return ret % mod;
+}
+
+int main() {
+	cin >> num >> k;
+	memset(cache, -1, sizeof(cache));
+	
+	cout << solve(num, k) << endl;
+	
+	return 0;
+}

@@ -1,0 +1,72 @@
+#include <iostream>
+#include <vector>
+#include <fstream>
+
+using namespace std;
+
+typedef long long ll;
+
+struct seg {
+    ll m, c;
+    double st;
+};
+
+const int S = 1e5;
+int N;
+ll a[S + 5], b[S + 5], dp[S + 5];
+
+double cross(const seg& s1, const seg& s2) {
+    return (-1.0 * s1.c + s2.c) / (1.0 * s1.m - s2.m);
+}
+
+ll solve() {
+    vector<seg> p;
+
+    for (int i = 2; i <= N; i++) {
+        seg s = { b[i - 1], dp[i - 1], 0 };
+
+        while (!p.empty()) {
+            seg s1 = p.back();
+            s.st = cross(s, s1);
+
+            if (s1.st < s.st)
+                break;
+
+            p.pop_back();
+        }
+        p.push_back(s);
+
+        ll x = a[i];
+        int lo = 0, hi = p.size() - 1, mid;
+        while (lo <= hi) {
+            mid = (lo + hi) / 2;
+            
+            if (p[mid].st <= x)
+                lo = mid + 1;
+            else
+                hi = mid - 1;
+        }
+        dp[i] = p[hi].m * x + p[hi].c;
+    }
+    return dp[N];
+}
+
+int main(void) {
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL); cout.tie(NULL);
+    //fstream inf("prob.txt");
+    //inf >> N;
+    cin >> N;
+
+    for (int i = 1; i <= N; i++) {
+        //inf >> a[i];
+        cin >> a[i];
+    }
+    for (int i = 1; i <= N; i++) {
+        //inf >> b[i];
+        cin >> b[i];
+    }
+    printf("%lld", solve());
+
+    return 0;
+}

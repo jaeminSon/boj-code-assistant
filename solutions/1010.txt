@@ -1,0 +1,36 @@
+#include <iostream>
+#include <string.h>
+
+using namespace std;
+
+int t, n, m;
+int cache[31][31];
+
+int solve(int n, int m) {
+	if(n == 0)	return 1;
+	if(n > m)	return 0;
+	
+	int& ret = cache[n][m];
+	if(ret != -1)	return ret;
+	
+	ret = 0;
+	
+	int mm = 0;
+	for(int i = 0; i<m; i++)
+		ret += solve(n-1, m - i - 1);
+	
+	return ret;
+}
+
+int main() {
+	cin >> t;
+	
+	for(int i = 0; i<t; i++) {
+		cin >> n >> m;
+		memset(cache, -1, sizeof(cache));
+		
+		cout << solve(n, m) << endl;
+	}
+	
+	return 0;
+}

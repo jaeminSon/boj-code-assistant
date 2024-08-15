@@ -1,0 +1,22 @@
+#include <iostream>
+
+using namespace std;
+
+typedef unsigned long long ULL;
+
+int main() {
+	int n;
+	cin >> n;
+	
+	ULL a = 0, b = 1, c = 1;
+	
+	for(int i = 0; i<n-2; i++) {
+		ULL temp = c;
+		c = b+c;
+		a = b;
+		b = temp;
+	}
+	cout << c << endl;	
+	
+	return 0;
+}

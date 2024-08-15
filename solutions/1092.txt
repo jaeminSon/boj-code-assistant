@@ -1,0 +1,51 @@
+#include <iostream>
+#include <algorithm>
+
+using namespace std;
+
+typedef long long ll;
+
+const int S = 1e4, INF = 1e9;
+int N, M;
+int a[55], b[S+5], cnt[55];
+
+int solve() {
+    sort(a+1, a+N+1);
+    sort(b+1, b+M+1);
+
+    for(int i = M; i>=1; i--) {
+        int t = INF, idx = -1;
+        
+        for(int j = 1; j<=N; j++) {
+            if(b[i] <= a[j]) {
+                if(t > cnt[j]) {
+                    t = cnt[j];
+                    idx = j;
+                }
+            }
+        }
+        if(idx == -1)
+            return -1;
+        cnt[idx]++;
+    }
+
+    int ret = 0;
+    for(int i = 1; i<=N; i++)
+        ret = max(ret, cnt[i]);
+    return ret;
+}
+
+int main() {
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL); cout.tie(NULL);
+    cin >> N;
+    for(int i = 1; i<=N; i++)
+        cin >> a[i];
+    cin >> M;
+    for(int i = 1; i<=M; i++)
+        cin >> b[i];
+
+    cout << solve() << '\n';
+
+    return 0;
+}

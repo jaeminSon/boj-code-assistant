@@ -1,0 +1,70 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <fstream>
+
+using namespace std;
+
+int N;
+int a[501], dp[501];
+vector<int> adj[501], tp;
+bool visited[501];
+
+void dfs(int here) {
+    visited[here] = true;
+
+    for (int i = 0; i < adj[here].size(); i++) {
+        int there = adj[here][i];
+        if (visited[there] == true)
+            continue;
+        dfs(there);
+    }
+    tp.push_back(here);
+}
+
+void dfsAll() {
+    for (int i = 1; i <= N; i++) {
+        if (visited[i] == true)
+            continue;
+        dfs(i);
+    }
+    for (int i = 1; i <= N; i++)
+        dp[i] = a[i];
+
+    for (int i = 0; i < tp.size(); i++) {
+        int here = tp[i];
+
+        for (int j = 0; j < adj[here].size(); j++) {
+            int there = adj[here][j];
+            dp[here] = max(dp[here], dp[there] + a[here]);
+        }
+    }
+    for (int i = 1;i <= N; i++)
+        printf("%d\n", dp[i]);
+}
+
+int main(void) {
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL); cout.tie(NULL);
+    //fstream inf("prob.txt");
+    //inf >> N;
+    cin >> N;
+
+    for (int x = 0, i = 1; i <= N; i++) {
+        //inf >> a[i];
+        cin >> a[i];
+
+        while (true) {
+            //inf >> x;
+            cin >> x;
+
+            if (x == -1)
+                break;
+
+            adj[i].push_back(x);
+        }
+    }
+    dfsAll();
+
+    return 0;
+}

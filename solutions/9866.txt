@@ -1,0 +1,107 @@
+#include <iostream>
+#include <vector>
+#include <queue>
+
+using namespace std;
+
+typedef long long ll;
+typedef pair<int,int> pii;
+
+const int S = 2e4, INF = 1e9;
+int N, M, K, Q;
+int hub[205], inv[S+5], dist[205][S+5], rdist[205][S+5];
+vector<pii> adj[S+5], radj[S+5];
+
+void dijkstra(int st, bool r) {
+    int h = inv[st];
+    vector<pii> g[S+5];
+    for(int i = 1; i<=N; i++)
+        g[i] = (r == false ? adj[i] : radj[i]);
+
+    for(int i = 1; i<=N; i++) {
+        if(r == false)
+            dist[h][i] = INF;
+        else
+            rdist[h][i] = INF;
+    }
+    dist[h][st] = 0;
+    rdist[h][st] = 0;
+
+    priority_queue<pii, vector<pii>, greater<pii>> pq;
+    pq.push({0, st});
+
+    while(r == false && !pq.empty()) {
+        int here = pq.top().second;
+        int d = pq.top().first;
+        pq.pop();
+
+        for(int i = 0; i<g[here].size(); i++) {
+            int there = g[here][i].first;
+            int cost = g[here][i].second;
+
+            if(dist[h][there] <= d + cost)
+                continue;
+
+            dist[h][there] = d + cost;
+            pq.push({dist[h][there], there});
+        }
+    }
+    while(r == true && !pq.empty()) {
+        int here = pq.top().second;
+        int d = pq.top().first;
+        pq.pop();
+
+        for(int i = 0; i<g[here].size(); i++) {
+            int there = g[here][i].first;
+            int cost = g[here][i].second;
+
+            if(rdist[h][there] <= d + cost)
+                continue;
+
+            rdist[h][there] = d + cost;
+            pq.push({rdist[h][there], there});
+        }
+    }
+}
+
+int main() {
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL); cout.tie(NULL);
+    cin >> N >> M >> K >> Q;
+
+    for(int i = 0; i<M; i++) {
+        int u, v, d;
+        cin >> u >> v >> d;
+        
+        adj[u].push_back({v,d});
+        radj[v].push_back({u,d});
+    }
+
+    for(int i = 1; i<=K; i++) {
+        cin >> hub[i];
+        inv[hub[i]] = i;
+
+        dijkstra(hub[i], false);
+        dijkstra(hub[i], true);
+    }
+
+    int cnt = 0;
+    ll sum = 0;
+    for(int i = 0; i<Q; i++) {
+        int u, v;
+        cin >> u >> v;
+
+        int cost = INF;
+        for(int j = 1; j<=K; j++)
+            cost = min(cost, rdist[j][u] + dist[j][v]);
+
+        if(cost != INF) {
+            cnt++;
+            sum += cost;
+        }
+    }
+    cout << cnt << '\n';
+    cout << sum << '\n';
+
+    return 0;
+}

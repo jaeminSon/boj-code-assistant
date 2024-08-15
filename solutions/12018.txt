@@ -1,0 +1,53 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <fstream>
+
+using namespace std;
+
+int N, M, L[101];
+vector<int> cut, ma[101];
+
+int solve() {
+    for (int i = 0; i < N; i++) {
+        int req = ma[i].size();
+
+        if (req - L[i] < 0)
+            cut.push_back(1);
+        else
+            cut.push_back(ma[i][req - L[i]]);
+    }
+    sort(cut.begin(), cut.end());
+
+    int ret = 0, sum = 0;
+    for (int i = 0; i < N; i++) {
+        sum += cut[i];
+        if (sum <= M)
+            ret++;
+    }
+    return ret;
+}
+
+int main(void) {
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL); cout.tie(NULL);
+    //fstream inf("prob.txt");
+    //inf >> N >> M;
+    cin >> N >> M;
+
+    for (int p,i = 0; i < N; i++) {
+        //inf >> p >> L[i];
+        cin >> p >> L[i];
+
+        for (int x,j = 0; j < p; j++) {
+            //inf >> x;
+            cin >> x;
+
+            ma[i].push_back(x);
+        }
+        sort(ma[i].begin(), ma[i].end());
+    }
+    printf("%d", solve());
+
+    return 0;
+}

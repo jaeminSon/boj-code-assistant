@@ -1,0 +1,125 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <cstring>
+
+using namespace std;
+
+typedef pair<int,int> pii;
+
+const int S = 1e5;
+int N;
+int idx[10*S+5], Tree1[8*S+5], Tree2[8*S+5], MX;
+vector<int> d;
+vector<pii> p;
+
+void update(int Tree[], int b, int s, int e, int n, int x) {
+    if(n < s || e < n)
+        return;
+    if(s == e) {
+        Tree[b] += x;
+        return;
+    }
+
+    int mid = (s+e)/2;
+    update(Tree, b*2, s, mid, n, x);
+    update(Tree, b*2+1, mid+1, e, n, x);
+    Tree[b] = Tree[b*2] + Tree[b*2+1];
+}
+
+int get(int Tree[], int b, int s, int e, int l, int r) {
+    if(r < s || e < l)
+        return 0;
+    if(l <= s && e <= r)
+        return Tree[b];
+    
+    int mid = (s+e)/2;
+    return get(Tree, b*2, s, mid, l, r) + get(Tree, b*2+1, mid+1, e, l, r);
+}
+
+int kth(int Tree[], int b, int s, int e, int k) {
+    if(s == e)
+        return s;
+    
+    int mid = (s+e)/2;
+    if(Tree[b*2] < k)
+        return kth(Tree, b*2+1, mid+1, e, k-Tree[b*2]);
+    return kth(Tree, b*2, s, mid, k);
+}
+
+bool check2(int p, int k) {
+    int l1 = get(Tree1, 1, 1, MX, 1, p);
+    int r1 = get(Tree1, 1, 1, MX, p+1, MX);
+    int l2 = get(Tree2, 1, 1, MX, 1, p);
+    int r2 = get(Tree2, 1, 1, MX, p+1, MX);
+
+    if(l1 <= k && r1 <= k && l2 <= k && r2 <= k)
+        return true;
+    return false;
+}
+
+bool check(int k) {
+    memset(Tree1, 0, sizeof(Tree1));
+    memset(Tree2, 0, sizeof(Tree2));
+
+    for(int i = 0; i<p.size(); i++)
+        update(Tree1, 1, 1, MX, p[i].second, 1);
+    
+    for(int y=0, i=0; y<=MX; y++) {
+        while(i<N && p[i].first<=y) {
+            update(Tree1, 1, 1, MX, p[i].second, -1);
+            update(Tree2, 1, 1, MX, p[i].second, 1);
+            i++;
+        }
+        int p1 = kth(Tree1, 1, 1, MX, k);
+        int p2 = kth(Tree2, 1, 1, MX, k);
+
+        if(check2(p1, k) == true || check2(p2, k) == true)
+            return true;
+    }
+    return false;
+}
+
+int solve() {
+    sort(p.begin(), p.end());
+    sort(d.begin(), d.end());
+    d.erase(unique(d.begin(), d.end()), d.end());
+
+    for(int i=0,j=1; i<d.size(); i++) {
+        MX = j;
+        if(idx[d[i]] == 0)
+            idx[d[i]] = j++;
+    }
+
+    for(int i = 0; i<p.size(); i++) {
+        p[i].first = idx[p[i].first];
+        p[i].second = idx[p[i].second];
+    }
+
+    int lo = 0, hi = MX, mid;
+    while(lo <= hi) {
+        int mid = (lo+hi)/2;
+        if(check(mid) == true)
+            hi = mid-1;
+        else
+            lo = mid+1;
+    }
+    return lo;
+}
+
+int main() {
+    ios_base :: sync_with_stdio(false);
+	cin.tie(NULL); cout.tie(NULL);
+    cin >> N;
+    
+    for(int i = 0; i<N; i++) {
+        int x,y;
+        cin >> x >> y;
+        p.push_back({y,x});
+        d.push_back(x);
+        d.push_back(y);
+    }
+    cout << solve() << '\n';
+
+    return 0;
+}

@@ -1,0 +1,36 @@
+#include <iostream>
+#include <fstream>
+
+using namespace std;
+
+int T;
+string s;
+
+//0123456
+//AABBABB
+int solve() {
+	if(s.size() != 7)	return 0;
+
+	if(s[0] != s[2] && s[0] == s[1] && s[0] == s[4] && s[2] == s[3] && s[2] == s[5] && s[2] == s[6])
+		return 1;
+	
+	return 0;
+}
+
+int main() {
+	ios_base :: sync_with_stdio(false);
+	cin.tie(NULL);
+	//fstream inf("prob.txt");
+	//inf >> T;
+	cin >> T;
+	
+	for(int i = 1; i<=T; i++) {
+		//inf >> s;
+		cin >> s;
+		
+		printf("%d\n", solve());
+	}
+	
+	
+	return 0;
+}

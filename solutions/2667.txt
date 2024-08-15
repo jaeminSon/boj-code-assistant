@@ -1,0 +1,61 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <string.h>
+
+using namespace std;
+
+bool map[26][26];
+bool visit[26][26];
+int mov[4][2] = {{0, 1}, {1, 0}, {-1, 0}, {0, -1}};
+int n, cnt;
+vector<int> sol;
+
+void dfs(int y, int x) {
+	visit[y][x] = true;
+	cnt++;
+	
+	for(int i = 0; i<4; i++) {
+		int dy = y + mov[i][0];
+		int dx = x + mov[i][1];
+		
+		if(dy < 0 || n <= dy || dx < 0 || n <= dx)	continue;
+		if(visit[dy][dx] || map[dy][dx] == 0)	continue;
+		
+		dfs(dy, dx);
+	}
+	
+	return;
+}
+
+void dfsAll() {
+	for(int i = 0; i<n; i++) {
+		for(int j = 0; j<n; j++) {
+			if(visit[i][j] || map[i][j] == 0)	continue;
+			dfs(i, j);
+			sol.push_back(cnt);
+			cnt = 0;
+		}
+	}
+}
+
+int main() {
+	cin >> n;
+	
+	for(int i = 0; i<n; i++) {
+		string str;
+		cin >> str;
+		
+		for(int j = 0; j<str.size(); j++)
+			if(str[j] == '1')	map[i][j] = 1;
+	}
+	
+	dfsAll();
+	sort(sol.begin(), sol.end());
+	cout << sol.size() << endl;
+	for(int i = 0; i<sol.size(); i++)
+		cout << sol[i] << endl;
+	return 0;
+}
+
+

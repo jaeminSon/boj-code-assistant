@@ -1,0 +1,71 @@
+#include <iostream>
+#include <stack>
+#include <fstream>
+
+using namespace std;
+
+const int S = 1e6;
+int N, M;
+int se[S+5], d[S+5];
+
+int findRoot(int a) {
+	int t;
+	stack<int> st;
+	
+	while(se[a] != a) {
+		st.push(a);
+		a = se[a];
+	}
+	while(!st.empty()) {
+		t = st.top();
+		se[t] = a;
+		st.pop();
+	}
+	return a;
+}
+
+void join(int a, int b) {
+	a = findRoot(a);
+	b = findRoot(b);
+	
+	if(a == b)
+		return;
+	
+	if(d[b] < d[a])
+		se[b] = a;
+	else if(d[a] < d[b])
+		se[a] = b;
+	else {
+		se[b] = a;
+		d[a]++;
+	}
+}
+
+int main() {
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL); cout.tie(NULL);
+	//fstream inf("prob.txt");
+	//inf >> N >> M;
+	cin >> N >> M;
+	
+	for(int i = 0; i<=N; i++) {
+		se[i] = i;
+		d[i] = 1;
+	}
+	
+	for(int t, a, b, i = 0; i<M; i++) {
+		//inf >> t >> a >> b;
+		cin >> t >> a >> b;
+		
+		if(t == 0)
+			join(a, b);
+		else {
+			if(findRoot(a) == findRoot(b))
+				printf("YES\n");
+			else
+				printf("NO\n");
+		}
+	}
+	
+	return 0;
+}

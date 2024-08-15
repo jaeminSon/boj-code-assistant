@@ -1,0 +1,42 @@
+#include <iostream>
+
+using namespace std;
+
+string s1, s2;
+
+void solve() {
+	int n = s1.size(), m = s2.size();
+	int idx1 = -1, idx2 = -1;
+	
+	for(int i = 0; i < n; i++) {
+		for(int j = 0; j < m; j++) {
+			if(s1[i] == s2[j]) {
+				idx1 = i;
+				idx2 = j;
+				break;
+			}
+		}
+		if(idx1 != -1)
+			break;
+	}
+	
+	for(int i = 0; i<m; i++) {
+		for(int j = 0; j<n; j++) {
+			if(i == idx2)
+				cout << s1[j];
+			else if(j != idx1)
+				cout << ".";
+			else if(j == idx1)
+				cout << s2[i];
+		}
+		cout << endl;
+	}
+}
+
+int main() {
+	cin >> s1 >> s2;
+	
+	solve();
+		
+	return 0;
+}

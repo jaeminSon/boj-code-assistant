@@ -1,0 +1,172 @@
+#include <iostream>
+#include <algorithm>
+#include <fstream>
+
+using namespace std;
+
+typedef pair<int, int> pii;
+
+const int INF = 987654321;
+int N, M;
+int mv[4][2] = {
+    {0, 1},
+    {0, -1},
+    {1, 0},
+    {-1, 0}
+};
+int ret = INF;
+char bd[11][11];
+
+bool checkA(int y, int x, int by, int bx) {
+    if (bd[y][x] == '#' || bd[y][x] == 'O' || (y == by && x == bx))
+        return true;
+    return false;
+}
+
+bool checkB(int y, int x, int ay, int ax) {
+    if (bd[y][x] == '#' || bd[y][x] == 'O' || (y == ay && x == ax))
+        return true;
+    return false;
+}
+
+void movedir(int& ay, int& ax, int& by, int& bx, int dir) {
+    if (dir == 0) {
+        ay--;
+        by--;
+    }
+    else if (dir == 1) {
+        ay++;
+        by++;
+    }
+    else if (dir == 2) {
+        ax--;
+        bx--;
+    }
+    else {
+        ax++;
+        bx++;
+    }
+}
+
+void moveAB(int& y, int& x, int dir) {
+    if (dir == 0)
+        y--;
+    else if (dir == 1)
+        y++;
+    else if (dir == 2)
+        x--;
+    else
+        x++;
+}
+
+void dfs(pii a, pii b, int depth, int dir) {
+    if (depth > 10)
+        return;
+
+    int ay = a.first, ax = a.second;
+    int by = b.first, bx = b.second;
+    while (!checkA(ay, ax, by, bx) && !checkB(by, bx, ay, ax))
+        movedir(ay, ax, by, bx, dir);
+    while (!checkA(ay, ax, by, bx))
+        moveAB(ay, ax, dir);
+    while (!checkB(by, bx, ay, ax))
+        moveAB(by, bx, dir);
+    if (bd[by][bx] == 'O')
+        return;
+    if (bd[ay][ax] == 'O') {
+        ret = min(ret, depth);
+        return;
+    }
+
+    if (ay == by && ax == bx) {
+        if (dir == 0) {
+            if (a.first < b.first) {
+                ay += 1;
+                by += 2;
+            }
+            else {
+                ay += 2;
+                by += 1;
+            }
+        }
+        else if (dir == 1) {
+            if (a.first > b.first) {
+                ay -= 1;
+                by -= 2;
+            }
+            else {
+                ay -= 2;
+                by -= 1;
+            }
+        }
+        else if (dir == 2) {
+            if (a.second < b.second) {
+                ax += 1;
+                bx += 2;
+            }
+            else {
+                ax += 2;
+                bx += 1;
+            }
+        }
+        else {
+            if (a.second > b.second) {
+                ax -= 1;
+                bx -= 2;
+            }
+            else {
+                ax -= 2;
+                bx -= 1;
+            }
+        }
+    }
+    else {
+        if (dir == 0)
+            dir = 1;
+        else if (dir == 1)
+            dir = 0;
+        else if (dir == 2)
+            dir = 3;
+        else
+            dir = 2;
+
+        movedir(ay, ax, by, bx, dir);
+    }
+
+    a = { ay, ax };
+    b = { by, bx };
+    dfs(a, b, depth + 1, 0);
+    dfs(a, b, depth + 1, 1);
+    dfs(a, b, depth + 1, 2);
+    dfs(a, b, depth + 1, 3);
+}
+
+int main(void) {
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL); cout.tie(NULL);
+    //fstream inf("prob.txt");
+    //inf >> N >> M;
+    cin >> N >> M;
+
+    pii a, b;
+    for (int i = 0; i < N; i++) {
+        for (int j = 0; j < M; j++) {
+            //inf >> bd[i][j];
+            cin >> bd[i][j];
+
+            if (bd[i][j] == 'R')
+                a = { i, j };
+            if (bd[i][j] == 'B')
+                b = { i, j };
+        }
+    }
+    dfs(a, b, 1, 0);
+    dfs(a, b, 1, 1);
+    dfs(a, b, 1, 2);
+    dfs(a, b, 1, 3);
+    
+    ret = (ret == INF ? -1 : ret);
+    printf("%d", ret);
+
+    return 0;
+}

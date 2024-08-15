@@ -1,0 +1,22 @@
+#include <iostream>
+
+using namespace std;
+
+int main() {
+	char map[10][10];
+	int ret = 0;
+	
+	for(int i = 0; i<8; i++)
+		for(int j = 0; j<8; j++)
+			cin >> map[i][j];
+	
+	for(int i = 0; i<8; i++)
+		for(int j = 0; j<8; j++) {
+			if((i+j)%2 == 0 && map[i][j] == 'F')
+				ret++;
+		}
+	
+	cout << ret << endl;
+	
+	return 0;
+}

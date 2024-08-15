@@ -1,0 +1,68 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <fstream>
+
+using namespace std;
+
+typedef long long ll;
+
+const int INF = 987654321;
+int N;
+int DP[301];
+vector<pair<ll, ll>> a;
+
+int solve(int idx) {
+    if (idx == N)
+        return 0;
+
+    int& ret = DP[idx];
+    if (ret != 0)
+        return ret;
+
+    ret = INF;
+    ll xpos = a[idx].first + a[idx].second;
+    for (int i = idx + 1; i < N; i++) {
+        if (a[i].first <= xpos) {
+            xpos = max(xpos, a[i].first + a[i].second);
+        }
+        else {
+            ret = solve(i) + 1;
+            break;
+        }
+    }
+
+    if (ret == INF)
+        return ret = 1;
+
+    int cur = idx, next = idx + 1;
+    for (int i = idx + 1; i < N; i++) {
+        xpos = a[i].first - a[i].second;
+
+        if (xpos <= a[cur].first) {
+            cur = i;
+            next = i + 1;
+        }
+    }
+    ret = min(ret, solve(next) + 1);
+    return ret;
+}
+
+int main(void) {
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL); cout.tie(NULL);
+    //fstream inf("prob.txt");
+    //inf >> N;
+    cin >> N;
+
+    ll x, h;
+    for (int i = 0; i < N; i++) {
+        //inf >> x >> h;
+        cin >> x >> h;        
+        a.push_back({ x,h });
+    }
+    sort(a.begin(), a.end());
+    printf("%d", solve(0));
+
+    return 0;
+}

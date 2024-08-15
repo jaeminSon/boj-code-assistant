@@ -1,0 +1,22 @@
+#include <iostream>
+
+using namespace std;
+
+int c, k, p;
+int sum[101], sqsum[101];
+
+void prev() {
+	for(int i = 1; i<101; i++) {
+		sum[i] = sum[i-1] + i;
+		sqsum[i] = sqsum[i-1] + i*i;
+	}
+}
+
+int main() {
+	cin >> c >> k >> p;
+	prev();
+	cout << k * sum[c] + p * sqsum[c] << endl;
+	
+	
+	return 0;
+}

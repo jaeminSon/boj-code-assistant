@@ -1,0 +1,28 @@
+#include <iostream>
+#include <vector>
+#include <string>
+#include <algorithm>
+
+using namespace std;
+
+vector<int> cnt(26);
+
+int main() {
+	string s;
+	cin >> s;
+	
+	transform(s.begin(), s.end(), s.begin(), ::tolower);
+	
+	for(int i = 0; i<s.size(); i++)
+		cnt[s[i]-'a']--;
+	
+	vector<int> a(cnt);
+	sort(a.begin(), a.end());
+	if(a[0] == a[1])	cout << "?" << endl;
+	else {
+		for(int i = 0; i<26; i++)
+			if(a[0] == cnt[i])	cout << char(i+'A') << endl;
+	}
+	
+	return 0;
+}

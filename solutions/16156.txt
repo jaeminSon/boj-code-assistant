@@ -1,0 +1,85 @@
+#include <iostream>
+#include <vector>
+#include <queue>
+
+using namespace std;
+
+typedef pair<int,int> pii;
+
+const int S = 500, INF = 2e9;
+int N, M;
+int adj[S+5][S+5], dist[S+5][S+5], ret[S+5];
+pii p[S+5][S+5];
+int mv[4][2] = {
+    {1,0}, {0,1}, {-1,0}, {0,-1}
+};
+
+struct pi {
+    int d, y, x;    
+};
+
+struct cmp {
+    bool operator()(const pi& a, const pi& b) {
+        return a.d > b.d;
+    }
+};
+
+void solve() {
+    for(int i = 1; i<=N; i++) {
+        for(int j = 1; j<=M; j++)
+            dist[i][j] = INF;
+    }
+    priority_queue<pi, vector<pi>, cmp> pq;
+    for(int i = 1; i<=N; i++) {
+        p[i][M] = {i, M};
+        dist[i][M] = adj[i][M];
+        pq.push({dist[i][M], i, M});
+    }
+
+    while(!pq.empty()) {
+        int d = pq.top().d;
+        int y = pq.top().y;
+        int x = pq.top().x;
+        pq.pop();
+        
+        for(int type = 0; type<4; type++) {
+            int ny = y + mv[type][0];
+            int nx = x + mv[type][1];
+
+            if(ny < 1 || ny > N || nx < 1 || nx > M)
+                continue;
+            if(dist[ny][nx] <= d + adj[ny][nx])
+                continue;
+            
+            dist[ny][nx] = d + adj[ny][nx];
+            p[ny][nx] = {y, x};
+            pq.push({dist[ny][nx], ny, nx});
+        }
+    }
+
+    for(int i = 1; i<=N; i++) {
+        int y = i, x = 1;
+        while(!(y == p[y][x].first && x == p[y][x].second)) {
+            int cy = y, cx = x;
+            y = p[cy][cx].first;
+            x = p[cy][cx].second;
+        }
+        ret[y]++;
+    }
+    for(int i = 1; i<=N; i++)
+        cout << ret[i] << '\n';
+}
+
+int main() {
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL); cout.tie(NULL);
+    cin >> N >> M;
+
+    for(int i = 1; i<=N; i++) {
+        for(int j = 1; j<=M; j++)
+            cin >> adj[i][j];
+    }
+    solve();
+
+    return 0;
+}

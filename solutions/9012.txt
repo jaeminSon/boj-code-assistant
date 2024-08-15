@@ -1,0 +1,46 @@
+#include <iostream>
+#include <stack>
+
+using namespace std;
+
+string solve(stack<char> st) {
+	stack<char> at;
+	
+	while(!st.empty()) {
+		if(st.top() == ')') {
+			at.push(')');
+			st.pop();
+		}
+		else if(st.top() == '(') {
+			if(!at.empty())
+				at.pop();
+			else
+				return "NO";
+			
+			st.pop();
+		}
+	}
+	
+	if(at.empty())
+		return "YES";
+	return "NO";
+}
+
+int main() {
+	int t;
+	cin >> t;
+	
+	for(int i = 0; i<t; i++) {
+		stack<char> st;
+		string s;
+		cin >> s;
+		
+		for(int j = 0; j<s.size(); j++)
+			st.push(s[j]);
+			
+		cout << solve(st) << endl;		
+	}
+	
+	
+	return 0;
+}

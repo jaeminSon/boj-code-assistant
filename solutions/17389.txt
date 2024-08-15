@@ -1,0 +1,26 @@
+#include <iostream>
+
+using namespace std;
+
+int n;
+string s;
+
+int main() {
+	cin >> n >> s;
+	
+	int bonus = 0, ret = 0;
+	for(int i = 0; i<n; i++) {
+		if(s[i] == 'X')
+			bonus = 0;
+		else {
+			ret += i+1 + bonus;
+			bonus++;
+		}
+	}
+	if(s[n-1] == 'X')
+		printf("%d", ret + bonus);
+	else
+		printf("%d", ret);
+	
+	return 0;
+}

@@ -1,0 +1,49 @@
+#include <iostream>
+#include <stack>
+#include <vector>
+
+using namespace std;
+
+int n;
+vector<string> words;
+
+bool good(string s) {
+	stack<char> st;
+	
+	for(int i = 0; i<s.size(); i++) {
+		if(st.empty())
+			st.push(s[i]);
+		else {
+			if(st.top() == s[i])
+				st.pop();
+			else
+				st.push(s[i]);
+		}
+	}
+	return st.empty();
+}
+
+int solve() {
+	int cnt = 0;
+	
+	for(int i = 0; i<words.size(); i++) {
+		if(good(words[i]) == true)
+			cnt++;
+	}
+	return cnt;
+}
+
+
+int main() {
+	cin >> n;
+	
+	for(int i = 0; i<n; i++) {
+		string s;
+		cin >> s;
+		words.push_back(s);
+	}
+	
+	cout << solve() << endl;
+	
+	return 0;
+}

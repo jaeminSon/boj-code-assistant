@@ -1,0 +1,55 @@
+#include <iostream>
+#include <cstring>
+
+using namespace std;
+
+int T, N, M;
+int a[5][5], dp[5][5][5][5];
+
+int solve(int y1, int x1, int y2, int x2) {
+    if(y1 < 1 || y2 > N || x1 < 1 || x2 > M)
+        return 0;
+    if(y1 > y2 || x1 > x2)
+        return 0;
+    if(y1 == y2 && x1 == x2)
+        return a[y1][x1];
+    
+    int& ret = dp[y1][x1][y2][x2];
+    if(ret != -1)
+        return ret;
+    
+    for(int i = y1; i<=y2; i++) {
+        int p = 1, sum = 0;
+        for(int j = x2; j>=x1; j--) {
+            sum += a[i][j] * p;
+            p *= 10;
+        }
+        ret = max(ret, sum + solve(y1, x1, i-1, x2) + solve(i+1, x1, y2, x2));
+    }
+    for(int i = x1; i<=x2; i++) {
+        int p = 1, sum = 0;
+        for(int j = y2; j>=y1; j--) {
+            sum += a[j][i] * p;
+            p *= 10;
+        }
+        ret = max(ret, sum + solve(y1, x1, y2, i-1) + solve(y1, i+1, y2, x2));
+    }
+    return ret;
+}
+
+int main() {
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL); cout.tie(NULL);
+    cin >> N >> M;
+
+    memset(dp, -1, sizeof(dp));
+    for(int i = 1; i<=N; i++) {
+        string s;
+        cin >> s;
+        for(int j = 1; j<=M; j++)
+            a[i][j] = s[j-1]-'0';
+    }
+    cout << solve(1, 1, N, M) << '\n';
+ 
+    return 0;
+}

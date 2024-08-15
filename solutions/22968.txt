@@ -1,0 +1,39 @@
+#include <iostream>
+
+using namespace std;
+
+typedef long long ll;
+
+const int S = 1e6;
+int T;
+ll N;
+ll dp[S+5];
+
+void prev() {
+    dp[1] = 1;
+    dp[2] = 2;
+    for(int i = 3; i<=S; i++)
+        dp[i] = dp[i-1] + dp[i-2] + 1;
+}
+
+int solve() {
+    for(int i = 1; i<=S; i++) {
+        if(dp[i-1] <= N && N < dp[i])
+            return i-1;
+    }
+    return -1;
+}
+
+int main() {
+    ios_base::sync_with_stdio(false);
+	cin.tie(NULL); cout.tie(NULL);
+    cin >> T;
+
+    prev();
+    for(int i = 1; i<=T; i++) {
+        cin >> N;
+        cout << solve() << '\n';
+    }
+
+    return 0;
+}

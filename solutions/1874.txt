@@ -1,0 +1,50 @@
+import java.util.*;
+
+public class Main {	
+	public static void main(String[] args) {
+		Scanner sc = new Scanner(System.in);
+		int n = sc.nextInt();
+		int m;
+		int c = 0;
+		boolean[] a = new boolean[100001];
+		
+		Stack s = new Stack();
+		Queue q = new LinkedList();
+		
+		for(int i=0; i<n; i++) {
+			m = sc.nextInt();
+			
+			if(c < m) {
+				
+				while(c < m) {
+					c++;
+		
+					if(a[c] == false) {
+						s.push(c);
+						q.offer("+");
+					}
+				}
+				
+				a[c] = true;
+				s.pop();
+				q.offer("-");
+				while(a[c] != false)
+					c--;
+			} 
+			else if (c == m) {
+				a[c] = true;
+				s.pop();
+				q.offer("-");
+				while(a[c] != false)
+					c--;
+			}
+			else {
+				System.out.println("NO");
+				return;
+			}
+		}
+		
+		while(!q.isEmpty())
+			System.out.println(q.poll());	
+	}
+}

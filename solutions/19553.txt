@@ -1,0 +1,72 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <fstream>
+
+using namespace std;
+
+const int INF = 987654321;
+int N, M;
+int pz[1001], DP[1001][1001][201];
+vector<int> ret;
+
+void prev() {
+    for (int i = 0; i < N; i++) {
+        for (int j = 0; j < N; j++) {
+            for (int t = 0; t < 201; t++)
+                DP[i][j][t] = INF;
+        }
+    }
+}
+
+int solve(bool st, int s, int e, int t) {
+    if (st == true) {
+        st = false;
+        int ret = -INF;
+        for (int i = 0; i < N; i++)
+            ret = max(ret, solve(st, i, i, pz[i]));
+        return ret;
+    }
+
+    int& ret = DP[s][e][t + 100];
+    if (ret != INF)
+        return ret;
+
+    int ns = s - 1, ne = (e + 1) % N;
+    if (ns < 0)
+        ns += N;
+
+    if (ns == e || s == ne)
+        return t;
+
+    if (t <= 0) {
+        ret = solve(st, s, ne, t + pz[ne]);
+        ret = max(ret, solve(st, ns, e, t + pz[ns]));
+    }
+    else {
+        ret = solve(st, s, ne, t - pz[ne]);
+        ret = min(ret, solve(st, ns, e, t - pz[ns]));
+    }
+
+    return ret;
+}
+
+int main(void) {
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL); cout.tie(NULL);
+    //fstream inf("prob.txt");
+    //inf >> N;
+    cin >> N;
+
+    int sum = 0;
+    for (int i = 0; i < N; i++) {
+        //inf >> pz[i];
+        cin >> pz[i];
+        sum += pz[i];
+    }
+
+    prev();
+    printf("%d", (sum + solve(true, -1, -1, -1)) / 2);
+
+    return 0;
+}

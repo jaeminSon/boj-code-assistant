@@ -1,0 +1,67 @@
+#include <iostream>
+#include <deque>
+#include <fstream>
+
+using namespace std;
+
+int N;
+string ins;
+
+int main() {
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL); cout.tie(NULL);
+	//fstream inf("prob.txt");
+	//inf >> N;
+	cin >> N;
+	
+	deque<int> q;
+	for(int x, i = 0; i<N; i++) {
+		//inf >> ins;
+		cin >> ins;
+		
+		if(ins == "push_front") {
+			//inf >> x;
+			cin >> x;
+			q.push_front(x);
+		}
+		else if(ins == "push_back") {
+			//inf >> x;
+			cin >> x;
+			q.push_back(x);
+		}
+		else if(ins == "pop_front") {
+			if(q.empty())
+				printf("-1\n");
+			else {
+				printf("%d\n", q.front());
+				q.pop_front();
+			}
+		}
+		else if(ins == "pop_back") {
+			if(q.empty())
+				printf("-1\n");
+			else {
+				printf("%d\n", q.back());
+				q.pop_back();
+			}
+		}
+		else if(ins == "size")
+			printf("%d\n", q.size());
+		else if(ins == "empty")
+			printf("%d\n", q.empty());
+		else if(ins == "front") {
+			if(q.empty())
+				printf("-1\n");
+			else
+				printf("%d\n", q.front());
+		}
+		else if(ins == "back") {
+			if(q.empty())
+				printf("-1\n");
+			else
+				printf("%d\n", q.back());
+		}
+	}
+
+	return 0;
+}

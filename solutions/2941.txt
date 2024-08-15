@@ -1,0 +1,33 @@
+#include <iostream>
+#include <vector>
+
+using namespace std;
+
+int main() {
+	string s;
+	cin >> s;
+	
+	int idx = 0, cnt = 0;
+	for(int i = 0; i<s.size(); i+=idx) {
+		string sb = s.substr(i, 3);
+		if(sb == "dz=") {
+			idx = 3;
+			cnt++;
+			continue;
+		}
+		sb = s.substr(i, 2);
+		if(sb == "c=" || sb == "c-" || sb == "d-" || sb == "lj" || sb == "nj" || sb == "s=" || sb == "z=") {
+			idx = 2;
+			cnt++;
+			continue;
+		}
+		else {
+			idx = 1;
+			cnt++;
+		}
+	}
+	
+	cout << cnt << endl;
+	
+	return 0;
+}

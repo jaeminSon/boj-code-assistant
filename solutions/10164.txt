@@ -1,0 +1,42 @@
+#include <iostream>
+#include <fstream>
+
+using namespace std;
+
+int N, M, k;
+int G[16][16];
+
+int getcnt(int r, int c) {
+	int g[r+1][c+1];
+
+	for(int i = 1; i<=r; i++)
+		g[i][1] = 1;
+	for(int i = 1; i<=c; i++)
+		g[1][i] = 1;
+	for(int i = 2; i<=r; i++) {
+		for(int j = 2; j<=c; j++)
+			g[i][j] = g[i-1][j]+g[i][j-1];
+	}
+	
+	return g[r][c];
+}
+
+int solve() {
+	if(k == 0)
+		return getcnt(N, M);
+	
+	int r = k%M == 0 ? k/M : k/M+1, c = k%M == 0 ? M : k%M;
+	return getcnt(r, c)*getcnt(N-r+1, M-c+1);
+}
+
+int main() {
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL); cout.tie(NULL);
+	//fstream inf("prob.txt");
+	//inf >> N >> M >> k;
+	cin >> N >> M >> k;
+	
+	printf("%d", solve());
+	
+	return 0;
+}

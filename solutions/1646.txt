@@ -1,0 +1,70 @@
+#include <iostream>
+#include <algorithm>
+
+using namespace std;
+
+typedef long long ll;
+
+const int S = 50;
+int N;
+ll s, e;
+ll fibo[S+5];
+
+void init() {
+    fibo[0] = 1;
+    fibo[1] = 1;
+    for(int i = 2; i<=N; i++)
+        fibo[i] = fibo[i-1] + fibo[i-2] + 1;
+}
+
+string inv(string a) {
+    string b = "";
+    for(int i = 0; i<a.size(); i++)
+        b += 'U';
+    return b;
+}
+
+string solve(int n, ll s, ll e) {
+    if(s == e)
+        return "";
+    
+    if(s == 1 && e <= 1+fibo[n-2])
+        return "L"+solve(n-2, 1, e-1);
+    if(s == 1 && 1+fibo[n-2] < e)
+        return "R"+solve(n-1, 1, e-(fibo[n-2]+1));
+    if(s <= 1+fibo[n-2] && e == 1) {
+        string a = solve(n-2, 1, s-1);
+        return inv(a) + "U";
+    }
+    if(1+fibo[n-2] < s && e == 1) {
+        string a = solve(n-1, 1, s-(fibo[n-2]+1));
+        return inv(a) + "U";
+    }
+    
+    if(s <= 1+fibo[n-2] && e <= 1+fibo[n-2])
+        return solve(n-2, s-1, e-1);
+    if(s <= 1+fibo[n-2] && 1+fibo[n-2] < e) {
+        string a = solve(n-2, 1, s-1);
+        a = inv(a);
+        return a + "UR" + solve(n-1, 1, e-(fibo[n-2]+1));
+    }
+    if(1+fibo[n-2] < s && e <= 1+fibo[n-2]) {
+        string a = solve(n-2, 1, e-1);
+        string b = solve(n-1, 1, s-(fibo[n-2]+1));
+        b = inv(b);
+        return b + "UL" + a;
+    }
+    if(1+fibo[n-2] < s && 1+fibo[n-2] < e)
+        return solve(n-1, s-(fibo[n-2]+1), e-(fibo[n-2]+1));
+}
+
+int main() {
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL); cout.tie(NULL);
+    cin >> N >> s >> e;
+
+    init();
+    cout << solve(N,s,e) << '\n';
+ 
+    return 0;
+}

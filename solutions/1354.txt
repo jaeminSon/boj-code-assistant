@@ -1,0 +1,32 @@
+#include <iostream>
+#include <map>
+#include <fstream>
+
+using namespace std;
+
+typedef long long ll;
+
+ll N, P, Q, X, Y;
+map<ll, ll> DP;
+
+ll solve(ll n) {
+	if (n <= 0)
+		return 1;
+
+	if (DP.count(n) != 0)
+		return DP[n];
+
+	return DP[n] = solve(n / P - X) + solve(n / Q - Y);
+}
+
+int main(void) {
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL); cout.tie(NULL);
+	//fstream inf("prob.txt");
+	//inf >> N >> P >> Q >> X >> Y;
+	cin >> N >> P >> Q >> X >> Y;
+	
+	printf("%lld", solve(N));
+
+	return 0;
+}

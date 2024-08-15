@@ -1,0 +1,30 @@
+#include <iostream>
+#include <string.h>
+
+using namespace std;
+
+int n;
+int cache[31];
+
+int solve(int n) {
+	if(n == 0)	return 1;
+	if(n < 0)	return 0;
+	
+	int& ret = cache[n];
+	if(ret != -1)	return ret;
+	
+	ret = solve(n-2) * 3;
+	for(int i = 4; i<=n; i+=2)
+		ret += solve(n-i) * 2;
+	
+	return ret;
+}
+
+int main() {
+	cin >> n;
+	memset(cache, -1, sizeof(cache));
+	
+	cout << solve(n) << endl;
+	
+	return 0;
+}

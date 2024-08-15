@@ -1,0 +1,60 @@
+#include <stdio.h>
+#include <math.h>
+#include <Windows.h>
+
+using namespace std;
+
+int N, nr, nc;
+int cnt, ins;
+
+void Travel(int n, int r, int c) {
+	printf("n: %d r: %d, c: %d cnt: %d\n", n, r, c, cnt);
+	if (ins == 1)
+		return;
+
+	if (n == 0) {
+		if (r == nr && c == nc) {
+			ins = 1;
+			return;
+		}
+
+		cnt++;
+		return;
+	}
+
+	if (r < nr || c < nc) {
+		cnt += pow(2, n) * pow(2, n);
+		return;
+	}
+
+
+
+	Travel(n - 1, r - (pow(2, n) - pow(2, n - 1)), c - (pow(2, n) - pow(2, n - 1)));
+
+	if (ins == 1)
+		return;
+
+	Travel(n - 1, r - (pow(2, n) - pow(2, n - 1)), c);
+
+	if (ins == 1)
+		return;
+
+	Travel(n - 1, r, c - (pow(2, n) - pow(2, n - 1)));
+
+	if (ins == 1)
+		return;
+
+	Travel(n - 1, r, c);
+}
+
+
+int main(void) {
+	scanf("%d %d %d", &N, &nr, &nc);
+
+	Travel(N, pow(2, N) - 1, pow(2, N) - 1);
+
+	printf("%d", cnt);
+
+	system("pause");
+	return 0;
+}

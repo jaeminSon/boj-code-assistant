@@ -1,0 +1,61 @@
+#include <iostream>
+#include <vector>
+#include <stack>
+#include <algorithm>
+#include <fstream>
+
+using namespace std;
+
+typedef pair<pair<int,int>, int> pti;
+
+const int S = 1e6;
+int N;
+int c[S + 5], dp[S + 5];
+vector<pti> a;
+
+void solve() {
+    for (int i = 0; i < a.size(); i++)
+        a[i].first.second = c[a[i].first.first];
+
+    stack<pti> st;
+    for (int i = 0; i < a.size(); i++) {
+        if (st.empty()) {
+            st.push(a[i]);
+            continue;
+        }
+
+        while (!st.empty() && st.top().first.second < a[i].first.second) {
+            int idx = st.top().second;
+            st.pop();
+
+            dp[idx] = a[i].first.first;
+        }
+        st.push(a[i]);
+    }
+    while (!st.empty()) {
+        int idx = st.top().second;
+        st.pop();
+
+        dp[idx] = -1;
+    }
+    for (int i = 1; i <= N; i++)
+        printf("%d ", dp[i]);
+}
+
+int main(void) {
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL); cout.tie(NULL);
+    //fstream inf("prob.txt");
+    //inf >> N;
+    cin >> N;
+
+    for (int x, i = 1; i <= N; i++) {
+        //inf >> x;
+        cin >> x;
+        c[x]++;
+        a.push_back({ { x, 0 }, i });
+    }
+    solve();
+
+    return 0;
+}

@@ -1,0 +1,33 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+
+using namespace std;
+
+int n, m;
+vector<int> set, pi;
+
+int solve() {
+	sort(set.begin(), set.end());
+	sort(pi.begin(), pi.end());
+	
+	int p = n / 6, q = n % 6;
+	int ret = min((p + 1) * set[0], n * pi[0]);
+	ret = min(ret, p*set[0] + q * pi[0]);
+	return ret;
+}
+
+int main() {
+	cin >> n >> m;
+	
+	for(int i = 0; i<m; i++) {
+		int a, b;
+		cin >> a >> b;
+		set.push_back(a);
+		pi.push_back(b);
+	}
+	
+	cout << solve() << endl;	
+		
+	return 0;
+}

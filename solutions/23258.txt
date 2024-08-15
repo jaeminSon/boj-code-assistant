@@ -1,0 +1,57 @@
+#include <iostream>
+
+using namespace std;
+
+const int S = 300, INF = 1e8;
+int N, Q;
+int a[S+5][S+5], dp[S+5][S+5][S+5];
+
+void prev() {
+    for(int i = 1; i<=N; i++) {
+        for(int j = 1; j<=N; j++) {
+            if(a[i][j] != INF)
+                dp[i][j][0] = a[i][j];
+        }
+    }
+
+    for(int k = 1; k<=N; k++) {
+        for(int i = 1; i<=N; i++) {
+            for(int j = 1; j<=N; j++) {
+                if(a[i][k] != INF && a[k][j] != INF) {
+                    a[i][j] = min(a[i][j], a[i][k]+a[k][j]);
+                    dp[i][j][k] = a[i][j];
+                }
+            }
+        }
+    }
+}
+
+int main() {
+    ios_base::sync_with_stdio(false);
+	cin.tie(NULL); cout.tie(NULL);
+    cin >> N >> Q;
+
+    for(int i = 1; i<=N; i++) {
+        for(int j = 1; j<=N; j++) {
+            int w;
+            cin >> w;
+            if(w == 0 && i != j)
+                a[i][j] = INF;
+            else
+                a[i][j] = w;
+        }
+    }
+
+    prev();
+    for(int i = 1; i<=Q; i++) {
+        int C, s, e;
+        cin >> C >> s >> e;
+
+        if(dp[s][e][C-1] != 0 || s == e)
+            cout << dp[s][e][C-1] << '\n';
+        else
+            cout << -1 << '\n';
+    }
+
+    return 0;
+}

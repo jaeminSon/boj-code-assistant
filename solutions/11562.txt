@@ -1,0 +1,54 @@
+#include <iostream>
+
+using namespace std;
+
+const int INF = 1e9;
+int N, M, K;
+int adj[255][255];
+
+void solve() {
+    for(int k = 1; k<=N; k++) {
+        for(int i = 1; i<=N; i++) {
+            for(int j = 1; j<=N; j++)
+                adj[i][j] = min(adj[i][j], adj[i][k] + adj[k][j]);
+        }
+    }
+}
+
+int main() {
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL); cout.tie(NULL);
+    cin >> N >> M;
+
+    for(int i = 1; i<=N; i++) {
+        for(int j = 1; j<=N; j++) {
+            if(i == j)
+                continue;
+            adj[i][j] = INF;
+        }
+    }
+    for(int i = 0; i<M; i++) {
+        int u, v, b;
+        cin >> u >> v >> b;
+
+        if(b == 0) {
+            adj[v][u] = 1;
+            adj[u][v] = 0;
+        }
+        else {
+            adj[u][v] = 0;
+            adj[v][u] = 0;
+        }
+    }
+    solve();
+    cin >> K;
+
+    for(int i = 0; i<K; i++) {
+        int s, e;
+        cin >> s >> e;
+
+        cout << adj[s][e] << '\n';
+    }
+
+    return 0;
+}

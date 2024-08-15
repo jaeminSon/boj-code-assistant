@@ -1,0 +1,26 @@
+#include <iostream>
+#include <fstream>
+
+using namespace std;
+
+typedef long long ll;
+
+int T;
+ll N;
+
+int main() {
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL); cout.tie(NULL);
+	//fstream inf("prob.txt");
+	//inf >> T;
+	cin >> T;
+	
+	for(int i = 0; i<T; i++) {
+		//inf >> N;
+		cin >> N;
+		
+		printf("%lld\n", N*(1000000000)-N);
+	}
+
+	return 0;
+}

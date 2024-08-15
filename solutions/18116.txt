@@ -1,0 +1,64 @@
+#include <iostream>
+
+using namespace std;
+
+const int S = 1e6;
+int N;
+int pt[S+5], d[S+5], t[S+5];
+
+int find(int a) {
+    if(pt[a] == a)
+        return a;    
+    return pt[a] = find(pt[a]);
+}
+
+void join(int a, int b) {
+    a = find(a);
+    b = find(b);
+
+    if(a == b)
+        return;
+    
+    if(d[a] < d[b]) {
+        pt[a] = b;
+        t[b] += t[a];
+    }
+    else if(d[a] > d[b]) {
+        pt[b] = a;
+        t[a] += t[b];
+    }
+    else {
+        d[a]++;
+        pt[b] = a;
+        t[a] += t[b];
+    }
+}
+
+int main() {
+    ios_base :: sync_with_stdio(false);
+	cin.tie(NULL); cout.tie(NULL);
+    cin >> N;
+
+    for(int i = 1; i<=S; i++) {
+        pt[i] = i;
+        t[i] = 1;
+    }
+    for(int i = 0; i<N; i++) {
+        string s;
+        cin >> s;
+
+        if(s == "I") {
+            int a, b;
+            cin >> a >> b;
+            join(a, b);
+        }
+        else {
+            int c;
+            cin >> c;
+            c = find(c);
+            cout << t[c] << '\n';
+        }
+    }
+
+    return 0;
+}

@@ -1,0 +1,124 @@
+#include <iostream>
+#include <vector>
+#include <queue>
+#include <algorithm>
+#include <cstring>
+#include <fstream>
+
+using namespace std;
+
+typedef pair<int, int> pii;
+
+const int INF = 1e9;
+int N, M, S, D;
+int dist[501], dp[501];
+vector<pii> adj[501], rev[501];
+bool visited[501], fd[501][501];
+
+void dijkstra() {
+    memset(visited, 0, sizeof(visited));
+    for (int i = 0; i < N; i++)
+        dist[i] = INF;
+    dist[S] = 0;
+    priority_queue<pii, vector<pii>, greater<pii>> pq;
+    pq.push({0, S});
+
+    while (!pq.empty()) {
+        int here = pq.top().second;
+        int cost = pq.top().first;
+        pq.pop();
+
+        if (visited[here] == true)
+            continue;
+        visited[here] = true;
+        dist[here] = min(dist[here], cost);
+
+        for (int i = 0; i < adj[here].size(); i++) {
+            int there = adj[here][i].first;
+            int tcost = adj[here][i].second;
+
+            if (fd[here][there] == true)
+                continue;
+
+            pq.push({ dist[here] + tcost, there });
+        }
+    }
+}
+
+void dijkstra2() {
+    memset(visited, 0, sizeof(visited));
+    for (int i = 0; i < N; i++)
+        dp[i] = INF;
+    dp[D] = 0;
+    priority_queue<pii, vector<pii>, greater<pii>> pq;
+    pq.push({ 0, D });
+
+    while (!pq.empty()) {
+        int here = pq.top().second;
+        int cost = pq.top().first;
+        pq.pop();
+
+        if (visited[here] == true)
+            continue;
+        visited[here] = true;
+        dp[here] = min(dp[here], cost);
+
+        for (int i = 0; i < rev[here].size(); i++) {
+            int there = rev[here][i].first;
+            int tcost = rev[here][i].second;
+
+            pq.push({ dp[here] + tcost, there });
+        }
+    }
+}
+
+int solve() {
+    memset(fd, 0, sizeof(fd));
+    dijkstra();
+    dijkstra2();
+
+    for (int i = 0; i < N; i++) {
+        int here = i;
+        for (int j = 0; j < adj[here].size(); j++) {
+            int there = adj[here][j].first;
+            int cost = adj[here][j].second;
+
+            if (dist[here] + dp[there] + cost == dist[D])
+                fd[here][there] = true;
+        }
+    }
+    dijkstra();
+
+    return dist[D] == INF ? -1 : dist[D];
+}
+
+int main(void) {
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL); cout.tie(NULL);
+    //fstream inf("prob.txt");
+    
+    while (true) {
+        //inf >> N >> M;
+        cin >> N >> M;
+        if (N == 0 && M == 0)
+            break;
+        //inf >> S >> D;
+        cin >> S >> D;
+
+        for (int i = 0; i < N; i++) {
+            adj[i].clear();
+            rev[i].clear();
+        }
+
+        for (int u,v,p,i = 0; i < M; i++) {
+            //inf >> u >> v >> p;
+            cin >> u >> v >> p;
+
+            adj[u].push_back({ v, p });
+            rev[v].push_back({ u, p });
+        }
+        printf("%d\n", solve());
+    }
+
+    return 0;
+}

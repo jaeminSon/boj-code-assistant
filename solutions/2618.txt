@@ -1,0 +1,75 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <cmath>
+#include <fstream>
+
+using namespace std;
+
+typedef pair<int, int> pii;
+
+const int S = 1000;
+int N, W;
+int dp[S + 5][S + 5];
+vector<pii> p;
+vector<int> ret;
+
+int dist(int idx1, int idx2) {
+    return abs(p[idx1].first - p[idx2].first) + abs(p[idx1].second - p[idx2].second);
+}
+
+int solve(int idx1, int idx2) {
+    if (max(idx1, idx2) == W + 1)
+        return 0;
+
+    int& ret = dp[idx1][idx2];
+    if (ret != -1)
+        return ret;
+
+    int nxt = max(idx1, idx2) + 1;
+    ret = solve(nxt, idx2) + dist(nxt, idx1);
+    ret = min(ret, solve(idx1, nxt) + dist(nxt, idx2));
+
+    return ret;
+}
+
+void reconstruct(int idx1, int idx2) {
+    if (max(idx1, idx2) == W + 1)
+        return;
+
+    if (solve(idx1, idx2) == solve(max(idx1, idx2) + 1, idx2) + dist(max(idx1, idx2) + 1, idx1)) {
+        ret.push_back(1);
+        reconstruct(max(idx1, idx2) + 1, idx2);
+    }
+    else if (solve(idx1, idx2) == solve(idx1, max(idx1, idx2) + 1) + dist(max(idx1, idx2) + 1, idx2)) {
+        ret.push_back(2);
+        reconstruct(idx1, max(idx1, idx2) + 1);
+    }
+}
+
+int main(void) {
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL); cout.tie(NULL);
+    //fstream inf("prob.txt");
+    //inf >> N >> W;
+    cin >> N >> W;
+
+    p.push_back({ 1,1 });
+    p.push_back({ N, N });
+    for (int y,x,i = 1; i <= W; i++) {
+        //inf >> y >> x;
+        cin >> y >> x;
+
+        p.push_back({ y, x });
+    }
+    for (int i = 0; i <= W + 2; i++) {
+        for (int j = 0; j <= W + 2; j++)
+            dp[i][j] = -1;
+    }
+    printf("%d\n", solve(0, 1));
+    reconstruct(0, 1);
+    for (int i = 0; i < ret.size(); i++)
+        printf("%d\n", ret[i]);
+
+    return 0;
+}

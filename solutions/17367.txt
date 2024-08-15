@@ -1,0 +1,72 @@
+#include <iostream>
+#include <fstream>
+
+using namespace std;
+
+int N;
+int cost[7][7][7];
+double DP[1001][7][7][7];
+
+double solve() {
+	for(int i = 0; i<=6; i++) {
+		for(int j = 1; j<=6; j++) {
+			for(int k = 1; k<=6; k++) {
+				if(i == 0)
+					cost[i][j][k] = 0;
+				else if(i == j && j == k)
+					cost[i][j][k] = 10000+i*1000;
+				else if(i == j || j == k)
+					cost[i][j][k] = 1000+j*100;
+				else if(i == k)
+					cost[i][j][k] = 1000+i*100;
+				else
+					cost[i][j][k] = max(i, max(j, k))*100;
+			}
+		}
+	}
+	double ret = 0;
+	
+	for(int i = 1; i<=6; i++) {
+		for(int j = 1; j<=6; j++) {
+			for(int k = 1; k<=6; k++)
+				DP[N][i][j][k] = 1.0*cost[i][j][k];
+		}
+	}
+	
+	for(int i = N-1; i>=3; i--) {
+		for(int a = 1; a<=6; a++) {
+			for(int b = 1; b<=6; b++) {
+				for(int c = 1; c<=6; c++) {
+					
+					double next = 0;
+					for(int j = 1; j<=6; j++)
+						next += DP[i+1][b][c][j];
+					
+					DP[i][a][b][c] = max(1.0*cost[a][b][c], next/6.0);
+				}
+			}
+		}
+	}
+	
+	for(int a = 1; a<=6; a++) {
+		for(int b = 1; b<=6; b++) {
+			for(int c = 1; c<=6; c++) {
+				ret += DP[3][a][b][c];
+			}
+		}
+	}
+	
+	return ret/216.0;
+}
+
+int main() {
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL); cout.tie(NULL);
+	//fstream inf("prob.txt");
+	//inf >> N;
+	cin >> N;
+	
+	printf("%lf", solve());
+	
+	return 0;
+}

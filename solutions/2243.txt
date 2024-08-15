@@ -1,0 +1,75 @@
+#include <iostream>
+#include <fstream>
+
+using namespace std;
+
+const int S = 1e6;
+int N;
+int Tree[4 * S + 5];
+
+void update(int b, int s, int e, int n, int x) {
+    if (n < s || e < n)
+        return;
+
+    if (s == e) {
+        Tree[b] += x;
+        return;
+    }
+
+    int mid = (s + e) / 2;
+    update(b * 2, s, mid, n, x);
+    update(b * 2 + 1, mid + 1, e, n, x);
+    Tree[b] = Tree[b * 2] + Tree[b * 2 + 1];
+}
+
+int get(int b, int s, int e, int l, int r) {
+    if (r < s || e < l)
+        return 0;
+
+    if (l <= s && e <= r)
+        return Tree[b];
+
+    int mid = (s + e) / 2;
+    return get(b * 2, s, mid, l, r) + get(b * 2 + 1, mid + 1, e, l, r);
+}
+
+int solve(int b) {
+    int lo = 1, hi = S, mid;
+
+    while (lo <= hi) {
+        mid = (lo + hi) / 2;
+
+        if (get(1, 1, S, 1, mid) < b)
+            lo = mid + 1;
+        else
+            hi = mid - 1;
+    }
+    return lo;
+}
+
+int main(void) {
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL); cout.tie(NULL);
+    //fstream inf("prob.txt");
+    //inf >> N;
+    cin >> N;
+
+    for (int a, b, c, i = 0; i < N; i++) {
+        //inf >> a >> b;
+        cin >> a >> b;
+
+        if (a == 1) {
+            int k = solve(b);
+            printf("%d\n", k);
+            update(1, 1, S, k, -1);
+        }
+        else {
+            //inf >> c;
+            cin >> c;
+
+            update(1, 1, S, b, c);
+        }
+    }
+
+    return 0;
+}

@@ -1,0 +1,84 @@
+#include <iostream>
+#include <vector>
+#include <set>
+#include <cmath>
+#include <algorithm>
+
+using namespace std;
+
+struct Point {
+	int x, y;
+	Point() {
+	}
+	Point(int x, int y) : x(x), y(y) {
+	}
+	bool operator < (const Point &v) const {
+		if(y == v.y)
+			return x < v.x;
+		else
+			return y < v.y;
+	}
+};
+
+bool cmp(Point &a, Point &b) {
+	return a.x < b.x;
+}
+
+int dist(Point a, Point b) {
+	return (a.x - b.x) * (a.x - b.x) + (a.y - b.y) * (a.y - b.y);
+}
+
+int n;
+vector<Point> p;
+
+int solve() {
+	set<Point> candidate;
+	candidate.insert(p[0]);
+	candidate.insert(p[1]);
+	
+	int ret = dist(p[0], p[1]);
+	int start = 0;
+	
+	for(int i = 2; i<n; i++) {
+		Point cur = p[i];
+		
+		while(start < i) {
+			auto q = p[start];
+			int x = cur.x - q.x;
+			if(x * x > ret) {
+				candidate.erase(q);
+				start += 1;
+			}
+			else
+				break;
+		}
+		
+		int d = (int)sqrt((double)ret) + 1;
+		auto lower_point = Point(-100000, cur.y - d);
+		auto upper_point = Point(100000, cur.y + d);
+		auto lower = candidate.lower_bound(lower_point);
+		auto upper = candidate.upper_bound(upper_point);
+		for(auto it = lower; it != upper; it++) {
+			int d = dist(cur, *it);
+			if(d < ret)
+				ret = d;
+		}
+		candidate.insert(cur);
+	}
+	return ret;
+}
+
+int main() {
+	cin >> n;
+	
+	for(int i = 0; i<n; i++) {
+		Point a;
+		scanf("%d %d", &a.x, &a.y);
+		p.push_back(a);
+	}
+	
+	sort(p.begin(), p.end(), cmp);
+	printf("%d", solve());
+	
+	return 0;
+}

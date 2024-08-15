@@ -1,0 +1,31 @@
+#include <iostream>
+#include <string.h>
+
+using namespace std;
+
+typedef unsigned long long ULL;
+
+int t, n;
+ULL cache[68];
+
+ULL solve(int n) {
+	if(n < 2)	return 1;
+	if(n == 2)	return 2;
+	if(n == 3)	return 4;
+	
+	ULL& ret = cache[n];
+	if(ret != -1)	return ret;
+	
+	return ret = solve(n-1) + solve(n-2) + solve(n-3) + solve(n-4);
+}
+
+int main() {
+	cin >> t;
+	memset(cache, -1, sizeof(cache));
+	
+	for(int i = 0; i<t; i++) {
+		cin >> n;
+		cout << solve(n) << endl;
+	}
+	return 0;
+}

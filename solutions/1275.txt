@@ -1,0 +1,59 @@
+#include <iostream>
+#include <fstream>
+
+using namespace std;
+
+typedef long long LL;
+
+const int S = 1e5;
+int N, Q;
+LL Tree[4*S+5], A[S+5];
+
+void update(int bucket, int node, int start, int end, LL x) {
+	if(node < start || end < node)	return;
+	
+	Tree[bucket] += x;
+	
+	if(start != end) {
+		update(bucket*2, node, start, (start+end)/2, x);
+		update(bucket*2+1, node, (start+end)/2+1, end, x);
+	}
+}
+
+LL get(int bucket, int start, int end, int left, int right) {
+	if(right < start || end < left)	return (LL)0;
+	
+	if(left <= start && end <= right)	return Tree[bucket];
+	
+	return get(bucket*2, start, (start+end)/2, left, right)
+			+ get(bucket*2+1, (start+end)/2+1, end, left, right);
+}
+
+int main() {
+	ios::sync_with_stdio(false);
+    cin.tie(NULL);
+    cout.tie(NULL);
+	//fstream inf("prob.txt");
+	//inf >> N >> Q;
+	cin >> N >> Q;
+	
+	for(int i = 1; i<=N; i++) {
+		//inf >> A[i];
+		cin >> A[i];
+		update(1, i, 1, N, A[i]);
+	}
+	
+	for(int i = 1; i<=Q; i++) {
+		int x, y, a;
+		LL b;
+		//inf >> x >> y >> a >> b;
+		cin >> x >> y >> a >> b;
+		if(y < x)	swap(x, y);
+		
+		printf("%lld\n", get(1, 1, N, x, y));
+		update(1, a, 1, N, b-A[a]);
+		A[a] = b;
+	}
+
+	return 0;
+}

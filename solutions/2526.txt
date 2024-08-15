@@ -1,0 +1,27 @@
+#include <iostream>
+
+using namespace std;
+
+int n, p;
+int a[98];
+
+int main() {
+	cin >> n >> p;
+	
+	int c = n;
+	while(true) {
+		if(a[c] == 2)
+			break;
+		
+		a[c]++;
+		c = c * n % p;
+	}
+	int ret = 0;
+	for(int i = 0; i<98; i++) {
+		if(a[i] == 2)
+			ret++;
+	}
+	cout << ret << endl;
+	
+	return 0;
+}

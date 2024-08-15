@@ -1,0 +1,86 @@
+#include <iostream>
+#include <vector>
+#include <queue>
+#include <algorithm>
+#include <fstream>
+
+using namespace std;
+
+int N;
+int obd[25][25];
+
+int dfs(int depth, int cbd[][25]) {
+    if (depth > 5) {
+        int ret = 0;
+        for (int i = 0; i < N; i++) {
+            for (int j = 0; j < N; j++)
+                ret = max(ret, cbd[i][j]);
+        }
+        return ret;
+    }
+    
+    int ret = 0;
+    for (int type = 0; type < 4; type++) {
+        int bd[25][25] = { 0, };
+        for (int i = 0; i < N; i++) {
+            for (int j = 0; j < N; j++)
+                bd[i][j] = cbd[i][j];
+        }
+
+        for (int i = 0; i < N; i++) {
+            vector<int> p;
+            for (int j = 0; j < N; j++) {
+                if (type < 2 && bd[i][j] != 0)
+                    p.push_back(bd[i][j]);
+                else if(type >= 2 && bd[j][i] != 0)
+                    p.push_back(bd[j][i]);
+            }
+
+            if (type == 1 || type == 3)
+                reverse(p.begin(), p.end());
+
+            vector<int> q;
+            for (int j = 0; j < p.size(); j++) {
+                if (j < p.size() - 1 && p[j] == p[j + 1]) {
+                    q.push_back(p[j] * 2);
+                    j++;
+                }
+                else
+                    q.push_back(p[j]);
+            }
+
+            for (int j = q.size(); j < N; j++)
+                q.push_back(0);
+
+            if (type == 1 || type == 3)
+                reverse(q.begin(), q.end());
+
+            for (int j = 0; j < N; j++) {
+                if (type < 2)
+                    bd[i][j] = q[j];
+                else
+                    bd[j][i] = q[j];
+            }
+        }
+        ret = max(ret, dfs(depth + 1, bd));
+    }
+    return ret;
+}
+
+int main(void) {
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL); cout.tie(NULL);
+    //fstream inf("prob.txt");
+    //inf >> N;
+    cin >> N;
+
+    for (int i = 0; i < N; i++) {
+        for (int j = 0; j < N; j++) {
+            //inf >> obd[i][j];
+            cin >> obd[i][j];
+        }
+    }
+    printf("%d", dfs(1, obd));
+
+    return 0;
+}

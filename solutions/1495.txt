@@ -1,0 +1,46 @@
+#include <iostream>
+#include <cstring>
+#include <fstream>
+
+using namespace std;
+
+int N, S, M;
+int V[101];
+
+int solve() {
+	bool DP[101][1001];
+	memset(DP, 0, sizeof(DP));
+	
+	DP[0][S] = true;
+	for(int i = 1; i<=N; i++) {
+		for(int j = 0; j<=M; j++) {
+			if(DP[i-1][j] == true) {
+				if(j+V[i] <= M)
+					DP[i][j+V[i]] = true;
+				if(0 <= j-V[i])
+					DP[i][j-V[i]] = true;
+			}
+		}
+	}
+	for(int j = M; j>=0; j--) {
+		if(DP[N][j] == true)
+			return j;
+	}
+	return -1;
+}
+
+int main() {
+	ios_base :: sync_with_stdio(false);
+	cin.tie(NULL); cout.tie(NULL);
+	//fstream inf("prob.txt");
+	//inf >> N >> S >> M;
+	cin >> N >> S >> M;
+	
+	for(int i = 1; i<=N; i++) {
+		//inf >> V[i];
+		cin >> V[i];
+	}
+	printf("%d", solve());
+	
+	return 0;
+}

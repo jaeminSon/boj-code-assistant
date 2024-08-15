@@ -1,0 +1,57 @@
+#include <iostream>
+#include <vector>
+
+using namespace std;
+
+typedef long long ll;
+
+struct FenwickTree {
+	vector<ll> tree;
+	FenwickTree(int n) : tree(n + 1) {}
+	
+	ll sum(int pos) {
+		++pos;
+		ll ret = 0;
+		while(pos > 0) {
+			ret += tree[pos];
+			pos &= (pos - 1);
+		}
+		return ret;
+	}
+	
+	void add(int pos, ll val) {
+		++pos;
+		while(pos < tree.size()) {
+			tree[pos] += val;
+			pos += (pos & -pos);
+		}
+	}
+};
+
+int n, m, k;
+
+int main() {
+    scanf("%d %d %d", &n, &m, &k);
+    
+	FenwickTree ft(n+1);
+	for(int i = 1; i<=n; i++) {
+		ll a;
+        cin >> a;
+		ft.add(i, a);
+	}
+	for(int i = 0; i<m+k; i++) {
+		int a, b;
+		ll c;
+		cin >> a >> b >> c;
+		
+		if(a == 1) {
+			int orib = ft.sum(b) - ft.sum(b-1);
+			ft.add(b, -orib);
+			ft.add(b, c);
+		}
+		else
+			printf("%lld\n", ft.sum(c) - ft.sum(b-1));
+	}
+	
+	return 0;
+}

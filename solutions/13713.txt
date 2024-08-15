@@ -1,0 +1,54 @@
+#include <iostream>
+#include <string>
+#include <algorithm>
+#include <fstream>
+
+using namespace std;
+
+const int S = 1e6;
+string s;
+int M, A[S + 5];
+
+void solve(const string& s) {
+	int N = s.size();
+	int r = N, p = N;
+
+	for (int i = N - 2; i >= 0; i--) {
+		if (i >= r)
+			A[i] = min(i - r, A[N - 1 - (p - i)]);
+		else
+			A[i] = 0;
+
+		while (0 <= i - A[i] - 1 && s[i - A[i] - 1] == s[N - 1 - A[i] - 1])
+			A[i]++;
+
+		if (r > i - A[i]) {
+			r = i - A[i];
+			p = i;
+		}
+	}
+	A[N - 1] = N - 1;
+}
+
+int main() {
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL); cout.tie(NULL);
+	//fstream inf("prob.txt");
+	//inf >> s >> M;
+	cin >> s >> M;
+
+	solve(s);
+
+	int N = s.size();
+	for (int q,i = 0; i < M; i++) {
+		//inf >> q;
+		cin >> q;
+
+		if (s[q - 1] == s[N - 1])
+			printf("%d\n", A[q - 1] + 1);
+		else
+			printf("0\n");
+	}
+
+	return 0;
+}

@@ -1,0 +1,126 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <cmath>
+#include <cstring>
+#include <fstream>
+
+using namespace std;
+
+const int S = 1e5, INF = 1e9;
+int N, L;
+int nxt[S + 5], pw[18];
+pair<int, int> ST[18][S + 5];
+vector<pair<int, int>> p;
+
+bool cmp(const pair<int, int>& a, const pair<int, int>& b) {
+    if (a.second == b.second)
+        return abs(a.first - a.second) > abs(b.first - b.second);
+    return a.second < b.second;
+}
+
+bool checkin(int e, int idx) {
+    if (p[idx].first == e || e == p[idx].second)
+        return true;
+    if (p[idx].first < e && e < p[idx].second)
+        return true;
+    if (p[idx].first > p[idx].second && (e <= p[idx].second || e >= p[idx].first))
+        return true;
+    return false;
+}
+
+int solve() {
+    sort(p.begin(), p.end(), cmp);
+    memset(nxt, -1, sizeof(nxt));
+
+    int idx = 0, si = 0, cnt = 0, e = p[0].second;
+    while(nxt[si] == -1) {
+        if (cnt == N)
+            return 1;
+        if (checkin(e, idx)) {
+            idx = (idx + 1) % N;
+            cnt++;
+            continue;
+        }
+        while (si != idx) {
+            if (checkin(p[si].second, idx) == true)
+                break;
+
+            nxt[si] = idx;
+            si = (si + 1) % N;
+        }
+        cnt = 0;
+        e = p[si].second;
+    }
+
+    int lgm = 0;
+    pw[0] = 1;
+    while (pw[lgm] <= N) {
+        lgm++;
+        pw[lgm] = pw[lgm - 1] << 1;
+    }
+
+    for (int i = 0; i < N; i++)
+        ST[0][i] = { nxt[i], 0 };
+    for (int i = 1; i < lgm; i++) {
+        for (int j = 0; j < N; j++) {
+            int a = ST[i - 1][j].first;
+            int b = ST[i - 1][a].first;
+
+            ST[i][j].first = b;
+            ST[i][j].second = ST[i - 1][j].second + ST[i - 1][a].second;
+
+            if ((j <= b && b < a) || (a < j && j <= b))
+                ST[i][j].second++;
+        }
+    }
+
+    int ret = INF;
+    for (int i = 0; i < N; i++) {
+        int cur = i, cnt = 0;
+
+        for (int j = lgm - 1; j >= 0; j--) {
+            if (ST[j][cur].second >= 1) {
+                ret = min(ret, 1 << j);
+                continue;
+            }
+
+            int next = ST[j][cur].first;
+            if ((i <= next && next < cur) || (cur < i && i <= next)) {
+                ret = min(ret, cnt + (1 << j));
+                continue;
+            }
+            cnt += (1 << j);
+            cur = next;
+        }
+    }
+
+    return ret;
+}
+
+int main(void) {
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL); cout.tie(NULL);
+    //fstream inf("prob.txt");
+    //inf >> N >> L;
+    cin >> N >> L;
+
+    for (int s, e, i = 0; i < N; i++) {
+        //inf >> s >> e;
+        cin >> s >> e;
+
+        if (e < s)
+            swap(s, e);
+        if (s + L / 2 < e) {
+            e -= L;
+            swap(s, e);
+        }
+        s = (s + L / 2) % L;
+        e = (e + L / 2) % L;
+
+        p.push_back({ s, e });
+    }
+    printf("%d", solve());
+
+    return 0;
+}

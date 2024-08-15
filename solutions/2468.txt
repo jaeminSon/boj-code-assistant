@@ -1,0 +1,57 @@
+#include <iostream>
+#include <string.h>
+
+using namespace std;
+
+const int NINF = -987654321;
+int n, ret;
+int map[101][101], mov[4][2] = { {0, 1}, {1, 0}, {-1, 0}, {0, -1} };
+bool visit[101][101];
+
+void dfs(int y, int x, int depth) {
+	visit[y][x] = true;
+	
+	for(int i = 0; i<4; i++) {
+		int dy = y + mov[i][0];
+		int dx = x + mov[i][1];
+		
+		if(dy < 0 || n <= dy || dx < 0 || n <= dx)	continue;
+		if(visit[dy][dx] == true) continue;
+		if(map[dy][dx] <= depth) {
+			map[dy][dx] = NINF;
+			continue;
+		}
+		
+		dfs(dy, dx, depth);
+	}
+}
+
+void dfsAll() {
+	for(int depth = 0; depth<101; depth++) {
+		int cnt = 0;
+		for(int y = 0; y<n; y++) {
+			for(int x = 0; x<n; x++) {
+				if(visit[y][x] == true || map[y][x] <= depth)	continue;
+				
+				dfs(y, x, depth);
+				cnt++;
+			}
+		}
+		
+		ret = max(ret, cnt);
+		memset(visit, false, sizeof(visit));
+	}
+}
+
+int main() {
+	cin >> n;
+
+	for(int i = 0; i<n; i++)
+		for(int j = 0; j<n; j++)
+			cin >> map[i][j];
+	
+	dfsAll();
+	cout << ret << endl;
+	
+	return 0;
+}

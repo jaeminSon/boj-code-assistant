@@ -1,0 +1,53 @@
+#include <iostream>
+#include <algorithm>
+#include <cmath>
+#include <fstream>
+
+using namespace std;
+
+const int S = 1e5;
+int N;
+int a[S + 5];
+
+void solve() {
+    int s = 0, e = N - 1;
+    int sum, rs = 0, re = N - 1, ret = 2e9;
+    while (s < e) {
+        sum = a[s] + a[e];
+        if (abs(sum) < abs(ret)) {
+            rs = s;
+            re = e;
+            ret = sum;
+        }
+        if (abs(a[s]) < abs(a[e]))
+            e--;
+        else
+            s++;
+    }
+
+    for (int i = 0; i < N - 1; i++) {
+        sum = a[i] + a[i + 1];
+        if (abs(sum) < abs(ret)) {
+            rs = i;
+            re = i + 1;
+            ret = sum;
+        }
+    }
+    printf("%d %d", a[rs], a[re]);
+}
+
+int main(void) {
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL); cout.tie(NULL);
+    //fstream inf("prob.txt");
+    //inf >> N;
+    cin >> N;
+
+    for (int i = 0; i < N; i++) {
+        //inf >> a[i];
+        cin >> a[i];
+    }
+    solve();
+
+    return 0;
+}

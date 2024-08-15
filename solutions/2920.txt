@@ -1,0 +1,27 @@
+#include <iostream>
+
+using namespace std;
+
+int main() {
+	int a[8];
+	
+	for(int i = 0; i<8; i++)
+		cin >> a[i];
+	
+	bool ac = true, bc = true;
+	for(int i = 1; i<8; i++) {
+		if(a[i] - a[i-1] != 1)
+			ac = false;
+		if(a[i] - a[i-1] != -1)
+			bc = false;
+	}
+	
+	if(ac)
+		cout << "ascending" << endl;
+	else if(bc)
+		cout << "descending" << endl;
+	else
+		cout << "mixed" << endl;
+	
+	return 0;
+}

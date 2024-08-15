@@ -1,0 +1,54 @@
+#include <iostream>
+#include <vector>
+#include <string.h>
+#include <math.h>
+
+using namespace std;
+
+const int MAX_N = 1000000000;
+int n;
+
+unsigned char sieve[(MAX_N + 7) / 8];
+
+inline bool isPrime(int k) {
+	return sieve[k>>3] & (1<<(k&7));
+}
+
+inline void setComposite(int k) {
+	sieve[k>>3] &= ~(1<<(k&7));
+}
+
+void eratosthenes() {
+	memset(sieve, 255, sizeof(sieve));
+	setComposite(0);
+	setComposite(1);
+	
+	int sqrtn = int(sqrt(n));
+	for(int i = 2; i<=sqrtn; i++) {
+		if(isPrime(i)) {
+			for(int j = i*i; j<=n; j+=i)
+				setComposite(j);
+		}
+	}
+}
+
+int main() {
+	n = 10001;
+	eratosthenes();
+
+	int M, N;
+	cin >> M >> N;
+
+	int sum = 0, idx = -1;
+	for(int i = M; i<=N; i++) {
+		if(isPrime(i))
+			sum += i;
+		if(isPrime(i) && idx == -1)
+			idx = i;
+	}
+
+	if(sum != 0)	cout << sum << endl;
+	cout << idx << endl;
+	
+	return 0;
+}

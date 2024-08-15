@@ -1,0 +1,52 @@
+#include <iostream>
+#include <stack>
+#include <fstream>
+
+using namespace std;
+
+typedef pair<int, int> pii;
+
+const int S = 1e6;
+int N;
+int a[S + 5], dp[S + 5];
+
+void solve() {
+    stack<pii> st;
+    for (int i = 1; i <= N; i++) {
+        if (st.empty()) {
+            st.push({ a[i], i });
+            continue;
+        }
+
+        while (!st.empty() && st.top().first < a[i]) {
+            int idx = st.top().second;
+            dp[idx] = a[i];
+            st.pop();
+        }
+        st.push({ a[i], i });
+    }
+    while (!st.empty()) {
+        int idx = st.top().second;
+        dp[idx] = -1;
+        st.pop();
+    }
+    for (int i = 1; i <= N; i++)
+        printf("%d ", dp[i]);
+}
+
+int main(void) {
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL); cout.tie(NULL);
+    //fstream inf("prob.txt");
+    //inf >> N;
+    cin >> N;
+
+    for (int x, i = 1; i <= N; i++) {
+        //inf >> x;
+        cin >> x;
+        a[i] = x;
+    }
+    solve();
+
+    return 0;
+}

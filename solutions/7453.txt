@@ -1,0 +1,52 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <fstream>
+
+using namespace std;
+
+typedef long long ll;
+
+int N;
+int a[4][4001];
+
+ll solve() {
+    vector<int> p;
+    for (int i = 0; i < N; i++) {
+        for (int j = 0; j < N; j++) {
+            int sum = a[0][i] + a[1][j];
+            p.push_back(sum);
+        }
+    }
+    sort(p.begin(), p.end());
+
+    ll ret = 0;
+    for (int i = 0; i < N; i++) {
+        for (int j = 0; j < N; j++) {
+            int sum = a[2][i] + a[3][j];
+            int lo = lower_bound(p.begin(), p.end(), -sum) - p.begin();
+            int hi = upper_bound(p.begin(), p.end(), -sum) - p.begin();
+            if (lo != p.size() && p[lo] == -sum)
+                ret += ((ll)hi - lo);
+        }
+    }
+    return ret;
+}
+
+int main(void) {
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL); cout.tie(NULL);
+    //fstream inf("prob.txt");
+    //inf >> N;
+    cin >> N;
+
+    for (int i = 0; i < N; i++) {
+        for (int j = 0; j < 4; j++) {
+            //inf >> a[j][i];
+            cin >> a[j][i];
+        }
+    }
+    printf("%lld", solve());
+
+    return 0;
+}

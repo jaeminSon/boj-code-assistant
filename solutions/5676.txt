@@ -1,0 +1,128 @@
+#include <iostream>
+#include <cstring>
+#include <fstream>
+
+using namespace std;
+
+const int S = 1e5;
+int N, K;
+int Tree[S+5], zTree[S+5];
+
+int zget(int a, int b) {
+	int i = a-1, aret = 0, bret = 0;
+	while(i>0) {
+		aret += zTree[i];
+		i -= (i&-i);
+	}
+	i = b;
+	while(i>0) {
+		bret += zTree[i];
+		i -= (i&-i);
+	}
+	return bret-aret;
+}
+
+void zupdate(int i, int x) {
+	while(i<=N) {
+		zTree[i] += x;
+		i += (i&-i);
+	}
+}
+
+int get(int a, int b) {
+	int i = a-1, aret = 1, bret = 1;
+	while(i>0) {
+		aret *= Tree[i];
+		i -= (i&-i);
+	}
+	i = b;
+	while(i>0) {
+		bret *= Tree[i];
+		i -= (i&-i);
+	}
+	
+	return bret / aret;
+}
+
+void update(int i, int x) {
+	int y = get(i, i);
+	x = (x>0) ? 1 : -1;
+	
+	while(i<=N) {
+		Tree[i] *= x/y;
+		i += (i&-i);
+	}
+}
+
+int main() {
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL); cout.tie(NULL);
+	//fstream inf("prob.txt");
+	
+	while(cin >> N) {
+		//inf >> K;
+		cin >> K;
+		
+		memset(Tree, 0, sizeof(Tree));
+		memset(zTree, 0, sizeof(zTree));
+		
+		for(int i = 1; i<=N; i++) {
+			int x;
+			//inf >> x;
+			cin >> x;
+			
+			if(x < 0)
+				Tree[i] = -1;
+			else if(x == 0) {
+				Tree[i] = 1;
+				zTree[i] = 1;
+			}
+			else
+				Tree[i] = 1;
+		}
+		for(int i = 1; i<=N; i++) {
+			int j = i+(i&-i);
+			if(j<=N) {
+				Tree[j] *= Tree[i];
+				zTree[j] += zTree[i];	
+			}
+		}
+		
+		char ch;
+		int a, b;
+		
+		for(int i = 1; i<=K; i++) {
+			//inf >> ch >> a >> b;
+			cin >> ch >> a >> b;
+			
+			if(ch == 'C') {
+				if(b == 0) {
+					if(zget(a, a) == 0)
+						zupdate(a, 1);
+						
+					update(a, 1);
+				}
+				else {
+					if(zget(a, a) == 1)
+						zupdate(a, -1);
+	
+					update(a, b);
+				}
+			}
+			else {
+				if(zget(a, b) > 0)
+					cout << 0;
+				else {
+					int ret = get(a, b);
+					if(ret > 0)
+						cout << "+";
+					else if(ret < 0)
+						cout << "-";
+				}
+			}
+		}
+		cout << endl;
+	}
+	
+	return 0;
+}

@@ -1,0 +1,62 @@
+#include <iostream>
+#include <vector>
+#include <fstream>
+
+using namespace std;
+
+typedef pair<int, int> pii;
+
+const int S = 4e5;
+int W, N;
+int a[5001];
+vector<pii> p[S + 5];
+
+bool solve() {
+    for (int i = 1; i <= N; i++) {
+        for (int j = i + 1; j <= N; j++) {
+            int sum = a[i] + a[j];
+            if (sum > W)
+                continue;
+
+            p[sum].push_back({ i, j });
+        }
+    }
+
+    for (int i = 1; i <= N; i++) {
+        for (int j = i + 1; j <= N; j++) {
+            int sum = W - a[i] - a[j];
+            if (sum < 0 || sum > S)
+                continue;
+            if (p[sum].empty())
+                continue;
+
+            for (int k = 0; k < p[sum].size(); k++) {
+                if (p[sum][k].first == i || p[sum][k].second == i)
+                    continue;
+                if (p[sum][k].first == j || p[sum][k].second == j)
+                    continue;
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
+int main(void) {
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL); cout.tie(NULL);
+    //fstream inf("prob.txt");
+    //inf >> W >> N;
+    cin >> W >> N;
+
+    for (int i = 1; i <= N; i++) {
+        //inf >> a[i];
+        cin >> a[i];
+    }
+    if (solve() == true)
+        printf("YES");
+    else
+        printf("NO");
+    
+    return 0;
+}
