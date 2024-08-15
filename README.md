@@ -10,8 +10,8 @@ $ python run.py
 ```
 
 ### 문제, 정답에서 힌트 얻기
-- problems 폴더 밑에, 문제 텍스트를 <boj_문제번호>.txt 에 저장
-- solutions 폴더 밑에, 정답 코드를 <boj_문제번호>.txt 에 저장 
+- 문제 텍스트를 problems 폴더 밑에 <boj_문제번호>.txt 로 저장
+- 정답 코드를 solutions 폴더 밑에 <boj_문제번호>.txt 로 저장 
 
 
 ### 문제 긁어 오기 (web-crawling 은 boj 에서 권장하지 않음)
