@@ -1,11 +1,7 @@
-import os
-import random
 import requests
-import time
 import json
 
 from tqdm import tqdm
-from bs4 import BeautifulSoup
 
 
 SEARCH_URL = "https://solved.ac/api/v3/search/problem"
