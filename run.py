@@ -168,7 +168,7 @@ def _manual():
         "## show list directory content\n```ls```",
         "## execute python file\n```python </path/to/python_file>```",
         "## get a hint\n```hint <boj-prob-number>```",
-        "## verify your logic\n```verify <your-logic>```",
+        "## verify your logic\n```verify <boj-prob-number> <your-logic>```",
         "## show algorithm tags\n```tag <algorithm-name>```",
         "## write parsing codes on draft.py\n```io <boj-prob-number> <language>```",
         "## fetch algorithm explanation\n```explain <algorithm-name>```",
