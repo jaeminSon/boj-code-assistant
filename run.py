@@ -11,6 +11,13 @@ from langchain_community.document_loaders import TextLoader
 from langchain_community.vectorstores import Chroma
 from langchain_community.embeddings import GPT4AllEmbeddings
 
+CSS = """
+.contain { display: flex; flex-direction: column; }
+.gradio-container { height: 100vh !important; }
+#component-0 { height: 100%; }
+#chatbot { flex-grow: 1; overflow: auto;}
+"""
+
 homedir = os.path.dirname(os.path.realpath(__file__))
 
 
@@ -370,8 +377,8 @@ def _give_hint(problem_num: str):
 
 
 def run_gradio():
-    with gr.Blocks(fill_height=True) as demo:
-        history = gr.Chatbot(bubble_full_width=False)
+    with gr.Blocks(css=CSS) as demo:
+        history = gr.Chatbot(bubble_full_width=False, elem_id="chatbot")
         text_input = gr.Textbox()
         clear = gr.Button("Clear")
 
