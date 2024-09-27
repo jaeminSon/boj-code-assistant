@@ -244,12 +244,12 @@ def reference_to_code(prompt, commands_discussion=["hint", "verify"]):
     command = prompt.split()[0]
     return command in commands_discussion
 
-
+@weave.op()
 def default_answer(history: List[List]) -> List[List]:
     history[-1][1] = "I don't know your intention. Type 'man' for available commands."
     return history
 
-
+@weave.op()
 def handle_query(history: List[List]) -> str:
     recent_user_message = history[-1][0]
     if is_command(recent_user_message):
@@ -261,7 +261,7 @@ def handle_query(history: List[List]) -> str:
 def read_txt(path: str):
     return open(path).read()
 
-
+@weave.op()
 def _problem_tags(problem_number):
     tags = [e["tags"] for e in prob_lists if e["problemId"] == int(problem_number)]
 
@@ -272,28 +272,28 @@ def _problem_tags(problem_number):
     else:
         return ", ".join(tags[0])
 
-
+@weave.op()
 def _read_problem(problem_num: str):
     try:
         return read_txt(os.path.join(homedir, f"problems/{problem_num}.txt"))
     except Exception:
         return "Not found"
 
-
+@weave.op()
 def _read_tags(problem_num: str):
     try:
         return _problem_tags(problem_num)
     except Exception:
         return "Not found"
 
-
+@weave.op()
 def _read_solution(problem_num: str):
     try:
         return read_txt(os.path.join(homedir, f"solutions/{problem_num}.txt"))
     except Exception:
         return "Not found"
 
-
+@weave.op()
 def _problem_prompt(problem_num: str):
     problem_desc = _read_problem(problem_num)
     ptags = _read_tags(problem_num)
