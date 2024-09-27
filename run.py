@@ -29,7 +29,15 @@ def read_yaml(path_yaml: str) -> Dict:
 
 
 auto = read_yaml(os.path.join(homedir, "authentication/openai.yaml"))
-client = OpenAI(api_key=auto["api_key"])
+
+# client = OpenAI(api_key=auto["api_key"])
+# MODEL = "gpt-4o"
+client = OpenAI(
+    api_key="up_8RfbCiSaCEymY3vFb7CwFD0wpwTBv",
+    base_url="https://api.upstage.ai/v1/solar"
+)
+
+MODEL = "solar-pro"
 
 tags = json.load(open(os.path.join(homedir, "metainfo/problem_tag.json")))
 
@@ -146,7 +154,7 @@ def _write_io_codes(spec):
     )
 
     response = client.chat.completions.create(
-        model="gpt-4o", messages=history_openai_format, temperature=1.0, stream=True
+        model=MODEL, messages=history_openai_format, temperature=1.0, stream=True
     )
 
     answer = ""
@@ -251,6 +259,7 @@ def default_answer(history: List[List]) -> List[List]:
 
 @weave.op()
 def handle_query(history: List[List]) -> str:
+    print(history)
     recent_user_message = history[-1][0]
     if is_command(recent_user_message):
         return execute_command(history)
@@ -337,7 +346,7 @@ def _verify_logic(prompt: str):
     )
 
     response = client.chat.completions.create(
-        model="gpt-4o", messages=history_openai_format, temperature=1.0, stream=True
+        model=MODEL, messages=history_openai_format, temperature=1.0, stream=True
     )
 
     answer = ""
@@ -366,7 +375,7 @@ def _give_hint(problem_num: str):
     )
 
     response = client.chat.completions.create(
-        model="gpt-4o-mini", messages=history_openai_format, temperature=1.0, stream=True
+        model=MODEL, messages=history_openai_format, temperature=1.0, stream=True
     )
 
     answer = ""
