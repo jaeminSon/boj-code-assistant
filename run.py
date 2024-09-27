@@ -3,6 +3,7 @@ import json
 import yaml
 import subprocess
 import glob
+import weave
 from typing import List, Dict
 
 import gradio as gr
@@ -38,7 +39,7 @@ vdb = None
 
 path_draft = os.path.join(homedir, "draft.py")
 
-
+@weave.op()
 def change_directory(dest) -> None:
     try:
         os.chdir(dest)
@@ -81,7 +82,7 @@ def prepare_vdb(homedir) -> None:
         persist_directory=homedir,
     )
 
-
+@weave.op()
 def _exec_cmd(command):
     output = subprocess.run(command.split(), capture_output=True, text=True)
     if len(output.stderr) > 0:
@@ -89,7 +90,7 @@ def _exec_cmd(command):
     else:
         return output.stdout
 
-
+@weave.op()
 def _show_tag(algorithm):
     if algorithm in tags:
         return "\n".join(tags[algorithm])
@@ -100,14 +101,14 @@ def _show_tag(algorithm):
             + "\n".join(tags.keys())
         )
 
-
+@weave.op()
 def _retrieve_description(algorithm):
     global vdb
     documents = vdb.similarity_search(algorithm, k=1)
     answer = "\n=======".join([d.page_content for d in documents])
     return answer
 
-
+@weave.op()
 def _general_advice():
     advices = []
     advices.append(
@@ -121,7 +122,7 @@ def _general_advice():
     )
     return "\n\n".join([f"{i+1}. {adv}" for i, adv in enumerate(advices)])
 
-
+@weave.op()
 def _write_io_codes(spec):
     chunks = spec.split()
     if len(chunks) == 1:
@@ -168,7 +169,7 @@ def _write_to_draft(content):
     with open(path_draft, "a") as f:
         f.write(content)
 
-
+@weave.op()
 def _manual():
     manuals = [
         "## change directory\n```cd </path/to/directory>```",
@@ -185,7 +186,7 @@ def _manual():
 
     return "\n\n".join(manuals)
 
-
+@weave.op()
 def execute_command(history):
     command = history[-1][0]
     cmd_name = command.split()[0]
@@ -304,7 +305,7 @@ def _problem_prompt(problem_num: str):
         + f"### solution code: {solution}"
     )
 
-
+@weave.op()
 def _verify_logic(prompt: str):
     try:
         chunks = prompt.split()
@@ -346,7 +347,7 @@ def _verify_logic(prompt: str):
 
     return answer
 
-
+@weave.op()
 def _give_hint(problem_num: str):
     try:
         problem_num = str(int(problem_num))
@@ -365,7 +366,7 @@ def _give_hint(problem_num: str):
     )
 
     response = client.chat.completions.create(
-        model="gpt-4o", messages=history_openai_format, temperature=1.0, stream=True
+        model="gpt-4o-mini", messages=history_openai_format, temperature=1.0, stream=True
     )
 
     answer = ""
@@ -398,6 +399,7 @@ def run_gradio():
 
 
 if __name__ == "__main__":
+    weave.init('wandb-korea/boj-code-assistant')
     prepare_vdb(homedir=os.path.join(homedir, "descriptions"))
 
     run_gradio()
