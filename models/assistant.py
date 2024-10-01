@@ -17,7 +17,49 @@ class Assistant(weave.Model):
         if self.is_command(input):
             return self.execute_command(input)
         else:
-            return self.default_answer(input)
+            return self.default_answer(input)     
+    
+    @weave.op()
+    def predict(self, question:str) -> str:
+
+        language = "python"
+
+        history_openai_format = [
+            {
+                "role": "system",
+                "content": f"As an expert in {language}, write a code snippet to parse the input using {language}. Answer only the code.",
+            }
+        ]
+
+        history_openai_format.append(
+            {"role": "user", "content": question}
+        )
+
+
+        client = openai.Client(
+            api_key=AUTH[self.cfg["provider"]],
+            base_url=self.cfg["base_url"]
+        )
+
+        response = client.chat.completions.create(
+            model=self.cfg["model_name"],
+            messages=history_openai_format,
+            temperature=1.0,
+            stream=True
+        )
+
+        answer = ""
+        for chunk in response:
+            if chunk.choices[0].delta.content is not None:
+                answer += chunk.choices[0].delta.content
+
+        start_code = answer.find(f"```{language}")
+        if start_code != -1:
+            answer = answer[start_code + len(f"```{language}") :]
+            end_code = answer.find("```")
+            if end_code != -1:
+                answer = answer[:end_code]
+        return answer
 
     @weave.op()
     def default_answer(self, input:str) -> List[List]:
