@@ -1,0 +1,5 @@
+name: SolarPro
+description: Get help with competitive programming problems using solar-pro.
+base_url: "https://api.upstage.ai/v1/solar"
+model_name: solar-pro
+provider: upstage

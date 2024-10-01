@@ -1,8 +1,9 @@
 import os
 import weave
 import gradio as gr
-from models.solar_pro import SolarPro as MODEL
-from models.common import prepare_vdb, homedir
+from models.assistant import Assistant
+from models.common import read_yaml, HOME_DIR
+import omegaconf
 
 CSS = """
 .contain { display: flex; flex-direction: column; }
@@ -19,8 +20,13 @@ def get_problem_description(problem_number):
     except FileNotFoundError:
         return f"No description found for problem {problem_number}."
 
-def run_gradio():
-    model = MODEL()
+def run_gradio(cfg):
+    print(cfg)
+    model = Assistant(
+        name = cfg.name,
+        description = cfg.description,
+        cfg = cfg
+        )
     with gr.Blocks(css=CSS) as demo:
         with gr.Row():  # Create a row to hold two columns
             with gr.Column(scale=1):  # Left column
@@ -43,9 +49,9 @@ def run_gradio():
 
         # Function to handle user input
         def handle_user_input(user_message, history_state):
-            history_state = history_state + [[user_message, None]]
-            updated_history = model.handle_query(history_state)
-            model_response = updated_history[-1][1]
+            assistant_outpu = model.handle_query(user_message)
+            updated_history = history_state + [[user_message, assistant_outpu]]
+            # model_response = updated_history[-1][1]
             problem_description_update = gr.update()
             recent_user_message = updated_history[-1][0]
             cmd_name = recent_user_message.split()[0]
@@ -59,7 +65,7 @@ def run_gradio():
             ]
 
             return "", updated_history, chatbot_messages, problem_description_update
-
+        
         # Function to clear the conversation
         def clear_conversation():
             return "", [], [], gr.update(value="Problem description will appear here.")
@@ -83,7 +89,12 @@ def run_gradio():
     demo.launch()
 
 if __name__ == "__main__":
+    import argparse
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--config", type=str, default="gpt4o", help="Configuration name")
+    args = parser.parse_args()
+    
+    cfg = omegaconf.OmegaConf.load(f"{HOME_DIR}/configs/{args.config}.yaml")
+    
     weave.init('wandb-korea/boj-code-assistant')
-    prepare_vdb(homedir=os.path.join(homedir, "descriptions"))
-
-    run_gradio()
+    run_gradio(cfg)

@@ -4,3 +4,4 @@ chroma.sqlite3
 authentication/*.yaml
 problems/*.txt
 
+__pycache__/
