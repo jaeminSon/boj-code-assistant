@@ -8,17 +8,9 @@ from langchain_community.vectorstores import Chroma
 
 
 class Assistant(weave.Model):
-    # def __init__(self, cfg):
-    #     self.provider = cfg.provider
-    #     cfg.model_name = cfg.model_name
-    #     self.name = cfg.name
-    #     self.description = cfg.description
-    #     cfg.base_url = cfg.base_url
-    #     cfg.api_key = cfg.api_key
     cfg: dict
-    # provider: str
-    # model_name: str
-    # vdb: Chroma
+    # def __init__(self, name, description, cfg):
+    #     self.cfg = cfg
 
     @weave.op()
     def handle_query(self, input:str) -> str:

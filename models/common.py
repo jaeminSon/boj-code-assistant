@@ -1,16 +1,9 @@
-import os
-import subprocess
-import glob
-import weave
+import os, glob, yaml, json
 from typing import List, Dict
 
 from langchain_community.document_loaders import TextLoader
 from langchain_community.vectorstores import Chroma
 from langchain_community.embeddings import GPT4AllEmbeddings
-
-import weave
-import yaml
-import json
 
 def read_yaml(path_yaml: str) -> Dict:
     with open(path_yaml, "r") as file:
@@ -21,7 +14,6 @@ HOME_DIR  = os.path.dirname(os.path.realpath(__file__)).split('models')[0]
 AUTH = read_yaml(os.path.join(HOME_DIR, "authentication/api_key.yaml"))
 TAGS = json.load(open(os.path.join(HOME_DIR, "metainfo/problem_tag.json")))
 PROB_LISTS = json.load(open(os.path.join(HOME_DIR, "metainfo/problem_lists.json")))
-VDB = None
 PATH_DRAFT = os.path.join(HOME_DIR, "draft.py")
 
 def _vdb_exists(homedir) -> bool:
