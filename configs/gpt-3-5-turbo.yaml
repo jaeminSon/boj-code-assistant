@@ -1,5 +1,5 @@
 name: GPT-3.5-Turbo
-description: Get help with competitive programming problems using solar-pro.
+description: Get help with competitive programming problems using gpt-3.5-turbo.
 base_url: "https://api.openai.com/v1/"
 model_name: gpt-3.5-turbo
 provider: openai

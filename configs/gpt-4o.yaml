@@ -1,5 +1,5 @@
 name: GPT4o
-description: Get help with competitive programming problems using solar-pro.
+description: Get help with competitive programming problems using gpt-4o.
 base_url: "https://api.openai.com/v1/"
 model_name: gpt-4o
 provider: openai

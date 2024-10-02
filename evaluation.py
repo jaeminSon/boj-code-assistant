@@ -57,9 +57,9 @@ if __name__ == "__main__":
     questions = get_dataset()
 
     evaluation = weave.Evaluation(
-        name = 'evaluation-205samples',
+        name = 'LLMJudge',
         dataset = questions,
         scorers=[judge],
     )
-    weave.init('wandb-korea/boj-code-assistant')
+    weave.init('do-something/boj-code-assistant')
     asyncio.run(evaluation.evaluate(model))

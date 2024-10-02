@@ -96,5 +96,5 @@ if __name__ == "__main__":
     
     cfg = omegaconf.OmegaConf.load(f"{HOME_DIR}/configs/{args.config}.yaml")
     
-    weave.init('wandb-korea/boj-code-assistant')
+    weave.init('do-something/boj-code-assistant')
     run_gradio(cfg)
